@@ -1,5 +1,8 @@
 package com.company;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Tile{
     /**
      * Description */
@@ -14,37 +17,28 @@ public class Tile{
     public final int id;
 
     private boolean hasRobber;
+    private Map<String, Tile> adjacents;
 
-    public  Tile upRight;
-    public  Tile downRight;
-    public  Tile right;
-    public Tile upLeft;
-    public  Tile downLeft;
-    public  Tile left;
-    public  Tile [] adjacents;
-    private Road[] roads = new Road[6];
-    private Structure[] structures = new Structure[6];
-
-
-    public Tile(int id, int resource, Tile upRight, Tile downRight, Tile right, Tile upLeft, Tile downLeft, Tile left){
+    public Tile(int id, int resource){
         this.id=id;
         this.resource = resource;
         hasRobber=false;
-        this.upRight=upRight;
-        this.downRight=downRight;
-        this.right=right;
-        this.upLeft=upLeft;
-        this.downLeft=downLeft;
-        this.left=left;
-
-        this.adjacents = new Tile []{this.upLeft,this.upRight,this.left,this.right,this.downLeft,this.downRight};
+        adjacents= new HashMap<String,Tile>();
     }
-
-    public Tile(int id, int resource){
-        this(id, resource, null, null, null, null, null, null);
-    }
-
     public boolean hasRobber() {
         return hasRobber;
+    }
+    public void setAdjacents(Tile topLeft,Tile topRight,Tile left, Tile right, Tile downLeft, Tile downRight){
+        adjacents.put("topLeft",topLeft);
+        adjacents.put("topRight",topRight);
+        adjacents.put("left",left);
+        adjacents.put("right",right);
+        adjacents.put("downLeft",downLeft);
+        adjacents.put("downRight",downRight);
+    }
+    public Map<String,Tile> getAdjacents(){ return adjacents;}
+
+    public Tile getAdjacent(String side){
+        return adjacents.get(side);
     }
 }
