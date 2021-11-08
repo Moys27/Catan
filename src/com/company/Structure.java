@@ -1,5 +1,7 @@
 package com.company;
 
-public abstract class Structure {
-    public Location location;
+public interface Structure {
+    Location getLocation();
+    Player getOwner();
+
 }
