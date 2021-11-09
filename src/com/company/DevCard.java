@@ -13,19 +13,16 @@ public class DevCard extends Card {
     static final int yearOfPlenty = 4; /* the player can draw 2 resource cards of their choice from the bank */
     static final int roadBuilding = 5; /* player can place 2 roads as if they just built them*/
 
-    private int id;
     private String description;
     private String title;
-    private Player owner;
 
-    public DevCard(int id){
-        this.id=id;
-        initialization(this.id);
-        this.owner=null;
+    public DevCard(int type){
+        super(type);
+        initialization();
 
     }
-    private void initialization(int id){
-        switch(id){
+    private void initialization(){
+        switch(this.type){
             case knights:
                 title = "Knights";
                 description= "Move the robber. Steal 1 resource from the owner of a settlement or city adjacent to the robber's new hex."; break;
@@ -57,4 +54,8 @@ public class DevCard extends Card {
         return description;
     }
 
+    @Override
+    public String toString() {
+        return this.title;
+    }
 }

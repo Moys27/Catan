@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public abstract class Player{
     private final String name;
-    private int score;
+    private int victoryPoints;
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
@@ -14,8 +14,8 @@ public abstract class Player{
     private HashMap<ResourceCard, Integer> resourceDeck = new HashMap<ResourceCard, Integer>();
 
     public Player(String n){
-        name=n;
-        score=0;
+        this.name=n;
+        this.victoryPoints=0;
         initializeResourceDeck();
     }
 
@@ -42,5 +42,11 @@ public abstract class Player{
     public abstract void buildStructure();
 
 
+    public void winVictoryPoint(int i){
+        this.victoryPoints+=i;
+    }
 
+    public  void looseVictoryPoint(int i){
+        this.victoryPoints-=i;
+    }
 }

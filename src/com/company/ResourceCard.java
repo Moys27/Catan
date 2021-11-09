@@ -8,16 +8,14 @@ public class ResourceCard extends Card{
     static final int lumber = 4;
     static final int ore = 5;
 
-    private int typeRessource;
-    private Player owner;
+
     public ResourceCard(int n){
-        typeRessource=n;
-        this.owner = null;
+        super(n);
     }
 
     @Override
     public String toString() {
-        switch (this.typeRessource){
+        switch (this.type){
             case brick : return "brick";
             case grain : return "grain";
             case wool : return "wool";
@@ -27,7 +25,4 @@ public class ResourceCard extends Card{
         }
     }
 
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
 }
