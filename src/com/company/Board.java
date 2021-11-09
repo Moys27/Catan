@@ -3,18 +3,26 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /** This class models the board
- * We choose to fix its dimension like the standard game board with 19 tiles.
+ * We choose to fix its dimension like the standard game board with 20 tiles.
  */
 
 public class Board {
+
     private final Tile[][] tiles;
-    private Road[] roads = new Road[6];
-    private Structure[] structures = new Structure[6];
+    private Map<Integer,Tile> tilesMap;
+
+
+    static final int brick = 1;
+    static final int grain = 2;
+    static final int wool = 3;
+    static final int lumber = 4;
+    static final int ore = 5;
 
     public Board (){
-        tiles = new Tile [][] {new Tile [3],new Tile[4],new Tile[5],new Tile[4],new Tile [3]};
+        tiles = new Tile [5][4];
         initializeTiles();
     }
 
@@ -32,15 +40,15 @@ public class Board {
          * 3 mountains produce ore (id = 5)
          * 4 fields produce grain (id = 2)
          * 4 pastures produce wool (id = 3 )
-         * 4 forests produce lumber  (id = 4)
+         * 5 forests produce lumber  (id = 4)
          */
         for (int i =0 ; i <19; i++){
             if(i == 0) resourcesList.add(0);
-            else if(i<3) resourcesList.add(1);
-            else if(i<6) resourcesList.add(5);
-            else if(i<10) resourcesList.add(2);
-            else if(i<14) resourcesList.add(3);
-            else resourcesList.add(4);
+            else if(i<3) resourcesList.add(brick);
+            else if(i<6) resourcesList.add(ore);
+            else if(i<10) resourcesList.add(grain);
+            else if(i<14) resourcesList.add(wool);
+            else resourcesList.add(lumber);
         }
 
         Collections.shuffle(resourcesList);
@@ -62,7 +70,7 @@ public class Board {
      */
     private List<Integer> generateId(){
         List<Integer> id = new ArrayList<>();
-        for (int i =0 ; i <19; i++){
+        for (int i =0 ; i <20; i++){
             if(i == 0) id.add(0);
             else if(i<2) id.add(2);
             else if(i<4) id.add(3);

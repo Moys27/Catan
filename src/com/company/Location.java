@@ -1,12 +1,17 @@
 package com.company;
 
 public class Location {
+    /**
+     * @x and @y are the structure's coordinates in the board
+     * @node stands for either it's located in the vertex (for structures)
+     * or in the edge (for roads)
+     * */
     private int x, y ;
-    private int orientation ;
-    public Location(int x, int y, int orientation){
+    private boolean node ;
+    public Location(int x, int y, boolean node){
         this.x = x;
         this.y=y;
-        this.orientation=orientation;
+        this.node=node;
     }
 
     public int getX() {
@@ -17,7 +22,7 @@ public class Location {
         return y;
     }
 
-    public int getOrientation() {
-        return orientation;
+    public boolean isaNode() {
+        return node;
     }
 }
