@@ -12,11 +12,21 @@ public class Settlement implements Structure{
     }
     @Override
     public Location getLocation() {
-        return null;
+        return this.location;
     }
 
     @Override
     public Player getOwner() {
-        return null;
+        return this.owner;
+    }
+
+    @Override
+    public boolean isBuildable() {//todo
+        return false;
+    }
+
+    @Override
+    public boolean hasNecessaryResources(Player p) {
+        return false; //todo
     }
 }

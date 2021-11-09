@@ -1,5 +1,11 @@
 package com.company;
 
+/** This class models the development cards seen in the game, composed by :
+* Knight Cards
+* Victory Point Cards
+* Progress Cards
+* */
+
 public class DevCard extends Card {
     static final int knights = 1; /* lets the player move the robber */
     static final int victoryPoint = 2; /* 1 additional Victory Point is added to the owners total and doesn't need to be played to win  */
@@ -22,15 +28,14 @@ public class DevCard extends Card {
         switch(id){
             case knights:
                 title = "Knights";
-                description="Lets the player move the robber"; break;
+                description= "Move the robber. Steal 1 resource from the owner of a settlement or city adjacent to the robber's new hex."; break;
             case victoryPoint:
                 title = "Victory Point";
-                description="1 additional Victory Point is added to the owners total and doesn't need to be played to wins"; break;
+                description= "Reveal this card on your turn if, with it, you reach the number of points requires for victory."; break;
             case monopoly:
                 title = "Monopoly";
-                description = "If you play this card, you must name 1 type of resource." +
-                        "All of the other players must give you all of the resource cards of this type that they have in their hands." +
-                        "If an opponent does not have resource card of the specified type, they do not have to give you anything.";
+                description = "When you play this card, announce 1 type of resource." +
+                        "All of the other players must give you all of the resource cards of this type that they have in their hands." ;
                 break;
             case yearOfPlenty:
                 title="Year Of Plenty";
@@ -39,13 +44,17 @@ public class DevCard extends Card {
                 break;
             case roadBuilding:
                 title="Road Building";
-                description="If you play this card, you may immediately place 2 free roads on the board (according to normal building rules).";break;
+                description= "If you play this card, you may immediately place 2 free roads on the board (according to normal building rules).";break;
             default: break;
         }
     }
 
     public void setOwner(Player p){
         this.owner = p;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /** This class models the board
- * We choose to fix its dimension like the standard game board with 20 tiles.
+ * We chose to fix its dimension  with 20 tiles (instead of the 19s of the standard game board).
  */
 
 public class Board {
