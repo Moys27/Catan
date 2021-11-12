@@ -25,10 +25,12 @@ public class DevCard extends Card {
         switch(this.type){
             case knights:
                 title = "Knights";
-                description= "Move the robber. Steal 1 resource from the owner of a settlement or city adjacent to the robber's new hex."; break;
+                description= "Move the robber. Steal 1 resource from the owner of a settlement or city adjacent to the robber's new hex.";
+                break;
             case victoryPoint:
                 title = "Victory Point";
-                description= "Reveal this card on your turn if, with it, you reach the number of points requires for victory."; break;
+                description= "Reveal this card on your turn if, with it, you reach the number of points requires for victory.";
+                break;
             case monopoly:
                 title = "Monopoly";
                 description = "When you play this card, announce 1 type of resource." +
