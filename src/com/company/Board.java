@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Board {
 
-    private final Tile[][] tiles;
+    public final Tile[][] tiles;
     private Structure [][] structures = new Structure[5][5];
     private Road [][]  verticalRoads = new Road[5][4];
     private Road [][] horizontalRoads = new Road[4][5];
@@ -68,10 +68,12 @@ public class Board {
         /*
          * Tiles initialization
          */
+        int k = 0;
         for (int i = 0; i<tiles.length; i++){
             for(int j=0; j< tiles[i].length;j++){
-                String resource = resourcesList.get(i+j);
-                int idTiles= (resource == "" ? 0 : id.get(i+j));
+                String resource = resourcesList.get(k);
+                int idTiles= (resource == "" ? 0 : id.get(k));
+                k++;
                 tiles[i][j]=new Tile(idTiles, resource);
             }
         }
@@ -83,7 +85,7 @@ public class Board {
      */
     private List<Integer> generateId(){
         List<Integer> id = new ArrayList<>();
-        for (int i =0 ; i <16; i++){
+        for (int i =0 ; i <15; i++){
             if(i==0) id.add(2);
             else if(i==1) id.add(3);
             else if(i==2) id.add(4);
@@ -92,9 +94,10 @@ public class Board {
             else if(i<=8) id.add(8);
             else if(i<=10) id.add(9);
             else if(i<=12) id.add(10);
-            else if(i<=14) id.add(11);
+            else if(i==13) id.add(11);
             else id.add(12);
         }
+        id.add(0);
         Collections.shuffle(id);
         return id;
     }
@@ -248,6 +251,24 @@ public class Board {
         return output;
     }
 
+    /**
+     * Counts the number of roads built from a given @param loc
+     */
+    public int countRoadsFromLocation(Location loc, Player player){
+
+        ArrayList<Road> adjacentRoads = this.getAdjacentRoads(loc);
+        List<Integer> roads = new ArrayList<>();
+        for (Road r : adjacentRoads){
+            if(r.getOwner() == player)  roads.add(1 + countRoadsFromLocation(r.getLocation(),player));
+        }
+        int max=0;
+        if(!roads.isEmpty()){
+            for (Integer i : roads) {
+                if(max<i) max = i;
+            }
+        }
+        return max;
+    }
 
 
 }

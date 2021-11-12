@@ -36,4 +36,6 @@ public class Title extends Card{
     public String toString() {
         return this.nomination;
     }
+
+
 }

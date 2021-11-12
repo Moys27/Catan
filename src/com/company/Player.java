@@ -50,8 +50,24 @@ public abstract class Player{
         looseResource("grain",1);
         looseResource("wool",1);
         Settlement settlement= new Settlement(this,location);
-
+        winVictoryPoint(1);
     }
+
+    public void buildCity(Location location){
+        looseResource("grain",2);
+        looseResource("ore",3);
+        City city= new City(this,location);
+        winVictoryPoint(2);
+    }
+
+    /* TODO
+    public void buyDevCard(){
+        looseResource("grain",1);
+        looseResource("ore",1);
+        looseResource("wool",1);
+    }
+    */
+
 
 
     public void winVictoryPoint(int i){
