@@ -43,7 +43,7 @@ public class Board {
      * We distribute the resources and generate Id for each tiles
      */
     private void initializeTiles(){
-        List<Integer> resourcesList=new ArrayList<>();
+        List<String> resourcesList=new ArrayList<>();
         List<Integer> id = this.generateId();
 
         /**
@@ -56,12 +56,12 @@ public class Board {
          * 3 forests produce lumber  (id = 4)
          */
         for (int i =0 ; i <16; i++){
-            if(i == 0) resourcesList.add(0);
-            else if(i<4) resourcesList.add(ResourceCard.brick);
-            else if(i<7) resourcesList.add(ResourceCard.ore);
-            else if(i<10) resourcesList.add(ResourceCard.grain);
-            else if(i<13) resourcesList.add(ResourceCard.wool);
-            else resourcesList.add(ResourceCard.lumber);
+            if(i == 0) resourcesList.add("");
+            else if(i<4) resourcesList.add("brick");
+            else if(i<7) resourcesList.add("ore");
+            else if(i<10) resourcesList.add("grain");
+            else if(i<13) resourcesList.add("wool");
+            else resourcesList.add("lumber");
         }
 
         Collections.shuffle(resourcesList);
@@ -70,8 +70,8 @@ public class Board {
          */
         for (int i = 0; i<tiles.length; i++){
             for(int j=0; j< tiles[i].length;j++){
-                int resource = resourcesList.get(i+j);
-                int idTiles= (resource == 0 ? 0 : id.get(i+j));
+                String resource = resourcesList.get(i+j);
+                int idTiles= (resource == "" ? 0 : id.get(i+j));
                 tiles[i][j]=new Tile(idTiles, resource);
             }
         }

@@ -5,13 +5,5 @@ public class HumanPlayer extends Player{
         super(Settings.askName());
     }
 
-    @Override
-    public void buildRoad() {//todo
 
-    }
-
-    @Override
-    public void buildStructure() {//todo
-
-    }
 }

@@ -11,7 +11,7 @@ public abstract class Player{
 
     private HashMap<Location,Road> roadsMap = new HashMap<>();
     private HashMap<Location,Structure> structureMap=new HashMap<>();
-    private HashMap<ResourceCard, Integer> resourceDeck = new HashMap<ResourceCard, Integer>();
+    private HashMap<String, Integer> resourceDeck = new HashMap<String, Integer>();
 
     public Player(String n){
         name =n;
@@ -20,26 +20,38 @@ public abstract class Player{
     }
 
     private void initializeResourceDeck(){
-            resourceDeck.put(new ResourceCard (ResourceCard.brick),0);
-            resourceDeck.put(new ResourceCard(ResourceCard.grain),0);
-            resourceDeck.put(new ResourceCard(ResourceCard.wool),0);
-            resourceDeck.put(new ResourceCard(ResourceCard.lumber),0);
-            resourceDeck.put(new ResourceCard(ResourceCard.ore),0);
+            resourceDeck.put("brick",0);
+            resourceDeck.put("grain",0);
+            resourceDeck.put("wool",0);
+            resourceDeck.put("lumber",0);
+            resourceDeck.put("ore",0);
     }
 
-    public void winResource(ResourceCard resourceCard, int number){
+    public void winResource(String resourceCard, int number){
         int actualValue = resourceDeck.get(resourceCard);
         resourceDeck.replace(resourceCard,actualValue+number);
     }
 
-    public void looseResource(ResourceCard resourceCard, int number){
+    public void looseResource(String resourceCard, int number){
         int actualValue = resourceDeck.get(resourceCard);
         if (actualValue >= number) resourceDeck.replace(resourceCard,actualValue - number);
         else System.out.println("ERROR: Insufficient resources.");
     }
 
-    public abstract void buildRoad();
-    public abstract void buildStructure();
+    public void buildRoad(Location location){ //conditions a verifier, assez de ressources, assez de nbAllowed, validlocalisation
+        looseResource("brick",1);
+        looseResource("lumber",1);
+        Road road = new Road(location,this);
+
+    }
+    public void buildSettlement(Location location){
+        looseResource("brick",1);
+        looseResource("lumber",1);
+        looseResource("grain",1);
+        looseResource("wool",1);
+        Settlement settlement= new Settlement(this,location);
+
+    }
 
 
     public void winVictoryPoint(int i){

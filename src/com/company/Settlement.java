@@ -31,7 +31,7 @@ public class Settlement implements Structure{
     }
 
     @Override
-    public void winResources(int resource) {
-        this.getOwner().winResource(new ResourceCard(resource),1);
+    public void winResources(String resource) {
+        this.getOwner().winResource(resource,1);
     }
 }

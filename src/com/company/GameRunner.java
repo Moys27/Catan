@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class GameRunner {
     private Player current;
-    public Player [] allPlayers;
+    private Player [] allPlayers;
 
     GameRunner() {
         createPlayers();

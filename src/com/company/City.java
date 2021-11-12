@@ -17,7 +17,7 @@ public class City extends Settlement implements Structure{
     }
 
     @Override
-    public void winResources(int resource) {
-        this.getOwner().winResource(new ResourceCard(resource),2);
+    public void winResources(String resource) {
+        this.getOwner().winResource(resource,2);
     }
 }
