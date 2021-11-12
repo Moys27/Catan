@@ -48,9 +48,6 @@ public class DevCard extends Card {
         }
     }
 
-    public void setOwner(Player p){
-        this.owner = p;
-    }
 
     public String getDescription() {
         return description;

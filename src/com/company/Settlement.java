@@ -29,4 +29,9 @@ public class Settlement implements Structure{
     public boolean hasNecessaryResources(Player p) {
         return false; //todo
     }
+
+    @Override
+    public void winResources(int resource) {
+        this.getOwner().winResource(new ResourceCard(resource),1);
+    }
 }

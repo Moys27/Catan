@@ -18,5 +18,15 @@ public class Tile{
         hasRobber=false;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public int getResource() {
+        return resource;
+    }
+
+    public boolean hasRobber() {
+        return hasRobber;
+    }
 }

@@ -1,16 +1,9 @@
 package com.company;
 
-public class City implements Structure{
-    @Override
-    public Location getLocation() {//todo
+public class City extends Settlement implements Structure{
 
-        return null;
-    }
-
-    @Override
-    public Player getOwner() {//todo
-
-        return null;
+    public City(Player p, Location l) {
+        super(p, l);
     }
 
     @Override
@@ -21,5 +14,10 @@ public class City implements Structure{
     @Override
     public boolean hasNecessaryResources(Player p) {
         return false; //todo
+    }
+
+    @Override
+    public void winResources(int resource) {
+        this.getOwner().winResource(new ResourceCard(resource),2);
     }
 }

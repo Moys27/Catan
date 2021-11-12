@@ -6,4 +6,5 @@ public interface Structure {
     Player getOwner();
     boolean isBuildable();
     boolean hasNecessaryResources(Player p);
+    void winResources(int resource);
 }

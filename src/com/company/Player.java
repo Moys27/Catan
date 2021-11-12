@@ -27,14 +27,14 @@ public abstract class Player{
             resourceDeck.put(new ResourceCard(ResourceCard.ore),0);
     }
 
-    public void winResource(ResourceCard resourceCard){
+    public void winResource(ResourceCard resourceCard, int number){
         int actualValue = resourceDeck.get(resourceCard);
-        resourceDeck.replace(resourceCard,++actualValue);
+        resourceDeck.replace(resourceCard,actualValue+number);
     }
 
-    public void looseResource(ResourceCard resourceCard){
+    public void looseResource(ResourceCard resourceCard, int number){
         int actualValue = resourceDeck.get(resourceCard);
-        if (actualValue > 0) resourceDeck.replace(resourceCard,--actualValue);
+        if (actualValue >= number) resourceDeck.replace(resourceCard,actualValue - number);
         else System.out.println("ERROR: Insufficient resources.");
     }
 
@@ -48,5 +48,17 @@ public abstract class Player{
 
     public  void looseVictoryPoint(int i){
         this.victoryPoints-=i;
+    }
+
+    public boolean canBuild(Structure s, Location loc) {
+        return true; //todo
+        /*
+        * Check if the location is valid :
+        *       if there are roads which reach the location
+        *       no structure from other player is already settled
+        *       if (it's a city) there's already a settlement there
+         * if resources are sufficient
+        * if the number of structures allowed hasn't been reached yet
+        * */
     }
 }
