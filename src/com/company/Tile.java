@@ -15,7 +15,7 @@ public class Tile{
     public Tile(int id, int resource){
         this.id=id;
         this.resource = resource;
-        hasRobber=false;
+        hasRobber=(id==0)? true : false;
     }
 
     public int getId() {
@@ -28,5 +28,16 @@ public class Tile{
 
     public boolean hasRobber() {
         return hasRobber;
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "resource=" + resource +
+                ", id=" + id +
+                ", hasRobber=" + hasRobber +
+                ", roadMap=" + roadMap +
+                ", structureMap=" + structureMap +
+                '}';
     }
 }
