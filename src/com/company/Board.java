@@ -65,9 +65,6 @@ public class Board {
         }
 
         Collections.shuffle(resourcesList);
-        for (Integer i : resourcesList){
-            System.out.println(i);
-        }
         /*
          * Tiles initialization
          */
