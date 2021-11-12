@@ -3,7 +3,7 @@ package com.company;
 import java.util.HashMap;
 
 public abstract class Player{
-    private final String name;
+    public final String name;
     private int victoryPoints;
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
@@ -14,7 +14,7 @@ public abstract class Player{
     private HashMap<ResourceCard, Integer> resourceDeck = new HashMap<ResourceCard, Integer>();
 
     public Player(String n){
-        this.name=n;
+        name =n;
         this.victoryPoints=0;
         initializeResourceDeck();
     }

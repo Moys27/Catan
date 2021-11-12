@@ -4,15 +4,28 @@ import java.util.Scanner;
 
 public class GameRunner {
     private Player current;
+    public Player [] allPlayers;
 
-    //TODO Au debut de chaque jeux initialiser Player.nbPlayers
-    GameRunner(){
-        //ask number of players
-        //ask names
-        String s="test";
-        current= new HumanPlayer(s);
+    GameRunner() {
+        createPlayers();
+    }
+    public void createPlayers(){
+        Settings initialise= new Settings();
+        current= new HumanPlayer();
+        allPlayers= new Player[initialise.numberPlayers()];
+        allPlayers[0]= current;
+        int numHP= initialise.HumanPlayers(allPlayers.length);
+        for (int i = 1; i<=numHP; i++ ){
+            System.out.println("Player "+(i+1)+":"); //Player 1 = allPla
+            allPlayers[i]= new HumanPlayer();
+        }
+        for (int i = numHP+1; i< allPlayers.length; i++ ) {
+            allPlayers[i] = new IAPlayer();
+        }
 
     }
+
+
 
     public int rollDice(){
        Random r= new Random();
