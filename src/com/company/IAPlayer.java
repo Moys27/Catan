@@ -5,4 +5,13 @@ public class IAPlayer extends Player{
         super(n);
     }
 
+    @Override
+    public void buildRoad() { //todo
+    }
+
+    @Override
+    public void buildStructure() { //todo
+
+    }
+
 }
