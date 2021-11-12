@@ -15,12 +15,6 @@ public class Board {
     private Map<Integer,Tile> tilesMap;
 
 
-    static final int brick = 1;
-    static final int grain = 2;
-    static final int wool = 3;
-    static final int lumber = 4;
-    static final int ore = 5;
-
     public Board (){
         tiles = new Tile [5][4];
         initializeTiles();
@@ -44,11 +38,11 @@ public class Board {
          */
         for (int i =0 ; i <20; i++){
             if(i == 0) resourcesList.add(0);
-            else if(i<3) resourcesList.add(brick);
-            else if(i<6) resourcesList.add(ore);
-            else if(i<10) resourcesList.add(grain);
-            else if(i<14) resourcesList.add(wool);
-            else resourcesList.add(lumber);
+            else if(i<3) resourcesList.add(ResourceCard.brick);
+            else if(i<6) resourcesList.add(ResourceCard.ore);
+            else if(i<10) resourcesList.add(ResourceCard.grain);
+            else if(i<14) resourcesList.add(ResourceCard.wool);
+            else resourcesList.add(ResourceCard.lumber);
         }
 
         Collections.shuffle(resourcesList);
