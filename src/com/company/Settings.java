@@ -87,4 +87,16 @@ public class Settings {
 
     }
 
+    public static String askLocation(){
+        System.out.println("Choose for your building");
+        String answer;
+        Scanner scanReponse=new Scanner(System.in);
+        try {
+            answer= scanReponse.nextLine();
+            return answer;
+        } catch (Exception e){
+            return giveName();
+        }
+    }
+
 }

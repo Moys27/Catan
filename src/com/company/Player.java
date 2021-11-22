@@ -38,18 +38,27 @@ public abstract class Player{
         else System.out.println("ERROR: Insufficient resources.");
     }
 
+    public boolean enoughResource(String resourceCard, int number){
+        int actualValue = resourceDeck.get(resourceCard);
+        return (actualValue >= number);
+    }
+
     public void buildRoad(Location location){ //conditions a verifier, assez de ressources, assez de nbAllowed, validlocalisation
-        looseResource("brick",1);
-        looseResource("lumber",1);
+        if ((nbRoadsAllowed!=15)&&(nbRoadsAllowed!=14)) {
+            looseResource("brick", 1);
+            looseResource("lumber", 1);
+        }
         Road road = new Road(location,this);
         nbRoadsAllowed--;
 
     }
     public void buildSettlement(Location location){
-        looseResource("brick",1);
-        looseResource("lumber",1);
-        looseResource("grain",1);
-        looseResource("wool",1);
+        if ((nbSettlementsAllowed!=5)&&(nbSettlementsAllowed!=4)) {
+            looseResource("brick", 1);
+            looseResource("lumber", 1);
+            looseResource("grain", 1);
+            looseResource("wool", 1);
+        }
         Settlement settlement= new Settlement(this,location);
         nbSettlementsAllowed--;
         winVictoryPoint(1);
@@ -59,10 +68,37 @@ public abstract class Player{
         looseResource("grain",2);
         looseResource("ore",3);
         City city= new City(this,location);
-        winVictoryPoint(2);
+        winVictoryPoint(1);
         nbCitiesAllowed--;
     }
 
+    public boolean canBuildRoad(Location location){
+        boolean resource= enoughResource("brick",1) &&
+                          enoughResource("lumber",1);
+        boolean isValidLocation= true; //existante ,vide, a cote d un settlement ou un ville
+        return (resource&&isValidLocation&&(nbRoadsAllowed>=1));
+    }
+
+    public boolean canBuildSettlement(Location location){
+        boolean resource= enoughResource("brick",1) &&
+                          enoughResource("lumber",1) &&
+                          enoughResource("grain",1) &&
+                          enoughResource("wool",1);
+        boolean isValidLocation= true; //existante ,vide, il est possible de construire(pas de settlement voisins et au moins de routes propres)
+
+        return (resource&&isValidLocation&&(nbSettlementsAllowed>=1));
+    }
+
+    public boolean canBuildCity(Location location){
+        boolean resource= enoughResource("grain",2) &&
+                enoughResource("ore",3);
+        boolean isValidLocation= true; //existante ,il y a deja un settlement sur cette localisation
+        return (resource&&isValidLocation&&(nbCitiesAllowed>=1));
+    }
+/*
+    public Location askLocation(){
+
+    }*/
     /* TODO
     public void buyDevCard(){
         looseResource("grain",1);

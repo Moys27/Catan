@@ -5,5 +5,7 @@ public class HumanPlayer extends Player{
         super(Settings.askName());
     }
 
+    public void choix(){
 
+    }
 }

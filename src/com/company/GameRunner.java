@@ -1,10 +1,10 @@
 package com.company;
 import java.util.Random;
-import java.util.Scanner;
 
 public class GameRunner {
     private Player current;
     private Player [] allPlayers;
+    private Deck deckDevelop;
 
     GameRunner() {
         createPlayers();
@@ -22,10 +22,36 @@ public class GameRunner {
         for (int i = numHP+1; i< allPlayers.length; i++ ) {
             allPlayers[i] = new IAPlayer();
         }
-
+        deckDevelop= new Deck();
     }
 
+    public void play(){
+        int nbressource= rollDice(); //fonction repartir resource
+       // current.choix();
+    }
 
+    public void playFirts(){
+
+    }
+    public void nextPlayer(){
+        if(current==allPlayers[allPlayers.length]){
+            current=allPlayers[0];
+            return;
+        }
+        if(current==allPlayers[0]){
+            current=allPlayers[1];
+            return;
+        }
+        if(current==allPlayers[1]){
+            current=allPlayers[2];
+            return;
+        }
+        if(current==allPlayers[2]){
+            current=allPlayers[3];
+            return;
+        }
+        current= allPlayers[4];
+    }
 
     public int rollDice(){
        Random r= new Random();
