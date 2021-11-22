@@ -5,7 +5,7 @@ public class GameRunner {
     public final Board board;
     private Player current;
     private Settings settings;
-    private Player [] allPlayers;
+    private Player [] allPlayers; //fixme : une linkedList ne serait-elle pas mieux ?
     private Deck deckCard;
 
 
@@ -34,6 +34,7 @@ public class GameRunner {
 
     }
     public void nextPlayer(){
+        //todo considérer le cas si allPlayers était une linkedList
         if(current==allPlayers[allPlayers.length]){
             current=allPlayers[0];
             return;

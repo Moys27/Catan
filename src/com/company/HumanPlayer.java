@@ -44,14 +44,14 @@ public class HumanPlayer extends Player{
                     buyDevCard(d);
                 }
                 break;
-            case 5: //todo trade
+            case 5: //todo trade avec le port tout simplement
                 break;
-            case 6://todo
+            case 6://todo faire passer le tour: peut etre qu'un breaak tout simplement suffit
                 break;
 
         }
     }
-    public Location askLocation(){
+    public Location askLocation(){ //todo : trouver un moyen de pouvoir donner les positions valables
         System.out.println("Insert the location. [Valid format : 'posX-posY-Orientation'] " +
                 "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, -1 for Structure)");
         String input = scanReply.next();
@@ -74,6 +74,6 @@ public class HumanPlayer extends Player{
 
     @Override
     public void placeFirstRoad(Board b) {
-    //todo
+    //todo place les premières routes à côté des premiers settlements
     }
 }

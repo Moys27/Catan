@@ -59,7 +59,7 @@ public class DevCard extends Card {
     }
 
     public void useCard(DevCard card){
-        //todo
+        //todo faire correspondre une action a chaque carte
         switch(card.type){
             case knights -> {
             }

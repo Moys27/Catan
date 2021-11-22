@@ -10,6 +10,7 @@ public class Tile{
     private boolean hasRobber;
     public Map<Location, Road> roadMap = new HashMap<Location, Road>() ;
     public Map<Location, Structure> structureMap = new HashMap<Location, Structure>();
+    //todo pour chaque construction de routes et Structures, remplir les hashMap ci-dessus si les constructions sont reliées aux tuiles.
 
 
     public Tile(int id, String resource){

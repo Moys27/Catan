@@ -12,6 +12,7 @@ public class Board {
     private Structure [][] structures = new Structure[5][5];
     private Road [][]  verticalRoads = new Road[5][4];
     private Road [][] horizontalRoads = new Road[4][5];
+    //todo: ajout de l'attribut des ports
 
 
 
@@ -387,5 +388,7 @@ public class Board {
                 System.out.println(t);
             }
         }
-    }
+    }//fixme : ameliorer l'affichage du tableau
+    /*
+    * exemple affichage par tiles avec les roads et strutures presents*/
 }
