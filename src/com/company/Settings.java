@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Settings {
     private Scanner scanReponse;
+    //todo traiter les cas où l'utilisateur insère un mauvais format comme réponse (débug)
     private int numberPlayersDefault=4;
     private boolean humanPlayersDefault=false;
     public static int countPlayer;

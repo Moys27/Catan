@@ -90,9 +90,11 @@ public class Board {
      * @returns if the structure was placed successfully
      * */
     public boolean placeStructure(Location loc, Structure s, Player player){
+        //ajouter la structure dans tiles
         if (s instanceof Settlement){
             if(player.buildSettlement(this,loc) != null){
                 structures[loc.getX()][loc.getY()]=s;
+
                 return true;
             }
         }

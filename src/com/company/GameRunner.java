@@ -34,7 +34,7 @@ public class GameRunner {
 
     }
     public void nextPlayer(){
-        //todo considérer le cas si allPlayers était une linkedList
+        //todo considérer le cas où allPlayers serait une linkedList
         if(current==allPlayers[allPlayers.length]){
             current=allPlayers[0];
             return;
