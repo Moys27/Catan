@@ -1,6 +1,5 @@
 package com.company;
 
-import java.util.Set;
 
 public class Settlement implements Structure{
     private Player owner;
@@ -18,16 +17,6 @@ public class Settlement implements Structure{
     @Override
     public Player getOwner() {
         return this.owner;
-    }
-
-    @Override
-    public boolean isBuildable() {//todo
-        return false;
-    }
-
-    @Override
-    public boolean hasNecessaryResources(Player p) {
-        return false; //todo
     }
 
     @Override

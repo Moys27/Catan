@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Player{
@@ -11,9 +12,10 @@ public abstract class Player{
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
 
-    private HashMap<Location,Road> roadsMap = new HashMap<>();
-    private HashMap<Location,Structure> structureMap=new HashMap<>();
-    private HashMap<String, Integer> resourceDeck = new HashMap<String, Integer>();
+    private Map<Location,Road> roadsMap = new HashMap<>();
+    private Map<Location,Structure> structureMap=new HashMap<>();
+    private Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
+    private Map<String, DevCard> hand = new HashMap<>();
 
     public Player(String n){
         name =n;
@@ -98,6 +100,7 @@ public abstract class Player{
                 looseResource("brick",1);
                 looseResource("lumber",1);
                 Road road = new Road(location,this);
+                roadsMap.put(location,road);
                 nbRoadsAllowed--;
                 return road;
         }
@@ -122,8 +125,9 @@ public abstract class Player{
                looseResource("lumber", 1);
                looseResource("grain", 1);
                looseResource("wool", 1);
-               Settlement settlement = new Settlement(this, location);
+               Structure settlement = new Settlement(this, location);
                nbSettlementsAllowed--;
+               structureMap.put(location,settlement);
                winVictoryPoint(1);
                return settlement;
        }
@@ -152,7 +156,8 @@ public abstract class Player{
         if(canBuildCityAt(b,location)){
             looseResource("grain",2);
             looseResource("ore",3);
-            City city= new City(this,location);
+            Structure city= new City(this,location);
+            structureMap.put(location,city);
             winVictoryPoint(2);
             nbCitiesAllowed--;
             return city;
@@ -160,13 +165,25 @@ public abstract class Player{
         return null;
     }
 
-    /* TODO
-    public void buyDevCard(){
-        looseResource("grain",1);
-        looseResource("ore",1);
-        looseResource("wool",1);
+    public boolean canBuyDevCard(){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put("grain",1);
+        resNeeded.put("ore",1);
+        resNeeded.put("wool",1);
+        return hasResources((HashMap<String, Integer>) resNeeded);
     }
-    */
+
+    public void buyDevCard(Deck d){
+        if(canBuyDevCard()){
+            DevCard card = d.dealACard();
+            if (card != null) {
+                looseResource("grain",1);
+                looseResource("ore",1);
+                looseResource("wool",1);
+                hand.put(card.toString(), card);
+            }
+        }
+    }
     public void winVictoryPoint(int i){
         this.victoryPoints+=i;
     }

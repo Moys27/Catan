@@ -20,18 +20,6 @@ public class Board {
         initializeTiles();
     }
 
-    public Road[][] getHorizontalRoads() {
-        return horizontalRoads;
-    }
-
-    public Road[][] getVerticalRoads() {
-        return verticalRoads;
-    }
-
-    public Tile[][] getTiles() {
-        return tiles;
-    }
-
     /**
      * We distribute the resources and generate Id for each tiles
      */
@@ -121,7 +109,7 @@ public class Board {
      * @returns if the road was placed successfully
      */
     public boolean placeRoad(Location loc, Player player){
-        if (player.buildRoad(this, loc) != null){
+        if (player.canBuildRoadAt(this, loc)){
             Road r = player.buildRoad(this, loc);
             if (loc.getOrientation() == 0){
                 horizontalRoads[loc.getX()][loc.getY()]=r;
@@ -309,7 +297,7 @@ public class Board {
     }
 
     /**
-     * Counts the number of roads built from a given @param loc
+     * @return  the number of roads built from a given @param loc
      */
     public int countRoadsFromLocation(Location loc, Player player){
         ArrayList<Road> adjacentRoads = this.getAdjacentRoads(loc);
@@ -326,6 +314,9 @@ public class Board {
         return max;
     }
 
+    /**
+     * @return if the given location is valid according to either it's a road or a structure
+     */
     public boolean isValidLocation(Location loc){
         if (loc.getOrientation() == -1){
             return (loc.getX()>=0 && loc.getX()<5 && loc.getX()>=0 && loc.getY()<5);
@@ -337,6 +328,10 @@ public class Board {
         }
     }
 
+    /**
+     * @param location of a structure
+     * @return the structure at a given location, null if there isn't any
+     */
     public Structure getStructureAt(Location location) {
         if (isValidLocation(location)) {
             return structures[location.getX()][location.getY()];
@@ -344,6 +339,10 @@ public class Board {
         return null;
     }
 
+    /**
+     * @param loc of a road
+     * @return the road ar a given location , null if there is'nt any
+     */
     public Road checkRoadAt(Location loc){
         if(loc.getOrientation()==-1){
             return null;
@@ -357,6 +356,10 @@ public class Board {
         return null;
     }
 
+    /**
+     * Checks if a player has roads near a given location
+     * @return true if there's at least one road adjacent to the location
+     */
     public boolean haveAdjacentRoads(Location loc,Player player){
         ArrayList<Road> ajdRoads=getAdjacentRoads(loc);
         for(Road r : ajdRoads){
@@ -364,6 +367,11 @@ public class Board {
         }
         return false;
     }
+
+    /**
+     * Checks if a player has structures near a given lcoation
+     * @return true if there's at least one road adjacent to the location
+     */
     public boolean haveAdjacentStructures(Location loc, Player player){
         ArrayList<Structure> adjStructures = getAdjacentStructure(loc);
         for (Structure s : adjStructures){

@@ -22,6 +22,6 @@ public class Deck {
     }
 
     public DevCard dealACard(){
-        return deck.remove((nbCard--)-1);
+        return (nbCard>0 ? deck.remove((nbCard--)-1) : null);
     }
 }
