@@ -53,7 +53,7 @@ public class HumanPlayer extends Player{
     public Location askLocation(){
         System.out.println("Insert the location. [Valid format : 'posX-posY-Orientation'] " +
                 "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, -1 for Structure)");
-        String input = scanReply.nextLine();
+        String input = scanReply.next();
         String[] inputs = input.split("-");
         if(inputs.length ==3){
             int posX= Integer.parseInt(inputs[0]);

@@ -39,6 +39,11 @@ public class GameRunner {
         }
     }
 
+    public void askActions(){
+        for (Player p : allPlayers){
+            p.askAction(board,deckCard);
+        }
+    }
     public int rollDice(){
        Random r= new Random();
        return r.nextInt(9)+2;
@@ -46,6 +51,7 @@ public class GameRunner {
 
     public void run(){
         placeFirstSettlementsAndRoads(board);
+        askActions();
     }
 
     /*

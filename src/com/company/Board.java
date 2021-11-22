@@ -363,7 +363,7 @@ public class Board {
     public boolean haveAdjacentRoads(Location loc,Player player){
         ArrayList<Road> ajdRoads=getAdjacentRoads(loc);
         for(Road r : ajdRoads){
-            if (r.getOwner() == player) return true;
+            if (r!=null && r.getOwner() == player) return true;
         }
         return false;
     }
@@ -375,7 +375,7 @@ public class Board {
     public boolean haveAdjacentStructures(Location loc, Player player){
         ArrayList<Structure> adjStructures = getAdjacentStructure(loc);
         for (Structure s : adjStructures){
-            if(s.getOwner() == player ) return  true;
+            if(s!= null && s.getOwner() == player ) return  true;
         }
         return false;
     }
