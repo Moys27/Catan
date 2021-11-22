@@ -381,5 +381,11 @@ public class Board {
     }
 
 
-
+    public void affiche() {
+        for(Tile[] tt : tiles){
+            for(Tile t : tt){
+                System.out.println(t);
+            }
+        }
+    }
 }

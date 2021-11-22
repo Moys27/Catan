@@ -1,8 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Player{
@@ -73,6 +71,7 @@ public abstract class Player{
         else
             return true;
     }
+
 
     /**
      * Check if the location is valid :
@@ -180,6 +179,7 @@ public abstract class Player{
                 looseResource("grain",1);
                 looseResource("ore",1);
                 looseResource("wool",1);
+                if(card.type==DevCard.victoryPoint) winVictoryPoint(1);
                 hand.put(card.toString(), card);
             }
         }
@@ -193,4 +193,7 @@ public abstract class Player{
     }
 
 
+    public abstract void placeFirstRoad(Board b);
+    public abstract  void placeFirstSettlement(Board b, boolean b1);
+    public abstract  void askAction(Board board, Deck d);
 }
