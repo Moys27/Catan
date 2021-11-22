@@ -7,16 +7,6 @@ public class City extends Settlement implements Structure{
     }
 
     @Override
-    public boolean isBuildable() {//todo
-        return false;
-    }
-
-    @Override
-    public boolean hasNecessaryResources(Player p) {
-        return false; //todo
-    }
-
-    @Override
     public void winResources(String resource) {
         this.getOwner().winResource(resource,2);
     }

@@ -13,10 +13,10 @@ public class Location {
     private boolean node ;
     private int orientation;
 
-    public Location(int x, int y, boolean node){
+    public Location(int x, int y, int orientation){
         this.x = x;
         this.y=y;
-        this.node=node;
+        this.node= (orientation==-1);
         this.orientation= -1;
     }
 
@@ -35,9 +35,6 @@ public class Location {
         return node;
     }
 
-    public void setOrientation(int orientation) {
-        this.orientation = orientation;
-    }
 
     public int getOrientation() {
         return orientation;

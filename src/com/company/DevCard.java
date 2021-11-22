@@ -57,4 +57,24 @@ public class DevCard extends Card {
     public String toString() {
         return this.title;
     }
+
+    public void useCard(DevCard card){
+        //todo
+        switch(card.type){
+            case knights -> {
+            }
+            case victoryPoint -> {
+            }
+            case monopoly -> {
+            }
+            case yearOfPlenty -> {
+            }
+            case roadBuilding -> {
+            }
+            default -> {
+            }
+
+        }
+    }
+
 }

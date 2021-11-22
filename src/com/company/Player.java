@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Player{
     public final String name;
@@ -9,9 +10,10 @@ public abstract class Player{
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
 
-    private HashMap<Location,Road> roadsMap = new HashMap<>();
-    private HashMap<Location,Structure> structureMap=new HashMap<>();
-    private HashMap<String, Integer> resourceDeck = new HashMap<String, Integer>();
+    private Map<Location,Road> roadsMap = new HashMap<>();
+    private Map<Location,Structure> structureMap=new HashMap<>();
+    private Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
+    private Map<String, DevCard> hand = new HashMap<>();
 
     public Player(String n){
         name =n;
@@ -38,77 +40,148 @@ public abstract class Player{
         else System.out.println("ERROR: Insufficient resources.");
     }
 
-    public boolean enoughResource(String resourceCard, int number){
-        int actualValue = resourceDeck.get(resourceCard);
-        return (actualValue >= number);
-    }
 
-    public void buildRoad(Location location){ //conditions a verifier, assez de ressources, assez de nbAllowed, validlocalisation
-        if ((nbRoadsAllowed!=15)&&(nbRoadsAllowed!=14)) {
-            looseResource("brick", 1);
-            looseResource("lumber", 1);
+   /**
+     * Checks if this Player has the specified resources
+     * @param res the resources to check
+     * @return whether the Player has those resources
+     */
+    private boolean hasResources(HashMap<String, Integer> res) {
+        int wool = 0,
+                ore = 0,
+                lumber = 0,
+                brick = 0,
+                grain = 0;
+
+        for (Map.Entry resType : res.entrySet()) {
+            if (resType.getKey().equals("wool")) {
+                wool = (int) resType.getValue();
+            } else if (resType.getKey().equals("ore"))
+                ore= (int) resType.getValue();
+            else if (resType.getKey().equals("lumber"))
+                lumber= (int) resType.getValue();
+            else if (resType.getKey().equals("brick"))
+                brick= (int) resType.getValue();
+            else if (resType.getKey().equals("grain"))
+                grain= (int) resType.getValue();
         }
-        Road road = new Road(location,this);
-        nbRoadsAllowed--;
 
+        if (wool > resourceDeck.get("wool") || ore > resourceDeck.get("ore") || lumber > resourceDeck.get("lumber") || brick > resourceDeck.get("brick") || grain > resourceDeck.get("grain"))
+            return false;
+        else
+            return true;
     }
-    public void buildSettlement(Location location){
-        if ((nbSettlementsAllowed!=5)&&(nbSettlementsAllowed!=4)) {
-            looseResource("brick", 1);
-            looseResource("lumber", 1);
-            looseResource("grain", 1);
-            looseResource("wool", 1);
+    /**
+     * Check if the location is valid :
+     *       if there are roads which reach the location
+     *       no structure from other player is already settled
+     *       if (it's a city) there's already a settlement there
+     * if resources are sufficient
+     * if the number of structures allowed hasn't been reached yet
+     * */
+
+    public boolean canBuildRoadAt(Board b, Location location){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put("brick",1);
+        resNeeded.put("lumber",1);
+        return (nbRoadsAllowed!=0 && b.isValidLocation(location)
+                && b.checkRoadAt(location)==null &&
+                (b.haveAdjacentRoads(location,this) || b.haveAdjacentStructures(location,this))
+                && hasResources(resNeeded)
+                );
+    }
+
+    public Road buildRoad(Board b, Location location){
+
+        if(canBuildRoadAt(b,location)){
+                looseResource("brick",1);
+                looseResource("lumber",1);
+                Road road = new Road(location,this);
+                roadsMap.put(location,road);
+                nbRoadsAllowed--;
+                return road;
         }
-        Settlement settlement= new Settlement(this,location);
-        nbSettlementsAllowed--;
-        winVictoryPoint(1);
+        return null;
+    }
+    public boolean canBuildSettlementAt(Board b, Location location){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put("brick", 1);
+        resNeeded.put("lumber", 1);
+        resNeeded.put("grain", 1);
+        resNeeded.put("wool", 1);
+        return (nbSettlementsAllowed!=0 && b.isValidLocation(location)
+                && b.haveAdjacentRoads(location,this)
+                && !b.haveAdjacentStructures(location, this)
+                && hasResources(resNeeded)
+        );
     }
 
-    public void buildCity(Location location){
-        looseResource("grain",2);
-        looseResource("ore",3);
-        City city= new City(this,location);
-        winVictoryPoint(1);
-        nbCitiesAllowed--;
+    public Structure buildSettlement(Board b, Location location){
+        if(canBuildSettlementAt(b,location)){
+               looseResource("brick", 1);
+               looseResource("lumber", 1);
+               looseResource("grain", 1);
+               looseResource("wool", 1);
+               Structure settlement = new Settlement(this, location);
+               nbSettlementsAllowed--;
+               structureMap.put(location,settlement);
+               winVictoryPoint(1);
+               return settlement;
+       }
+        return null;
     }
 
-    public boolean canBuildRoad(Location location){
-        boolean resource= enoughResource("brick",1) &&
-                          enoughResource("lumber",1);
-        boolean isValidLocation= true; //existante ,vide, a cote d un settlement ou un ville
-        return (resource&&isValidLocation&&(nbRoadsAllowed>=1));
+    private boolean haveAntecedentSettlement(Board b , Location location){
+        if (b.getStructureAt(location) != null ){
+            Structure s = b.getStructureAt(location);
+            return (s instanceof Settlement && s.getOwner()==this);
+        }
+        return false;
     }
 
-    public boolean canBuildSettlement(Location location){
-        boolean resource= enoughResource("brick",1) &&
-                          enoughResource("lumber",1) &&
-                          enoughResource("grain",1) &&
-                          enoughResource("wool",1);
-        boolean isValidLocation= true; //existante ,vide, il est possible de construire(pas de settlement voisins et au moins de routes propres)
-
-        return (resource&&isValidLocation&&(nbSettlementsAllowed>=1));
+    public boolean canBuildCityAt(Board b, Location location){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put("grain",2);
+        resNeeded.put("ore",3);
+        return (nbCitiesAllowed!=0
+                && b.haveAdjacentRoads(location,this)
+                && haveAntecedentSettlement(b,location)
+                && hasResources(resNeeded)
+                );
+    }
+    public Structure buildCity(Board b, Location location){
+        if(canBuildCityAt(b,location)){
+            looseResource("grain",2);
+            looseResource("ore",3);
+            Structure city= new City(this,location);
+            structureMap.put(location,city);
+            winVictoryPoint(2);
+            nbCitiesAllowed--;
+            return city;
+        }
+        return null;
     }
 
-    public boolean canBuildCity(Location location){
-        boolean resource= enoughResource("grain",2) &&
-                enoughResource("ore",3);
-        boolean isValidLocation= true; //existante ,il y a deja un settlement sur cette localisation
-        return (resource&&isValidLocation&&(nbCitiesAllowed>=1));
+    public boolean canBuyDevCard(){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put("grain",1);
+        resNeeded.put("ore",1);
+        resNeeded.put("wool",1);
+        return hasResources((HashMap<String, Integer>) resNeeded);
     }
-/*
-    public Location askLocation(){
 
-    }*/
-    /* TODO
-    public void buyDevCard(){
-        looseResource("grain",1);
-        looseResource("ore",1);
-        looseResource("wool",1);
+    public void buyDevCard(Deck d){
+        if(canBuyDevCard()){
+            DevCard card = d.dealACard();
+            if (card != null) {
+                looseResource("grain",1);
+                looseResource("ore",1);
+                looseResource("wool",1);
+                if(card.type==DevCard.victoryPoint) winVictoryPoint(1);
+                hand.put(card.toString(), card);
+            }
+        }
     }
-    */
-
-
-
     public void winVictoryPoint(int i){
         this.victoryPoints+=i;
     }
@@ -117,15 +190,8 @@ public abstract class Player{
         this.victoryPoints-=i;
     }
 
-    public boolean canBuild(Structure s, Location loc) {
-        return true; //todo
-        /*
-        * Check if the location is valid :
-        *       if there are roads which reach the location
-        *       no structure from other player is already settled
-        *       if (it's a city) there's already a settlement there
-         * if resources are sufficient
-        * if the number of structures allowed hasn't been reached yet
-        * */
-    }
+
+    public abstract void placeFirstRoad(Board b);
+    public abstract  void placeFirstSettlement(Board b, boolean b1);
+    public abstract  void askAction(Board board, Deck d);
 }
