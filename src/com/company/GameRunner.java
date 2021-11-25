@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class GameRunner {
     public final Board board;
-    private Player current;
+    public Player current;
     private Settings settings;
     private Player [] allPlayers; //fixme : une linkedList ne serait-elle pas mieux ?
     private Deck deckCard;
@@ -37,21 +37,26 @@ public class GameRunner {
         //todo considérer le cas où allPlayers serait une linkedList
         if(current==allPlayers[allPlayers.length]){
             current=allPlayers[0];
+            System.out.println("Hey, "+current.name+" your turn!");
             return;
         }
         if(current==allPlayers[0]){
             current=allPlayers[1];
+            System.out.println("Hey, "+current.name+" your turn!");
             return;
         }
         if(current==allPlayers[1]){
             current=allPlayers[2];
+            System.out.println("Hey, "+current.name+" your turn!");
             return;
         }
         if(current==allPlayers[2]){
             current=allPlayers[3];
+            System.out.println("Hey, "+current.name+" your turn!");
             return;
         }
         current= allPlayers[4];
+        System.out.println("Hey, "+current.name+" your turn!");
     }
 
 
@@ -66,20 +71,39 @@ public class GameRunner {
         }
     }
 
-    public void askActions(){
-        for (Player p : allPlayers){
-            p.askAction(board,deckCard);
+    public void askActions(Player p){
+        if( p instanceof HumanPlayer) {
+            System.out.println("Hey, " + p.name + " your turn!");
         }
+        p.askAction(board,deckCard);
     }
 
-    public int rollDice(){
+    public void rollDice(){
        Random r= new Random();
-       return r.nextInt(9)+2;
+       int num = r.nextInt(9)+2;
+       if(num==7){
+           //TODO Rober
+       } else {
+           for (int i = 0; i < board.getTiles().length; i++) {
+               for (int j = 0; j < board.getTiles()[i].length; j++) {
+                   if ((board.getTiles()[i][j].getId() == num) &&
+                           (!board.getTiles()[i][j].hasRobber())) {
+                       //board.getTiles()[i][j].getStructureMap();
+                       //TODO acces to owner of settlement in the tile
+                   }
+               }
+           }
+       }
     }
 
     public void run(){
-        placeFirstSettlementsAndRoads(board);
-        askActions();
+        //placeFirstSettlementsAndRoads(board);
+        while (true){
+            for (Player p : allPlayers) {
+                rollDice();
+                askActions(p);
+            }
+        }
     }
 
     /*

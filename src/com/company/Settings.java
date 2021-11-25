@@ -2,19 +2,30 @@ package com.company;
 import java.util.Scanner;
 
 public class Settings {
-    private Scanner scanReponse;
+    private static Scanner scanReponse = new Scanner(System.in);
     //todo traiter les cas où l'utilisateur insère un mauvais format comme réponse (débug)
-    private int numberPlayersDefault=4;
-    private boolean humanPlayersDefault=false;
-    public static int countPlayer;
+    private static  int numberPlayersDefault=4;
+    private static boolean humanPlayersDefault=false;
+    public static int countPlayer=-1;
 
 
-    public Settings(){
-        countPlayer=-1;
-        scanReponse=new Scanner(System.in);
+
+    public static Location askLocation() { //todo : trouver un moyen de pouvoir donner les positions valables
+        System.out.println("Insert the location. [Valid format : 'posX/posY/Orientation'] " +
+                "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, -1 for Structure)");
+        String input = scanReponse.next();
+        String[] inputs = input.split("-");
+        if(inputs.length ==3){
+            int posX= Integer.parseInt(inputs[0]);
+            int posY = Integer.parseInt(inputs[1]);
+            int orientation = Integer.parseInt(inputs[2]);
+            return new Location(posX,posY,orientation);
+        }
+        System.out.println("Wrong location, please retry.");
+        return askLocation();
     }
 
-    public int numberPlayers(){
+    public static int numberPlayers(){
         System.out.println("Choose the number of players:");
         System.out.println("[3]");
         System.out.println("[4] (default)");
@@ -32,7 +43,7 @@ public class Settings {
         }
     }
 
-    public boolean askHumanPlayers(){
+    public static boolean askHumanPlayers(){
         System.out.println("Will you play with anothers humans?");
         System.out.println("[1] Yes");
         System.out.println("[2] No (default)");
@@ -48,7 +59,7 @@ public class Settings {
             return humanPlayersDefault;
         }
     }
-    public int HumanPlayers( int maximumPlayers){
+    public static int HumanPlayers( int maximumPlayers){
         System.out.println("Who many humans will play with you?");
         System.out.println("[0] (default)");
         System.out.println("[1] ");

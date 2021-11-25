@@ -13,12 +13,16 @@ public class Board {
     private Road [][]  verticalRoads = new Road[5][4];
     private Road [][] horizontalRoads = new Road[4][5];
     //todo: ajout de l'attribut des ports
-
+    //todo créer un classe pour les ports
 
 
     public Board (){
         tiles = new Tile [4][4];
         initializeTiles();
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     /**

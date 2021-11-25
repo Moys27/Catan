@@ -80,40 +80,47 @@ public abstract class Player{
      * if the number of structures allowed hasn't been reached yet
      * */
 
-    public boolean canBuildRoadAt(Board b, Location location){
+    public boolean canBuildRoad(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("brick",1);
         resNeeded.put("lumber",1);
-        return (nbRoadsAllowed!=0 && b.isValidLocation(location)
-                && b.checkRoadAt(location)==null &&
-                (b.haveAdjacentRoads(location,this) || b.haveAdjacentStructures(location,this))
-                && hasResources(resNeeded)
-                );
+        return (nbRoadsAllowed!=0 && hasResources(resNeeded));
+    }
+    public boolean canBuildRoadAt(Board board, Location location){
+        return (canBuildRoad() && goodPlaceRoad(board,location));
+    }
+
+    public boolean goodPlaceRoad(Board board, Location location){
+        return board.isValidLocation(location)
+                && board.checkRoadAt(location)==null &&
+                (board.haveAdjacentRoads(location,this) || board.haveAdjacentStructures(location,this));
     }
 
     public Road buildRoad(Board b, Location location){
-
-        if(canBuildRoadAt(b,location)){
-                looseResource("brick",1);
-                looseResource("lumber",1);
-                Road road = new Road(location,this);
-                roadsMap.put(location,road);
-                nbRoadsAllowed--;
-                return road;
-        }
-        return null;
+        looseResource("brick",1);
+        looseResource("lumber",1);
+        Road road = new Road(location,this);
+        roadsMap.put(location,road);
+        nbRoadsAllowed--;
+        return road;
     }
-    public boolean canBuildSettlementAt(Board b, Location location){
+    public boolean canBuildSettlementAt(Board board, Location location){
+        return (canBuildSettlement() && goodPlaceSettlement(board,location));
+    }
+
+    public boolean canBuildSettlement(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("brick", 1);
         resNeeded.put("lumber", 1);
         resNeeded.put("grain", 1);
         resNeeded.put("wool", 1);
-        return (nbSettlementsAllowed!=0 && b.isValidLocation(location)
-                && b.haveAdjacentRoads(location,this)
-                && !b.haveAdjacentStructures(location, this)
-                && hasResources(resNeeded)
-        );
+        return (nbSettlementsAllowed!=0 && hasResources(resNeeded));
+    }
+
+    public boolean goodPlaceSettlement(Board board, Location location){
+        return  board.isValidLocation(location)
+                && board.haveAdjacentRoads(location,this)
+                && !board.haveAdjacentStructures(location, this);
     }
 
     public Structure buildSettlement(Board b, Location location){
@@ -139,22 +146,26 @@ public abstract class Player{
         return false;
     }
 
-    public boolean canBuildCityAt(Board b, Location location){
+    public boolean canBuildCityAt(Board board, Location location){
+        return canBuildRoad() && goodPlaceRoad(board,location);
+    }
+    public boolean canBuildCity(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("grain",2);
         resNeeded.put("ore",3);
-        return (nbCitiesAllowed!=0
-                && b.haveAdjacentRoads(location,this)
-                && haveAntecedentSettlement(b,location)
-                && hasResources(resNeeded)
-                );
+        return (nbCitiesAllowed!=0 && hasResources(resNeeded)
+        );
+    }
+    public boolean goodPlaceCity(Board b, Location location){
+        return b.haveAdjacentRoads(location,this)
+                && haveAntecedentSettlement(b,location);
     }
     public Structure buildCity(Board b, Location location){
         if(canBuildCityAt(b,location)){
             looseResource("grain",2);
             looseResource("ore",3);
             Structure city= new City(this,location);
-            structureMap.put(location,city);
+            structureMap.replace(location,city); //au lieu de put
             winVictoryPoint(2);
             nbCitiesAllowed--;
             return city;
@@ -194,4 +205,37 @@ public abstract class Player{
     public abstract void placeFirstRoad(Board b);
     public abstract  void placeFirstSettlement(Board b, boolean b1);
     public abstract  void askAction(Board board, Deck d);
+    public void executeAction(int option, Board board, Deck d){
+        Location location;
+        switch (option){
+            case 1 :
+                location = Settings.askLocation();
+                if(canBuildRoadAt(board,location)){
+                    buildRoad(board,location);
+                }
+                break;
+            case 2:
+                location = Settings.askLocation();
+                if(canBuildSettlementAt(board,location)){
+                    buildSettlement(board,location);
+                }
+                break;
+            case 3:
+                location=Settings.askLocation();
+                if(canBuildCityAt(board,location)){
+                    buildCity(board,location);
+                }
+                break;
+            case 4:
+                if(canBuyDevCard()){
+                    buyDevCard(d);
+                }
+                break;
+            case 5: //todo trade avec le port tout simplement
+                break;
+            case 6:
+                break;
+
+        }
+    }
 }

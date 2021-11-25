@@ -31,6 +31,10 @@ public class Tile{
         return hasRobber;
     }
 
+    public Map<Location, Structure> getStructureMap() {
+        return structureMap;
+    }
+
     @Override
     public String toString() {
         return "Tile{" +
