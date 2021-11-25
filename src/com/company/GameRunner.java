@@ -80,19 +80,11 @@ public class GameRunner {
 
     public void rollDice(){
        Random r= new Random();
-       int num = r.nextInt(9)+2;
-       if(num==7){
+       int num = r.nextInt(6)+1 +r.nextInt(6)+1;
+        if(num==7){
            //TODO Rober
        } else {
-           for (int i = 0; i < board.getTiles().length; i++) {
-               for (int j = 0; j < board.getTiles()[i].length; j++) {
-                   if ((board.getTiles()[i][j].getId() == num) &&
-                           (!board.getTiles()[i][j].hasRobber())) {
-                       //board.getTiles()[i][j].getStructureMap();
-                       //TODO acces to owner of settlement in the tile
-                   }
-               }
-           }
+           board.distributeResources(num);
        }
     }
 
