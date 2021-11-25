@@ -221,6 +221,7 @@ public abstract class Player{
 
     public abstract void placeFirstRoad(Board b);
     public abstract  void placeFirstSettlement(Board b, boolean b1);
+
     public abstract  void askAction(Board board, Deck d);
 
     public void executeAction(int option, Board board, Deck d){
@@ -256,4 +257,6 @@ public abstract class Player{
 
         }
     }
+
+    //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 }

@@ -190,7 +190,7 @@ public class Board {
             if(isAValidLocation(loc.getX(), loc.getY(),4,4))
                 output.add(tiles[loc.getX()][loc.getY()]);
         }
-        return output;
+        return output; //pour les routes
     } //todo first resources distribution at the beginning of the game
 
     private boolean isAValidLocation(int x, int y,int xBounds, int yBounds){
