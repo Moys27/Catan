@@ -7,6 +7,7 @@ public class GameRunner {
     private Settings settings;
     private Player [] allPlayers; //fixme : une linkedList ne serait-elle pas mieux ?
     private Deck deckCard;
+    private int maxVictoryPoint;
 
 
     GameRunner() {
@@ -14,6 +15,7 @@ public class GameRunner {
         settings = new Settings();
         deckCard = new Deck();
         createPlayers();
+        maxVictoryPoint =0;
     }
 
     public void createPlayers(){
@@ -30,48 +32,19 @@ public class GameRunner {
         }
     }
 
-    public void playFirts(){
-
-    }
-    public void nextPlayer(){
-        //todo considérer le cas où allPlayers serait une linkedList
-        if(current==allPlayers[allPlayers.length]){
-            current=allPlayers[0];
-            System.out.println("Hey, "+current.name+" your turn!");
-            return;
-        }
-        if(current==allPlayers[0]){
-            current=allPlayers[1];
-            System.out.println("Hey, "+current.name+" your turn!");
-            return;
-        }
-        if(current==allPlayers[1]){
-            current=allPlayers[2];
-            System.out.println("Hey, "+current.name+" your turn!");
-            return;
-        }
-        if(current==allPlayers[2]){
-            current=allPlayers[3];
-            System.out.println("Hey, "+current.name+" your turn!");
-            return;
-        }
-        current= allPlayers[4];
-        System.out.println("Hey, "+current.name+" your turn!");
-    }
-
-
     public void placeFirstSettlementsAndRoads(Board b){
         int i = 2;
         while (i < 0){
             for (Player p : allPlayers){
-                p.placeFirstSettlement(b,i==1);
-                p.placeFirstRoad(b);
+                p.placeFirstSettlement(b,i==1); //todo#1 à implémenter
+                p.placeFirstRoad(b);//todo#2
             }
             i--;
         }
     }
 
     public void askActions(Player p){
+
         if( p instanceof HumanPlayer) {
             System.out.println("Hey, " + p.name + " your turn!");
         }
@@ -89,11 +62,14 @@ public class GameRunner {
     }
 
     public void run(){
-        //placeFirstSettlementsAndRoads(board);
-        while (true){
+        placeFirstSettlementsAndRoads(board);
+        while (maxVictoryPoint < 10){ //todo find the condition
             for (Player p : allPlayers) {
+                current = p;
                 rollDice();
                 askActions(p);
+                if(p.victoryPoints > maxVictoryPoint) maxVictoryPoint=p.victoryPoints;
+                if (maxVictoryPoint >= 10) break;
             }
         }
     }
