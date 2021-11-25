@@ -5,7 +5,7 @@ import java.util.Map;
 
 public abstract class Player{
     public final String name;
-    private int victoryPoints;
+    public int victoryPoints;
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
