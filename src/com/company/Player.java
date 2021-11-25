@@ -80,21 +80,38 @@ public abstract class Player{
      * if the number of structures allowed hasn't been reached yet
      * */
 
+
+    /**
+     * Check if the player has enough resources to build a road and if they're allowed to do it
+     * It's the same thing for canBuildSettlements and canBuildCity
+     * */
     public boolean canBuildRoad(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("brick",1);
         resNeeded.put("lumber",1);
         return (nbRoadsAllowed!=0 && hasResources(resNeeded));
     }
-    public boolean canBuildRoadAt(Board board, Location location){
-        return (canBuildRoad() && goodPlaceRoad(board,location));
-    }
 
-    public boolean goodPlaceRoad(Board board, Location location){
+
+    /**
+     * @return true if the player can build a road at the given location
+     */
+    public boolean checkLocationForRoad(Board board, Location location){
         return board.isValidLocation(location)
                 && board.checkRoadAt(location)==null &&
                 (board.haveAdjacentRoads(location,this) || board.haveAdjacentStructures(location,this));
     }
+
+    /**
+     * @return true if all the conditions for building a road are fulfilled.
+     */
+    public boolean canBuildRoadAt(Board board, Location location){
+        return (canBuildRoad() && checkLocationForRoad(board,location));
+    }
+
+    /**
+     * Proceeds to the construction of the road
+     */
 
     public Road buildRoad(Board b, Location location){
         looseResource("brick",1);
@@ -105,7 +122,7 @@ public abstract class Player{
         return road;
     }
     public boolean canBuildSettlementAt(Board board, Location location){
-        return (canBuildSettlement() && goodPlaceSettlement(board,location));
+        return (canBuildSettlement() && checkLocationForSettlement(board,location));
     }
 
     public boolean canBuildSettlement(){
@@ -117,7 +134,7 @@ public abstract class Player{
         return (nbSettlementsAllowed!=0 && hasResources(resNeeded));
     }
 
-    public boolean goodPlaceSettlement(Board board, Location location){
+    public boolean checkLocationForSettlement(Board board, Location location){
         return  board.isValidLocation(location)
                 && board.haveAdjacentRoads(location,this)
                 && !board.haveAdjacentStructures(location, this);
@@ -147,7 +164,7 @@ public abstract class Player{
     }
 
     public boolean canBuildCityAt(Board board, Location location){
-        return canBuildRoad() && goodPlaceRoad(board,location);
+        return canBuildRoad() && checkLocationForCity(board,location);
     }
     public boolean canBuildCity(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
@@ -156,7 +173,7 @@ public abstract class Player{
         return (nbCitiesAllowed!=0 && hasResources(resNeeded)
         );
     }
-    public boolean goodPlaceCity(Board b, Location location){
+    public boolean checkLocationForCity(Board b, Location location){
         return b.haveAdjacentRoads(location,this)
                 && haveAntecedentSettlement(b,location);
     }
@@ -205,6 +222,7 @@ public abstract class Player{
     public abstract void placeFirstRoad(Board b);
     public abstract  void placeFirstSettlement(Board b, boolean b1);
     public abstract  void askAction(Board board, Deck d);
+
     public void executeAction(int option, Board board, Deck d){
         Location location;
         switch (option){
@@ -217,7 +235,7 @@ public abstract class Player{
             case 2:
                 location = Settings.askLocation();
                 if(canBuildSettlementAt(board,location)){
-                    buildSettlement(board,location);
+                    board.placeStructure(buildSettlement(board,location));
                 }
                 break;
             case 3:

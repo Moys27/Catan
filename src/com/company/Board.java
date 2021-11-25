@@ -93,19 +93,18 @@ public class Board {
      * Proceeds to the placement of structures
      * @returns if the structure was placed successfully
      * */
-    public boolean placeStructure(Location loc, Structure s, Player player){
+    public boolean placeStructure(Structure structure){
         //ajouter la structure dans tiles
-        if (s instanceof Settlement){
-            if(player.buildSettlement(this,loc) != null){
-                structures[loc.getX()][loc.getY()]=s;
+        if(structure != null) {
+            Location loc = structure.getLocation();
+            if (structure instanceof Settlement){
+                structures[loc.getX()][loc.getY()]=structure;
 
-                return true;
+                    return true;
             }
-        }
-        if (s instanceof City){
-            if(player.buildCity(this,loc) != null){
-                structures[loc.getX()][loc.getY()]=s;
-                return true;
+            if (structure instanceof City){
+                structures[loc.getX()][loc.getY()]=structure;
+                    return true;
             }
         }
         return false;
@@ -115,15 +114,15 @@ public class Board {
      * Proceeds to the placement of roads
      * @returns if the road was placed successfully
      */
-    public boolean placeRoad(Location loc, Player player){
-        if (player.canBuildRoadAt(this, loc)){
-            Road r = player.buildRoad(this, loc);
-            if (loc.getOrientation() == 0){
-                horizontalRoads[loc.getX()][loc.getY()]=r;
+    public boolean placeRoad(Road road){
+        if (road != null){
+            Location loc = road.getLocation();
+            if(loc.getOrientation() == 0 ){
+                horizontalRoads[loc.getX()][loc.getY()]=road;
                 return true;
             }
             if (loc.getOrientation() == 1) {
-                verticalRoads[loc.getX()][loc.getY()]=r;
+                verticalRoads[loc.getX()][loc.getY()]=road;
                 return true;
             }
         }
