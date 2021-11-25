@@ -232,24 +232,27 @@ public abstract class Player{
                 if(canBuildRoadAt(board,location)){
                     board.placeRoad(buildRoad(board,location));
                 }
-                break;
+                askAction(board,d);
+
             case 2:
                 location = Settings.askLocation();
                 if(canBuildSettlementAt(board,location)){
                     board.placeStructure(buildSettlement(board,location));
                 }
-                break;
+                askAction(board,d);
+
             case 3:
                 location=Settings.askLocation();
                 if(canBuildCityAt(board,location)){
                     buildCity(board,location);
                 }
-                break;
+                askAction(board,d);
+
             case 4:
                 if(canBuyDevCard()){
                     buyDevCard(d);
                 }
-                break;
+                askAction(board,d);
             case 5: //todo trade avec le port tout simplement
                 break;
             case 6:
