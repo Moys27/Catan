@@ -211,7 +211,7 @@ public abstract class Player{
             case 1 :
                 location = Settings.askLocation();
                 if(canBuildRoadAt(board,location)){
-                    buildRoad(board,location);
+                    board.placeRoad(buildRoad(board,location));
                 }
                 break;
             case 2:
