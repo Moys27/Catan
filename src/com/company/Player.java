@@ -262,4 +262,11 @@ public abstract class Player{
     }
 
     //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
+
+
+    public boolean canCommerce(String s){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put(s, 4);
+        return (hasResources(resNeeded));
+    }
 }
