@@ -101,4 +101,26 @@ public class Settings {
 
     }
 
+    public String choiseRessourceWanted() {
+        System.out.println("Who many humans will play with you?");
+        System.out.println("[1] ");
+        System.out.println("[2]");
+        System.out.println("[3] ");
+        System.out.println("[4] ");
+        System.out.println("[5] Brick");
+        int answer;
+        try {
+            answer = Integer.valueOf(scanReponse.nextLine());
+            switch (answer) {
+                case 1:
+                    return "";
+                case 2:
+                    return "";
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Choose a ressource (between the numbers)");
+            return choiseRessourceWanted();
+        }
+        return "";
+    }
 }
