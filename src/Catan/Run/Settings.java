@@ -3,6 +3,10 @@ import Catan.Board.Location;
 
 import java.util.Scanner;
 
+/**
+ * This class models the interaction between the user interface and the game
+ * */
+
 public class Settings {
     private static Scanner scanReponse = new Scanner(System.in);
     //todo traiter les cas où l'utilisateur insère un mauvais format comme réponse (débug)
@@ -11,6 +15,10 @@ public class Settings {
     public static int countPlayer=-1;
 
 
+    /**
+     * Ask the location for the structure or the road to build
+     * @return the given location
+     * */
 
     public static Location askLocation() { //todo : trouver un moyen de pouvoir donner les positions valables
         System.out.println("Insert the location. [Valid format : 'posX/posY/Orientation'] " +
@@ -27,6 +35,10 @@ public class Settings {
         return askLocation();
     }
 
+    /**
+     *
+     * @return
+     */
     public static int numberPlayers(){
         System.out.println("Choose the number of players:");
         System.out.println("[3]");
@@ -45,6 +57,11 @@ public class Settings {
         }
     }
 
+    /**
+     *
+     * @return
+     */
+
     public static boolean askHumanPlayers(){
         System.out.println("Will you play with anothers humans?");
         System.out.println("[1] Yes");
@@ -61,6 +78,12 @@ public class Settings {
             return humanPlayersDefault;
         }
     }
+
+    /**
+     *
+     * @param maximumPlayers
+     * @return
+     */
     public static int HumanPlayers( int maximumPlayers){
         System.out.println("Who many humans will play with you?");
         System.out.println("[0] (default)");
@@ -83,17 +106,25 @@ public class Settings {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static String askName(){
         System.out.println("What is your name?");
         String answer;
-        Scanner scanReponse=new Scanner(System.in);
-        try {
+        try (Scanner scanReponse=new Scanner(System.in)){
             answer= scanReponse.nextLine();
             return answer;
         } catch (Exception e){
             return giveName();
         }
     }
+
+    /**
+     *
+     * @return
+     */
     public static String giveName(){
         String [] nameList= {"Ada","Linux","Pixel"};
         countPlayer++;
@@ -101,6 +132,10 @@ public class Settings {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String choiseRessourceWanted() {
         System.out.println("Who many humans will play with you?");
         System.out.println("[1] ");
