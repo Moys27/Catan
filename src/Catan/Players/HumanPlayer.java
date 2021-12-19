@@ -1,5 +1,6 @@
 package Catan.Players;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import Catan.Board.*;
 import Catan.Card.*;
@@ -30,8 +31,7 @@ public class HumanPlayer extends Player{
                              "\n[6]Continue");
         //Todo Trade
         int option=0;
-        try {
-            Scanner scanReply = new Scanner(System.in);
+        try (Scanner scanReply = new Scanner(System.in)){
             option = scanReply.nextInt();
         } catch (Exception e){
             askAction(board,d);
@@ -45,15 +45,20 @@ public class HumanPlayer extends Player{
         Location loc = Settings.askLocation();
         Settlement settlement = new Settlement(this, loc);
         b.placeStructure(settlement);
-        if (b1){
-            b.getAdjacentTilesStructure(loc);
+        if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
+            ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
+            for (Tile t : tiles){
+                this.winResource(t.getResource(),1);
+            }
         }
-    //todo if b1 true -> winresource
 
     }
 
     @Override
     public void placeFirstRoad(Board b) {
     //todo place les premières routes à côté des premiers settlements
+        Location loc = Settings.askLocation();
+        Road road = new Road(loc,this);
+        b.placeRoad(road);
     }
 }

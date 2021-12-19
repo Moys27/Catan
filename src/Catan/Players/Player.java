@@ -1,5 +1,6 @@
 package Catan.Players;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import Catan.Board.*;
@@ -344,4 +345,12 @@ public abstract class Player{
     }
 
     //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
+
+    public ArrayList<Location> suggestedLocationRoads(){
+        return new ArrayList<Location>();
+    }
+
+   public ArrayList<Location> suggestedLocationStructures(){
+        return new ArrayList<Location>();
+    }
 }

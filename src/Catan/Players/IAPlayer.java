@@ -1,5 +1,6 @@
 package Catan.Players;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import Catan.Card.*;
@@ -42,13 +43,25 @@ public class IAPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
-    //todo
+        ArrayList<Location> loc = suggestedLocationStructures();
+        int randLocPos = r.nextInt(loc.size()-1);
+        Location randomLoc = loc.get(randLocPos);
+        Settlement settlement = new Settlement(this, randomLoc);
+        b.placeStructure(settlement);
+        if (b1){
+            ArrayList<Tile> tiles = b.getAdjacentTilesStructure(randomLoc);
+            for (Tile t : tiles){
+                this.winResource(t.getResource(),1);
+            }
+        }
     }
-
-
 
     @Override
     public void placeFirstRoad(Board b) {
-    //todo
+        ArrayList<Location> loc = suggestedLocationRoads();
+        int randLocPos = r.nextInt(loc.size()-1);
+        Location randomLoc = loc.get(randLocPos);
+        Road road = new Road(randomLoc,this);
+        b.placeRoad(road);
     }
 }
