@@ -36,7 +36,16 @@ public class IAPlayer extends Player{
 
         Random r= new Random();
         int randomOption= r.nextInt(i);
-        executeAction(6, board, d);
+        executeAction(randomOption, board, d);
+    }
+
+    @Override
+    public boolean canCommerce(String s) {
+        return false;
+    }
+
+    public boolean canCommerce() {
+        return false; //TODO
     }
 
 

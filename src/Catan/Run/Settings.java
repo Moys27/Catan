@@ -101,26 +101,33 @@ public class Settings {
 
     }
 
-    public String choiseRessourceWanted() {
-        System.out.println("Who many humans will play with you?");
-        System.out.println("[1] ");
-        System.out.println("[2]");
-        System.out.println("[3] ");
-        System.out.println("[4] ");
-        System.out.println("[5] Brick");
+    public static String choiseRessourceWanted() {
+        System.out.println("Choose the ressource wanted:");
+        System.out.println("[1] Brick");
+        System.out.println("[2] Grain");
+        System.out.println("[3] Wool");
+        System.out.println("[4] Lumber");
+        System.out.println("[5] Ore");
         int answer;
         try {
             answer = Integer.valueOf(scanReponse.nextLine());
             switch (answer) {
                 case 1:
-                    return "";
+                    return "brick";
                 case 2:
-                    return "";
+                    return "grain";
+                case 3:
+                    return "wool";
+                case 4:
+                    return "lumber";
+                case 5:
+                    return "ore";
             }
         } catch (NumberFormatException e) {
             System.out.println("Choose a ressource (between the numbers)");
             return choiseRessourceWanted();
         }
-        return "";
+        return choiseRessourceWanted();
     }
+
 }

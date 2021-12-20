@@ -17,11 +17,13 @@ public abstract class Player{
     private Map<Location,Structure> structureMap=new HashMap<>();
     private Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
     private Map<String, DevCard> hand = new HashMap<>();
+    Map<String,Integer> price= new HashMap<>();
 
     public Player(String n){
         name =n;
         this.victoryPoints=0;
         initializeResourceDeck();
+        initializePrice();
     }
 
     private void initializeResourceDeck(){
@@ -30,6 +32,14 @@ public abstract class Player{
             resourceDeck.put("wool",0);
             resourceDeck.put("lumber",0);
             resourceDeck.put("ore",0);
+    }
+
+    private void initializePrice(){
+        price.put("brick",4);
+        price.put("grain",4);
+        price.put("wool",4);
+        price.put("lumber",4);
+        price.put("ore",4);
     }
 
     public void winResource(String resourceCard, int number){
@@ -49,7 +59,7 @@ public abstract class Player{
      * @param res the resources to check
      * @return whether the Player has those resources
      */
-    private boolean hasResources(HashMap<String, Integer> res) {
+    boolean hasResources(HashMap<String, Integer> res) {
         int wool = 0,
                 ore = 0,
                 lumber = 0,
@@ -264,11 +274,7 @@ public abstract class Player{
         }
     }
 
-    public boolean canCommerce(String s){
-        HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put(s, 4);
-        return (hasResources(resNeeded));
-    }
+    public abstract boolean canCommerce(String s);
 
     //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 }

@@ -1,5 +1,6 @@
 package Catan.Players;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import Catan.Board.*;
 import Catan.Card.*;
@@ -50,5 +51,11 @@ public class HumanPlayer extends Player{
     @Override
     public void placeFirstRoad(Board b) {
     //todo place les premières routes à côté des premiers settlements
+    }
+
+    public boolean canCommerce(String s){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put(s, price.get(s));
+        return (hasResources(resNeeded));
     }
 }
