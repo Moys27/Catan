@@ -43,7 +43,12 @@ public class HumanPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
-
+        Location loc = Settings.askLocation();
+        Settlement settlement = new Settlement(this, loc);
+        b.placeStructure(settlement);
+        if (b1){
+            b.getAdjacentTilesStructure(loc);
+        }
     //todo if b1 true -> winresource
 
     }

@@ -26,6 +26,9 @@ public abstract class Player{
         initializePrice();
     }
 
+    /**
+     *
+     */
     private void initializeResourceDeck(){
             resourceDeck.put("brick",0);
             resourceDeck.put("grain",0);
@@ -34,6 +37,7 @@ public abstract class Player{
             resourceDeck.put("ore",0);
     }
 
+
     private void initializePrice(){
         price.put("brick",4);
         price.put("grain",4);
@@ -41,6 +45,12 @@ public abstract class Player{
         price.put("lumber",4);
         price.put("ore",4);
     }
+
+    /**
+     *
+     * @param resourceCard
+     * @param number
+     */
 
     public void winResource(String resourceCard, int number){
         int actualValue = resourceDeck.get(resourceCard);
@@ -116,7 +126,7 @@ public abstract class Player{
     }
 
     /**
-     * @return true if all the conditions for building a road are fulfilled.
+     * @return true if all the conditions to build a road are fulfilled.
      */
     public boolean canBuildRoadAt(Board board, Location location){
         return (canBuildRoad() && checkLocationForRoad(board,location));
@@ -124,6 +134,9 @@ public abstract class Player{
 
     /**
      * Proceeds to the construction of the road
+     * @param b the board related to the game
+     * @param location to place the newly built road
+     * @return the new road
      */
 
     public Road buildRoad(Board b, Location location){
@@ -134,10 +147,18 @@ public abstract class Player{
         nbRoadsAllowed--;
         return road;
     }
+
+    /**
+     * @return if all the conditions to build a settlement at a given location are fullfilled.
+     */
     public boolean canBuildSettlementAt(Board board, Location location){
         return (canBuildSettlement() && checkLocationForSettlement(board,location));
     }
 
+    /**
+     * Check if the player have the resources needed to build a settlement
+     * @return if all resources needed are in the player's deck
+     */
     public boolean canBuildSettlement(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("brick", 1);
@@ -147,12 +168,24 @@ public abstract class Player{
         return (nbSettlementsAllowed!=0 && hasResources(resNeeded));
     }
 
+    /**
+     * Check if the player can place a settlement at the given location
+     * @param board
+     * @param location
+     * @return if conditions related the location of an eventual settlement construction are fullfilled
+     */
     public boolean checkLocationForSettlement(Board board, Location location){
         return  board.isValidLocation(location)
                 && board.haveAdjacentRoads(location,this)
                 && !board.haveAdjacentStructures(location, this);
     }
 
+    /**
+     * Creates the Settlement
+     * @param b
+     * @param location
+     * @return the built settlement
+     */
     public Structure buildSettlement(Board b, Location location){
         if(canBuildSettlementAt(b,location)){
                looseResource("brick", 1);
@@ -168,6 +201,11 @@ public abstract class Player{
         return null;
     }
 
+    /**
+     * @param b the board
+     * @param location
+     * @return if there's a settlement in a given location
+     */
     private boolean haveAntecedentSettlement(Board b , Location location){
         if (b.getStructureAt(location) != null ){
             Structure s = b.getStructureAt(location);
@@ -176,9 +214,17 @@ public abstract class Player{
         return false;
     }
 
+    /**
+     * @return true if all the conditions to build a city are fulfilled.
+     */
     public boolean canBuildCityAt(Board board, Location location){
         return canBuildRoad() && checkLocationForCity(board,location);
     }
+
+    /**
+     * Check if the player have the resources needed to build a city
+     * @return if all resources needed are in the player's deck
+     */
     public boolean canBuildCity(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("grain",2);
@@ -186,10 +232,20 @@ public abstract class Player{
         return (nbCitiesAllowed!=0 && hasResources(resNeeded)
         );
     }
+
+    /**
+     * Check if the player can place a settlement at the given locatio
+     * @return if conditions related the location of an eventual city construction are fullfilled
+     */
     public boolean checkLocationForCity(Board b, Location location){
         return b.haveAdjacentRoads(location,this)
                 && haveAntecedentSettlement(b,location);
     }
+
+    /**
+     * Creates the city
+     * @return the built city
+     */
     public Structure buildCity(Board b, Location location){
         if(canBuildCityAt(b,location)){
             looseResource("grain",2);
@@ -203,6 +259,9 @@ public abstract class Player{
         return null;
     }
 
+    /**
+     * @return if the player can build a development card
+     */
     public boolean canBuyDevCard(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
         resNeeded.put("grain",1);
@@ -210,6 +269,7 @@ public abstract class Player{
         resNeeded.put("wool",1);
         return hasResources((HashMap<String, Integer>) resNeeded);
     }
+
 
     public void buyDevCard(Deck d){
         if(canBuyDevCard()){
@@ -223,17 +283,32 @@ public abstract class Player{
             }
         }
     }
+
+    /**
+     * Adds i victory points to the player's score
+     */
     public void winVictoryPoint(int i){
         this.victoryPoints+=i;
     }
 
+    /**
+     * Removes i victory points to the player's score
+     */
     public  void looseVictoryPoint(int i){
         this.victoryPoints-=i;
     }
 
-
+    /**
+     * Places first roads at the beginning of the game
+     */
     public abstract void placeFirstRoad(Board b);
+
+    /**
+     * Places first settlements at the beginning of the game
+     * @param b1 flag when the player win his firt resources
+     */
     public abstract  void placeFirstSettlement(Board b, boolean b1);
+
 
     public abstract  void askAction(Board board, Deck d);
 
