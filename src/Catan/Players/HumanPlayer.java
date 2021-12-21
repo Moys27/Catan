@@ -16,10 +16,10 @@ public class HumanPlayer extends Player{
     public void  askAction(Board board, Deck d){
         System.out.println("Choose an action to make:");
         if(canBuildRoad()){
-            System.out.println("[1]Build Roads");
+            System.out.println("[1]Build Road");
         }
         if (canBuildSettlement()){
-            System.out.println("[2]Build Settlements");
+            System.out.println("[2]Build Settlement");
         }
         if(canBuildCity()){
             System.out.println("[3]Build City");
@@ -41,6 +41,23 @@ public class HumanPlayer extends Player{
 
     }
 
+
+
+    @Override
+    public String resourceExchanged(String wanted) {
+        System.out.println("In exchange of what?");
+        String s= Settings.choiseRessource();
+        if (canPayPrice(s,wanted)){
+            return s;
+        }
+        return null;
+    }
+
+    public String resourceWanted() {
+        System.out.println("What do you want?");
+        return Settings.choiseRessource();
+    }
+
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
         Location loc = Settings.askLocation();
@@ -58,9 +75,5 @@ public class HumanPlayer extends Player{
     //todo place les premières routes à côté des premiers settlements
     }
 
-    public boolean canCommerce(String s){
-        HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put(s, price.get(s));
-        return (hasResources(resNeeded));
-    }
+
 }

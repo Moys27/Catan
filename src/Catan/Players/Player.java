@@ -8,7 +8,7 @@ import Catan.Run.*;
 
 public abstract class Player{
     public final String name;
-    public int victoryPoints;
+    private int victoryPoints;
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
@@ -26,24 +26,28 @@ public abstract class Player{
         initializePrice();
     }
 
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
+
     /**
      *
      */
     private void initializeResourceDeck(){
-            resourceDeck.put("brick",0);
-            resourceDeck.put("grain",0);
-            resourceDeck.put("wool",0);
-            resourceDeck.put("lumber",0);
-            resourceDeck.put("ore",0);
+            resourceDeck.put(ResourceCard.Brick,0);
+            resourceDeck.put(ResourceCard.Grain,0);
+            resourceDeck.put(ResourceCard.Wool,0);
+            resourceDeck.put(ResourceCard.Lumber,0);
+            resourceDeck.put(ResourceCard.Ore,0);
     }
 
 
     private void initializePrice(){
-        price.put("brick",4);
-        price.put("grain",4);
-        price.put("wool",4);
-        price.put("lumber",4);
-        price.put("ore",4);
+        price.put(ResourceCard.Brick,4);
+        price.put(ResourceCard.Grain,4);
+        price.put(ResourceCard.Wool,4);
+        price.put(ResourceCard.Lumber,4);
+        price.put(ResourceCard.Ore,4);
     }
 
     /**
@@ -188,10 +192,10 @@ public abstract class Player{
      */
     public Structure buildSettlement(Board b, Location location){
         if(canBuildSettlementAt(b,location)){
-               looseResource("brick", 1);
-               looseResource("lumber", 1);
-               looseResource("grain", 1);
-               looseResource("wool", 1);
+               looseResource(ResourceCard.Brick, 1);
+               looseResource(ResourceCard.Lumber, 1);
+               looseResource(ResourceCard.Grain, 1);
+               looseResource(ResourceCard.Wool, 1);
                Structure settlement = new Settlement(this, location);
                nbSettlementsAllowed--;
                structureMap.put(location,settlement);
@@ -227,8 +231,8 @@ public abstract class Player{
      */
     public boolean canBuildCity(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put("grain",2);
-        resNeeded.put("ore",3);
+        resNeeded.put(ResourceCard.Grain,2);
+        resNeeded.put(ResourceCard.Ore,3);
         return (nbCitiesAllowed!=0 && hasResources(resNeeded)
         );
     }
@@ -248,8 +252,8 @@ public abstract class Player{
      */
     public Structure buildCity(Board b, Location location){
         if(canBuildCityAt(b,location)){
-            looseResource("grain",2);
-            looseResource("ore",3);
+            looseResource(ResourceCard.Grain,2);
+            looseResource(ResourceCard.Ore,3);
             Structure city= new City(this,location);
             structureMap.replace(location,city); //au lieu de put
             winVictoryPoint(2);
@@ -264,9 +268,9 @@ public abstract class Player{
      */
     public boolean canBuyDevCard(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put("grain",1);
-        resNeeded.put("ore",1);
-        resNeeded.put("wool",1);
+        resNeeded.put(ResourceCard.Brick,1);
+        resNeeded.put(ResourceCard.Ore,1);
+        resNeeded.put(ResourceCard.Wool,1);
         return hasResources((HashMap<String, Integer>) resNeeded);
     }
 
@@ -275,9 +279,9 @@ public abstract class Player{
         if(canBuyDevCard()){
             DevCard card = d.dealACard();
             if (card != null) {
-                looseResource("grain",1);
-                looseResource("ore",1);
-                looseResource("wool",1);
+                looseResource(ResourceCard.Grain,1);
+                looseResource(ResourceCard.Ore,1);
+                looseResource(ResourceCard.Wool,1);
                 if(card.type==DevCard.victoryPoint) winVictoryPoint(1);
                 hand.put(card.toString(), card);
             }
@@ -312,6 +316,12 @@ public abstract class Player{
 
     public abstract  void askAction(Board board, Deck d);
 
+    /**
+     *
+     * @param option
+     * @param board
+     * @param d
+     */
     public void executeAction(int option, Board board, Deck d){
         Location location;
         switch (option){
@@ -341,15 +351,47 @@ public abstract class Player{
                     buyDevCard(d);
                 }
                 askAction(board,d);
-            case 5: //todo trade avec le port tout simplement
-                break;
+
+            case 5: commerce();
+                    askAction(board,d);
             case 6:
                 break;
-
         }
     }
 
-    public abstract boolean canCommerce(String s);
+    public abstract String resourceWanted();
+    public abstract String resourceExchanged(String wanted);
 
-    //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
+    /**
+     *
+     * @param rW is the resourceExchanged, rW resourceWarned
+     * @return
+     */
+    public boolean canPayPrice(String rE, String rW){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put(rE, price.get(rW));
+        return (hasResources(resNeeded));
+    }
+
+
+    private void doCommerce(String resourceWanted, String resourceExchanged){
+        looseResource(resourceExchanged,price.get(resourceWanted));
+        winResource(resourceWanted,1);
+
+    }
+
+    private void commerce(){
+        String resourceWanted= resourceWanted();
+        if (resourceWanted==null){
+            return;
+        }
+        String resourceExchaged = resourceExchanged(resourceWanted);
+        if (resourceExchaged!=null) {
+            doCommerce(resourceWanted,resourceExchaged);
+        } else{
+            System.out.println("Error: Can not do the trade");
+        }
+    }
+
+        //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 }

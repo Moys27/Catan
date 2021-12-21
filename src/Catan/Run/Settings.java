@@ -1,5 +1,6 @@
 package Catan.Run;
 import Catan.Board.Location;
+import Catan.Card.ResourceCard;
 
 import java.util.Scanner;
 
@@ -113,7 +114,7 @@ public class Settings {
     public static String askName(){
         System.out.println("What is your name?");
         String answer;
-        try (Scanner scanReponse=new Scanner(System.in)){
+        try {
             answer= scanReponse.nextLine();
             return answer;
         } catch (Exception e){
@@ -137,8 +138,8 @@ public class Settings {
      * @return The type of ressource wich the player want to commerce
      */
 
-    public static String choiseRessourceWanted() {
-        System.out.println("Choose the ressource wanted:");
+    public static String choiseRessource() {
+        System.out.println("Choose the ressource :");
         System.out.println("[1] Brick");
         System.out.println("[2] Grain");
         System.out.println("[3] Wool");
@@ -149,21 +150,21 @@ public class Settings {
             answer = Integer.valueOf(scanReponse.nextLine());
             switch (answer) {
                 case 1:
-                    return "brick";
+                    return ResourceCard.Brick;
                 case 2:
-                    return "grain";
+                    return ResourceCard.Grain;
                 case 3:
-                    return "wool";
+                    return ResourceCard.Wool;
                 case 4:
-                    return "lumber";
+                    return ResourceCard.Lumber;
                 case 5:
-                    return "ore";
+                    return ResourceCard.Ore;
             }
         } catch (NumberFormatException e) {
             System.out.println("Choose a ressource (between the numbers)");
-            return choiseRessourceWanted();
+            return choiseRessource();
         }
-        return choiseRessourceWanted();
+        return choiseRessource();
     }
 
 }

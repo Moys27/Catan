@@ -1,5 +1,6 @@
 package Catan.Players;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import Catan.Card.*;
@@ -14,47 +15,80 @@ public class IAPlayer extends Player{
     }
 
 
+    //Todo Creer quelque chose empechant les numeros magiques et les strings magiques
     @Override
     public void  askAction(Board board, Deck d){
         HashMap<Integer,Integer> option= new HashMap<>();
-        int i=1;
+        ArrayList<Integer> possibilities= new ArrayList<>();
         if(canBuildRoad()){
-                option.put(i,1);
-                i++;
+                possibilities.add(1);
         }
         if (canBuildSettlement()){
-            option.put(i,2);
-            i++;        }
+            possibilities.add(2);
+        }
         if(canBuildCity()){
-            option.put(i,3);
-            i++;        }
+            possibilities.add(3);
+        }
         if (canBuyDevCard()){
-            option.put(i,4);
-            i++;        }
-        //Todo trade
+            possibilities.add(4);
+        }
+        if (resourceWanted()!=null){
+            possibilities.add(5); //Trade
+        }
         //Todo conUseDevCard
-
         Random r= new Random();
-        int randomOption= r.nextInt(i);
-        executeAction(randomOption, board, d);
+        if(possibilities.size()==0){
+            executeAction( 6, board, d);
+            return;
+        }
+        int randomOption= r.nextInt(possibilities.size());
+        executeAction( possibilities.get(randomOption), board, d);
+
     }
 
-    @Override
-    public boolean canCommerce(String s) {
-        return false;
+    /**
+     * Helps to the IAPlayer to choise between differents options
+     */
+    public String randomChoiseString(ArrayList<String> list){
+        Random r= new Random();
+        int randomOption= r.nextInt(list.size());
+        return list.get(randomOption);
+    }
+    public Integer randomChoiseInteger(ArrayList<Integer> list){
+        Random r= new Random();
+        int randomOption= r.nextInt(list.size());
+        return list.get(randomOption);
     }
 
-    public boolean canCommerce() {
-        return false; //TODO
+    public String resourceWanted(){
+        int random = r.nextInt(ResourceCard.array.length);
+        for(int i=0;i<ResourceCard.array.length;i++) {
+            for (int j = 0; j < ResourceCard.array.length - 1; j++) {
+                if (canPayPrice(ResourceCard.array[(random + i + j) % ResourceCard.array.length], ResourceCard.array[(random + i) % ResourceCard.array.length])) {
+                    return ResourceCard.array[(random + i) % ResourceCard.array.length];
+                }
+            }
+        }
+        return null;
+    }
+
+    public String resourceExchanged(String resourceWanted){
+        ArrayList<String> posibilities= new ArrayList<>();
+        for (String key: price.keySet()){
+            if (canPayPrice(key,resourceWanted)){
+                posibilities.add(key);
+            }
+        }
+        return (String) randomChoiseString(posibilities);
     }
 
 
-    @Override
+
+
+        @Override
     public void placeFirstSettlement(Board b, boolean b1) {
     //todo
     }
-
-
 
     @Override
     public void placeFirstRoad(Board b) {
