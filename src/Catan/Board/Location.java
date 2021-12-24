@@ -39,4 +39,8 @@ public class Location {
     public int getOrientation() {
         return orientation;
     }
+
+    public boolean isCoast() {
+        return ((x%Board.getSizeT()==0)||(y%Board.getSizeT()==0));
+    }
 }

@@ -393,5 +393,21 @@ public abstract class Player{
         }
     }
 
+    /**
+     * Fonction charged to reduce the price of the ressource when the player wants to commerce with the bank
+     * @param specialisation
+     */
+    public void priceReduction(int specialisation){
+        if (specialisation>ResourceCard.ore){
+            for (String s: price.keySet()){
+                if (price.get(s)==4){
+                    price.replace(s,3);
+                }
+            }
+        } else {
+            price.replace(ResourceCard.array[specialisation+1],2);
+        }
+    }
+
         //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 }

@@ -8,6 +8,9 @@ public class Settlement implements Structure{
     public Settlement(Player p, Location l){
         this.owner=p;
         this.location=l;
+        if (hasAPort()){
+            owner.priceReduction(Board.getSpecialisation(l));
+        }
     }
     @Override
     public Location getLocation() {
@@ -23,4 +26,9 @@ public class Settlement implements Structure{
     public void winResources(String resource) {
         this.getOwner().winResource(resource,1);
     }
+
+    public boolean hasAPort(){
+        return location.isCoast();
+    }
+
 }
