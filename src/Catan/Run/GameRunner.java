@@ -72,7 +72,7 @@ public class GameRunner {
                 current = p;
                 rollDice();
                 askActions(p);
-                if(p.victoryPoints > maxVictoryPoint) maxVictoryPoint=p.victoryPoints;
+                if(p.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint=p.getVictoryPoints();
                 if (maxVictoryPoint >= 10) break;
             }
         }

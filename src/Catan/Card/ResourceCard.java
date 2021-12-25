@@ -2,11 +2,18 @@ package Catan.Card;
 
 public class ResourceCard extends Card{
 
-    static final int brick = 1;
-    static final int grain = 2;
-    static final int wool = 3;
-    static final int lumber = 4;
-    static final int ore = 5;
+    public static final int brick = 1;
+    public static final int grain = 2;
+    public static final int wool = 3;
+    public static final int lumber = 4;
+    public static final int ore = 5;
+    public static final String Brick = "brick";
+    public static final String Grain = "grain";
+    public static final String Wool = "wool";
+    public static final String Lumber = "lumber";
+    public static final String Ore = "ore";
+    public static final String [] array = {ResourceCard.Brick,ResourceCard.Grain,ResourceCard.Wool,ResourceCard.Lumber,ResourceCard.Ore};
+
 
 
     public ResourceCard(int n){

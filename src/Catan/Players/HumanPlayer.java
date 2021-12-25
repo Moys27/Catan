@@ -1,6 +1,7 @@
 package Catan.Players;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import Catan.Board.*;
 import Catan.Card.*;
@@ -16,10 +17,10 @@ public class HumanPlayer extends Player{
     public void  askAction(Board board, Deck d){
         System.out.println("Choose an action to make:");
         if(canBuildRoad()){
-            System.out.println("[1]Build Roads");
+            System.out.println("[1]Build Road");
         }
         if (canBuildSettlement()){
-            System.out.println("[2]Build Settlements");
+            System.out.println("[2]Build Settlement");
         }
         if(canBuildCity()){
             System.out.println("[3]Build City");
@@ -38,6 +39,23 @@ public class HumanPlayer extends Player{
         }
         executeAction(option, board, d);
 
+    }
+
+
+
+    @Override
+    public String resourceExchanged(String wanted) {
+        System.out.println("In exchange of what?");
+        String s= Settings.choiseRessource();
+        if (canPayPrice(s,wanted)){
+            return s;
+        }
+        return null;
+    }
+
+    public String resourceWanted() {
+        System.out.println("What do you want?");
+        return Settings.choiseRessource();
     }
 
     @Override
@@ -61,4 +79,6 @@ public class HumanPlayer extends Player{
         Road road = new Road(loc,this);
         b.placeRoad(road);
     }
+
+
 }

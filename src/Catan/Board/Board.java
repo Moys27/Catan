@@ -10,20 +10,39 @@ import Catan.Players.*;
 public class Board {
 
     public final Tile[][] tiles;
-    private Structure [][] structures = new Structure[5][5];
-    private Road [][]  verticalRoads = new Road[5][4];
-    private Road [][] horizontalRoads = new Road[4][5];
+    private static final int sizeT= 4;
+
+    private static final int sizeS= 5;
+    private static final int numberPort= 8;
+
+    private Structure [][] structures = new Structure[sizeS][sizeS];
+    private Road [][]  verticalRoads = new Road[sizeS][sizeT];
+    private Road [][] horizontalRoads = new Road[sizeT][sizeS];
+    private static HashMap<Location, Integer> Ports= new HashMap<>();
     //todo: ajout de l'attribut des ports
     //todo créer un classe pour les ports
 
 
     public Board (){
-        tiles = new Tile [4][4];
+        tiles = new Tile [sizeT][sizeT];
         initializeTiles();
+        initailiseCoast();
     }
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public static int getSizeS() {
+        return sizeS;
+    }
+
+    public static int getSizeT() {
+        return sizeT;
+    }
+
+    public static int getSpecialisation(Location l){
+        return Ports.get(l);
     }
 
     /**
@@ -67,9 +86,55 @@ public class Board {
 
     }
 
-    /**
-     * This method allowed to generate the Tile's id according to the rule of the game.
-     */
+    public int[] initailisePorts(){
+        Random r= new Random();
+        int random= r.nextInt(numberPort) +1;
+        int [] ports= new int[numberPort];
+        for (int i=0;i<numberPort;i++){
+            ports[i]= (random+i)%numberPort;
+            if((random+i)%numberPort==0){
+                ports[i]= numberPort;
+            }
+        }
+        return ports;
+    }
+
+    public void initailiseCoast() {
+        int[] ports= initailisePorts();
+        int a=0;
+        for (int i=0; i<sizeS; i++){
+            if(i==2) a++;
+            Ports.put(new Location(i,0,-1),ports[a]);
+            Ports.put(new Location(sizeT,i,-1),ports[a+2]);
+            Ports.put(new Location(sizeT-i,sizeT,-1),ports[a+4]);
+            Ports.put(new Location(0,sizeT-i,-1),ports[a+6]);
+        }
+        /*
+            Ports.put(new Location(0,0,-1),ports[0]);
+            Ports.put(new Location(1,0,-1),ports[0]);
+            Ports.put(new Location(2,0,-1),ports[1]);
+            Ports.put(new Location(3,0,-1),ports[1]);
+            Ports.put(new Location(4,0,-1),ports[2]);
+            Ports.put(new Location(4,1,-1),ports[2]);
+            Ports.put(new Location(4,2,-1),ports[3]);
+            Ports.put(new Location(4,3,-1),ports[3]);
+            Ports.put(new Location(4,4,-1),ports[4]);
+            Ports.put(new Location(3,4,-1),ports[4]);
+            Ports.put(new Location(2,4,-1),ports[5]);
+            Ports.put(new Location(1,4,-1),ports[5]);
+            Ports.put(new Location(0,4,-1),ports[6]);
+            Ports.put(new Location(0,3,-1),ports[6]);
+            Ports.put(new Location(0,2,-1),ports[7]);
+            Ports.put(new Location(0,1,-1),ports[7]);
+         */
+    }
+
+
+
+
+        /**
+         * This method allowed to generate the Tile's id according to the rule of the game.
+         */
     private List<Integer> generateId(){
         List<Integer> id = new ArrayList<>();
         for (int i =0 ; i <15; i++){

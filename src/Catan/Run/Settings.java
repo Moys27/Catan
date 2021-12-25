@@ -1,5 +1,6 @@
 package Catan.Run;
 import Catan.Board.Location;
+import Catan.Card.ResourceCard;
 
 import java.util.Scanner;
 
@@ -113,7 +114,7 @@ public class Settings {
     public static String askName(){
         System.out.println("What is your name?");
         String answer;
-        try (Scanner scanReponse=new Scanner(System.in)){
+        try {
             answer= scanReponse.nextLine();
             return answer;
         } catch (Exception e){
@@ -134,28 +135,36 @@ public class Settings {
 
     /**
      *
-     * @return
+     * @return The type of ressource wich the player want to commerce
      */
-    public String choiseRessourceWanted() {
-        System.out.println("Who many humans will play with you?");
-        System.out.println("[1] ");
-        System.out.println("[2]");
-        System.out.println("[3] ");
-        System.out.println("[4] ");
-        System.out.println("[5] Brick");
+
+    public static String choiseRessource() {
+        System.out.println("Choose the ressource :");
+        System.out.println("[1] Brick");
+        System.out.println("[2] Grain");
+        System.out.println("[3] Wool");
+        System.out.println("[4] Lumber");
+        System.out.println("[5] Ore");
         int answer;
         try {
             answer = Integer.valueOf(scanReponse.nextLine());
             switch (answer) {
                 case 1:
-                    return "";
+                    return ResourceCard.Brick;
                 case 2:
-                    return "";
+                    return ResourceCard.Grain;
+                case 3:
+                    return ResourceCard.Wool;
+                case 4:
+                    return ResourceCard.Lumber;
+                case 5:
+                    return ResourceCard.Ore;
             }
         } catch (NumberFormatException e) {
             System.out.println("Choose a ressource (between the numbers)");
-            return choiseRessourceWanted();
+            return choiseRessource();
         }
-        return "";
+        return choiseRessource();
     }
+
 }
