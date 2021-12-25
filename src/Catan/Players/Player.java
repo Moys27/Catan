@@ -346,11 +346,60 @@ public abstract class Player{
 
     //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 
-    public ArrayList<Location> suggestedLocationRoads(){
-        return new ArrayList<Location>();
+
+    /**
+     * @return a location where the player could place a road
+     */
+    public ArrayList<Location> suggestedLocationRoads(Board b){
+        ArrayList<Location> output = new ArrayList<>();
+
+        HashMap<Location, Road> allAdjRoads = new HashMap<>();
+
+        /*We take all roads adjacent to all structures and roads that belong to the player*/
+        for (Map.Entry structureOwned : structureMap.entrySet()){
+            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) structureOwned.getKey());
+            for (Map.Entry road : adjRoads.entrySet()){
+                allAdjRoads.put((Location)road.getKey(),(Road)road.getValue());
+            }
+        }
+        for (Map.Entry roadOwned : roadsMap.entrySet()){
+            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) roadOwned.getKey());
+            for (Map.Entry road : adjRoads.entrySet()){
+                allAdjRoads.put((Location)road.getKey(),(Road)road.getValue());
+            }
+        }
+        /*we return only locations that haven't any road in it.*/
+        for (Map.Entry road : allAdjRoads.entrySet()){
+            if((Road)road.getValue() == null) output.add((Location)road.getKey() );
+        }
+        return output;
     }
 
-   public ArrayList<Location> suggestedLocationStructures(){
-        return new ArrayList<Location>();
+    /**
+     * @return location where the player could place a structure
+     */
+   public ArrayList<Location> suggestedLocationStructures(Board b){
+       ArrayList<Location> output = new ArrayList<>();
+
+       HashMap<Location, Structure> allAdjStructures = new HashMap<>();
+
+       /*We take all structures adjacent to all structures and roads that belong to the player*/
+       for (Map.Entry structureOwned : structureMap.entrySet()){
+           HashMap<Location,Structure> adjacentStructure = b.getAdjacentStructure((Location) structureOwned.getKey());
+           for (Map.Entry structure : adjacentStructure.entrySet()){
+               adjacentStructure.put((Location)structure.getKey(),(Structure) structure.getValue());
+           }
+       }
+       for (Map.Entry roadOwned : roadsMap.entrySet()){
+           HashMap<Location,Structure> adjacentStructure = b.getAdjacentStructure((Location) roadOwned.getKey());
+           for (Map.Entry structure : adjacentStructure.entrySet()){
+               adjacentStructure.put((Location)structure.getKey(),(Structure) structure.getValue());
+           }
+       }
+       /*we return only locations that haven't any structures in it.*/
+       for (Map.Entry structure : allAdjStructures.entrySet()){
+           if((Structure)structure.getValue() == null) output.add((Location)structure.getKey() );
+       }
+       return output;
     }
 }

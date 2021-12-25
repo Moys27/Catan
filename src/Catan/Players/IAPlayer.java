@@ -43,7 +43,7 @@ public class IAPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
-        ArrayList<Location> loc = suggestedLocationStructures();
+        ArrayList<Location> loc = suggestedLocationStructures(b);
         int randLocPos = r.nextInt(loc.size()-1);
         Location randomLoc = loc.get(randLocPos);
         Settlement settlement = new Settlement(this, randomLoc);
@@ -58,7 +58,7 @@ public class IAPlayer extends Player{
 
     @Override
     public void placeFirstRoad(Board b) {
-        ArrayList<Location> loc = suggestedLocationRoads();
+        ArrayList<Location> loc = suggestedLocationRoads(b);
         int randLocPos = r.nextInt(loc.size()-1);
         Location randomLoc = loc.get(randLocPos);
         Road road = new Road(randomLoc,this);
