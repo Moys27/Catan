@@ -365,7 +365,8 @@ public abstract class Player{
 
     /**
      *
-     * @param rW is the resourceExchanged, rW resourceWarned
+     * @param rE is the resourceExchanged,
+     * @param rW resourceWarned
      * @return
      */
     public boolean canPayPrice(String rE, String rW){
