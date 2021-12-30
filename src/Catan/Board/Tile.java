@@ -45,4 +45,11 @@ public class Tile{
                 ", structureMap=" + structureMap +
                 '}';
     }
+
+    public void moveRobber(){
+        hasRobber=true;
+    }
+    public void removeRobber() {
+            hasRobber = false;
+    }
 }

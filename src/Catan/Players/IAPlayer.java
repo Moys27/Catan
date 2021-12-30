@@ -2,6 +2,7 @@ package Catan.Players;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import Catan.Card.*;
 import Catan.Board.*;
@@ -32,13 +33,13 @@ public class IAPlayer extends Player{
         if (canBuyDevCard()){
             possibilities.add(4);
         }
-        if (resourceWanted()!=null){
-            possibilities.add(5); //Trade
-        }
         //Todo conUseDevCard
+        if (resourceWanted()!=null){
+            possibilities.add(6);
+        }
         Random r= new Random();
         if(possibilities.size()==0){
-            executeAction( 6, board, d);
+            executeAction( 7, board, d);
             return;
         }
         int randomOption= r.nextInt(possibilities.size());
@@ -50,12 +51,10 @@ public class IAPlayer extends Player{
      * Helps to the IAPlayer to choise between differents options
      */
     public String randomChoiseString(ArrayList<String> list){
-        Random r= new Random();
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
     public Integer randomChoiseInteger(ArrayList<Integer> list){
-        Random r= new Random();
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
@@ -82,10 +81,61 @@ public class IAPlayer extends Player{
         return (String) randomChoiseString(posibilities);
     }
 
+    public void optionsDevCard(DevCard card, Board board){
+        useDevCard(card,board);
+    }
+
+    public String randomRessource(){
+        return ResourceCard.array[r.nextInt(ResourceCard.ore)];
+    }
 
 
+    void useYearOfPlenty() {
+        for (int i=0; i<2;i++){
+            winResource(ResourceCard.array[r.nextInt(ResourceCard.ore)],1);
+        }
+    }
 
-        @Override
+    @Override
+    void actionDevCard(Board board) {
+        ArrayList<DevCard> options= new ArrayList();
+        for( DevCard card:hand){
+            if (card.getCanUSe()){
+                options.add(card);
+            }
+        }
+        if (options!=null){
+            int random= r.nextInt(options.size());
+            useDevCard(options.get(random),board);
+        }
+    }
+
+    @Override
+    public void discartCards(int i) {
+        while(i>0){
+            String random= randomRessource();
+            if (resourceDeck.get(random)>0){
+                looseResource(random,1);
+                i--;
+            }
+        }
+    }
+    public Player choosePlayerToStolen(List<Player> players){
+        if (players==null){
+            return null;
+        }
+        Player choosed= players.get(r.nextInt(players.size()));
+        return choosed;
+    }
+
+    @Override
+    public int[] askCoordinatesTile() {
+        return new int[]{r.nextInt(Board.getSizeT() ), r.nextInt(Board.getSizeT() )};
+
+    }
+
+
+    @Override
     public void placeFirstSettlement(Board b, boolean b1) {
     //todo
     }
@@ -94,4 +144,5 @@ public class IAPlayer extends Player{
     public void placeFirstRoad(Board b) {
     //todo
     }
+
 }

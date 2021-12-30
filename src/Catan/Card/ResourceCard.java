@@ -7,11 +7,11 @@ public class ResourceCard extends Card{
     public static final int wool = 3;
     public static final int lumber = 4;
     public static final int ore = 5;
-    public static final String Brick = "brick";
-    public static final String Grain = "grain";
-    public static final String Wool = "wool";
-    public static final String Lumber = "lumber";
-    public static final String Ore = "ore";
+    public static final String Brick = "Brick";
+    public static final String Grain = "Grain";
+    public static final String Wool = "Wool";
+    public static final String Lumber = "Lumber";
+    public static final String Ore = "Ore";
     public static final String [] array = {ResourceCard.Brick,ResourceCard.Grain,ResourceCard.Wool,ResourceCard.Lumber,ResourceCard.Ore};
 
 
