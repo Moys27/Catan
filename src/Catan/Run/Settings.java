@@ -199,7 +199,7 @@ public class Settings {
     }
 
     /*
-    number not include, for array
+    number include, for array
      */
     public static int chooseANumber(int number){
         for (int i=0;i<number;i++){
@@ -208,7 +208,7 @@ public class Settings {
         int answer;
         try {
             answer = scanReponse.nextInt();
-            if ((answer >= 1) && (answer < number)){
+            if ((answer >= 1) && (answer <= number)){
                 return answer;
             }else {
                 System.out.println("Not valid number. Try again");

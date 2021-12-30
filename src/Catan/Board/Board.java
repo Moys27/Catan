@@ -255,7 +255,7 @@ public class Board {
     public ArrayList<Tile> getAdjacentTilesStructure(Location loc) {
         ArrayList<Tile> output = new ArrayList<Tile>();
         if (loc.isaNode()){
-            if(isAValidLocation(loc.getX()-1, loc.getY()-1,4,4))
+            /*if(isAValidLocation(loc.getX()-1, loc.getY()-1,4,4))
                 output.add(tiles[loc.getX()-1][loc.getY()-1]);
 
             if(isAValidLocation(loc.getX()-1, loc.getY(),4,4))
@@ -265,7 +265,15 @@ public class Board {
                 output.add(tiles[loc.getX()][loc.getY()-1]);
 
             if(isAValidLocation(loc.getX(), loc.getY(),4,4))
-                output.add(tiles[loc.getX()][loc.getY()]);
+                output.add(tiles[loc.getX()][loc.getY()]);*/
+
+            for (int i = -1 ; i < 1 ; i++){
+                for (int j = -1 ; j< 1; j++){
+                    if (isAValidLocation(loc.getX()+i, loc.getY()+j,4,4))
+                        output.add(tiles[loc.getX()+i][loc.getY()+j]);
+                }
+            }
+
         }
         return output; //pour les routes
     } //todo first resources distribution at the beginning of the game
@@ -274,19 +282,18 @@ public class Board {
         return (x<xBounds && x>=0 && y<yBounds && y>=0);
     }
 
-
     /**
      * Gives the structures adjacent to the given location
      * @param loc location being checked
      * @return ArrayList<Structure> list of adjacent structures
      */
-    public ArrayList<Structure> getAdjacentStructure(Location loc){
+    public HashMap<Location, Structure> getAdjacentStructure(Location loc){
         int x = loc.getX();
         int y = loc.getY();
         int o = loc.getOrientation();
-        ArrayList<Structure> output = new ArrayList<>();
+        HashMap<Location,Structure> output = new HashMap<>();
         if(loc.isaNode()){
-            if(isAValidLocation(x-1, y,5,5))
+            /*if(isAValidLocation(x-1, y,4,5))
                 output.add(structures[x-1][y]);
 
             if(isAValidLocation(x+1, y,4,5))
@@ -296,22 +303,57 @@ public class Board {
                 output.add(structures[x][y-1]);
 
             if(isAValidLocation(x, y+1,5,4))
-                output.add(structures[x][y+1]);
+                output.add(structures[x][y+1]);*/
+            getAdjacentStructureForNode(output,x,y);
+
+
         }else if (o == 0){
-            if(isAValidLocation(x, y,5,5))
+            /*if(isAValidLocation(x, y,5,5))
                 output.add(structures[x][y]);
 
             if(isAValidLocation(x, y+1,5,5))
-                output.add(structures[x][y+1]);
+                output.add(structures[x][y+1]);*/
+            getAdjacentStructureForHorizontalRoads(output, x, y);
+
+
         }else if (o == 1){
-            if(isAValidLocation(x, y,5,5))
+            /*if(isAValidLocation(x, y,5,5))
                 output.add(structures[x][y]);
 
             if(isAValidLocation(x+1, y,5,5))
-                output.add(structures[x+1][y]);
+                output.add(structures[x+1][y]);*/
+            getAdjacentStructureForVerticalRoads(output,x,y);
         }
         return output;
     }
+
+    private void getAdjacentStructureForNode(HashMap<Location, Structure> output, int x, int y){
+        for (int i = -1 ; i < 2 ; i+=2){
+            if(isAValidLocation(x+i, y,4,5)){
+                output.put(new Location(x+i,y,-1),structures[x+i][y]);
+            }
+        }
+        for(int i = -1 ; i < 2 ; i+=2){
+            if(isAValidLocation(x, y+i,5,4))
+                output.put(new Location(x,y+i,-1),structures[x][y+i]);
+        }
+    }
+
+    private void getAdjacentStructureForHorizontalRoads(HashMap<Location, Structure> output, int x, int y){
+        for (int i = 0; i < 2 ; i++){
+            if(isAValidLocation(x, y+i,5,5))
+                output.put(new Location(x,y+i,0),structures[x][y+i]);
+        }
+    }
+
+    private void getAdjacentStructureForVerticalRoads(HashMap<Location, Structure> output, int x, int y){
+        for (int i = 0; i < 2 ; i++){
+            if(isAValidLocation(x+i, y,5,5))
+                output.put(new Location(x+i,y,1),structures[x+i][y]);
+        }
+    }
+
+
 
     /**
      * Gives the roads adjacent to the given location
@@ -319,26 +361,29 @@ public class Board {
      * @return ArrayList<Road> list of adjacent roads
      */
 
-    public ArrayList<Road> getAdjacentRoads(Location loc){
+    public HashMap<Location, Road> getAdjacentRoads(Location loc){
         int x = loc.getX();
         int y = loc.getY();
-        ArrayList<Road> output = new ArrayList<Road>();
+        HashMap<Location, Road> output = new HashMap<>();
         if (loc.isaNode()) {
-            if(isAValidLocation(x-1, y,4,5))
+            /*if(isAValidLocation(x-1, y,4,5))
                 output.add(verticalRoads[x-1][y]);
 
             if(isAValidLocation(x, y,4,5))
                 output.add(verticalRoads[x][y]);
 
+
             if(isAValidLocation(x, y-1,5,4))
                 output.add(horizontalRoads[x][y-1]);
 
             if(isAValidLocation(x, y,5,4))
-                output.add(horizontalRoads[x][y]);
+                output.add(horizontalRoads[x][y]);*/
+            getAdjacentRoadsForNode(output,x,y);
+
         }else{
 
             if (loc.getOrientation() == 0){
-                if(isAValidLocation(x-1, y,4,5))
+                /*if(isAValidLocation(x-1, y,4,5))
                     output.add(verticalRoads[x-1][y]);
 
                 if(isAValidLocation(x-1, y+1,4,5))
@@ -354,10 +399,12 @@ public class Board {
                     output.add(horizontalRoads[x][y-1]);
 
                 if(isAValidLocation(x, y+1,5,4))
-                    output.add(horizontalRoads[x][y+1]);
+                    output.add(horizontalRoads[x][y+1]);*/
+                getAdjacentRoadsForHorizontalRoads(output,x,y);
+
             }
             else {
-                if(isAValidLocation(x-1, y,4,5))
+                /*if(isAValidLocation(x-1, y,4,5))
                     output.add(verticalRoads[x-1][y]);
 
                 if(isAValidLocation(x+1, y,4,5))
@@ -373,20 +420,56 @@ public class Board {
                     output.add(horizontalRoads[x+1][y-1]);
 
                 if(isAValidLocation(x+1, y,5,4))
-                    output.add(horizontalRoads[x+1][y]);
+                    output.add(horizontalRoads[x+1][y]);*/
+                getAdjacentRoadsForVerticalRoads(output,x,y);
+
             }
         }
         return output;
+    }
+
+    private void getAdjacentRoadsForNode(HashMap<Location, Road> output, int x, int y){
+        for (int i = -1 ; i <1 ; i++){
+            if(isAValidLocation(x+i, y,4,5))
+                output.put(new Location(x+i,y,1),verticalRoads[x+i][y]);
+            if(isAValidLocation(x, y+i,5,4))
+                output.put(new Location(x,y+i,0),horizontalRoads[x][y+i]);
+        }
+    }
+    private void getAdjacentRoadsForHorizontalRoads(HashMap<Location, Road> output, int x, int y){
+        for (int i = -1 ; i < 1 ; i++){
+            for (int j = 0 ; j<2 ; j++){
+                if(isAValidLocation(x+i, y+j,4,5))
+                    output.put(new Location(x+i,y+j,1),verticalRoads[x+i][y+j]);
+            }
+        }
+        for (int j = -1 ; j <2 ; j+=2){
+            if(isAValidLocation(x, y+j,5,4))
+                output.put(new Location(x,y+j,0),horizontalRoads[x][y+j]);
+        }
+    }
+    private void getAdjacentRoadsForVerticalRoads(HashMap<Location, Road> output, int x, int y){
+        for (int i = -1 ; i <2 ; i+=2){
+            if(isAValidLocation(x+i, y,4,5))
+                output.put(new Location(x+i,y,1),verticalRoads[x+i][y]);
+        }
+        for (int i = 0; i <2; i++){
+            for (int j = -1 ; j <1;  j++){
+                if(isAValidLocation(x+i, y+j,5,4))
+                    output.put(new Location(x+i,y+j,0),horizontalRoads[x+i][y+j]);
+            }
+        }
     }
 
     /**
      * @return  the number of roads built from a given @param loc
      */
     public int countRoadsFromLocation(Location loc, Player player){
-        ArrayList<Road> adjacentRoads = this.getAdjacentRoads(loc);
+        HashMap<Location, Road> adjacentRoads = this.getAdjacentRoads(loc);
         List<Integer> roads = new ArrayList<>();
-        for (Road r : adjacentRoads){
-            if(r.getOwner() == player)  roads.add(1 + countRoadsFromLocation(r.getLocation(),player));
+        for (Map.Entry road : adjacentRoads.entrySet()){
+            if(((Road)road.getValue()).getOwner() == player)
+                roads.add(1 + countRoadsFromLocation((Location) road.getKey(),player));
         }
         int max=0;
         if(!roads.isEmpty()){
@@ -424,7 +507,7 @@ public class Board {
 
     /**
      * @param loc of a road
-     * @return the road ar a given location , null if there is'nt any
+     * @return the road in a given location , null if there is'nt any
      */
     public Road checkRoadAt(Location loc){
         if(loc.getOrientation()==-1){
@@ -444,9 +527,10 @@ public class Board {
      * @return true if there's at least one road adjacent to the location
      */
     public boolean haveAdjacentRoads(Location loc,Player player){
-        ArrayList<Road> ajdRoads=getAdjacentRoads(loc);
-        for(Road r : ajdRoads){
-            if (r!=null && r.getOwner() == player) return true;
+        HashMap<Location, Road> adjacentRoads = this.getAdjacentRoads(loc);
+        for (Map.Entry r : adjacentRoads.entrySet()){
+            Road road = (Road)r.getValue();
+            if( road != null && road.getOwner() == player) return true;
         }
         return false;
     }
@@ -456,9 +540,10 @@ public class Board {
      * @return true if there's at least one road adjacent to the location
      */
     public boolean haveAdjacentStructures(Location loc, Player player){
-        ArrayList<Structure> adjStructures = getAdjacentStructure(loc);
-        for (Structure s : adjStructures){
-            if(s!= null && s.getOwner() == player ) return  true;
+        HashMap<Location, Structure> adjacentStructure = this.getAdjacentStructure(loc);
+        for (Map.Entry s : adjacentStructure.entrySet()){
+            Structure structure = (Structure) s.getValue();
+            if( structure!= null && structure.getOwner() == player) return true;
         }
         return false;
     }

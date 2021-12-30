@@ -3,6 +3,9 @@ package Catan.Players;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import Catan.Board.*;
 import Catan.Card.*;
 import Catan.Run.*;
@@ -409,7 +412,8 @@ public abstract class Player{
 
     /**
      *
-     * @param rW is the resourceExchanged, rW resourceWarned
+     * @param rE is the resourceExchanged,
+     * @param rW resourceWarned
      * @return
      */
     public boolean canPayPrice(String rE, String rW){
@@ -418,6 +422,61 @@ public abstract class Player{
         return (hasResources(resNeeded));
     }
 
+    /**
+     * @return a location where the player could place a road
+     */
+    public ArrayList<Location> suggestedLocationRoads(Board b){
+        ArrayList<Location> output = new ArrayList<>();
+
+        HashMap<Location, Road> allAdjRoads = new HashMap<>();
+
+        /*We take all roads adjacent to all structures and roads that belong to the player*/
+        for (Map.Entry structureOwned : structureMap.entrySet()){
+            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) structureOwned.getKey());
+            for (Map.Entry road : adjRoads.entrySet()){
+                allAdjRoads.put((Location)road.getKey(),(Road)road.getValue());
+            }
+        }
+        for (Map.Entry roadOwned : roadsMap.entrySet()){
+            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) roadOwned.getKey());
+            for (Map.Entry road : adjRoads.entrySet()){
+                allAdjRoads.put((Location)road.getKey(),(Road)road.getValue());
+            }
+        }
+        /*we return only locations that haven't any road in it.*/
+        for (Map.Entry road : allAdjRoads.entrySet()){
+            if((Road)road.getValue() == null) output.add((Location)road.getKey() );
+        }
+        return output;
+    }
+
+    /**
+     * @return location where the player could place a structure
+     */
+   public ArrayList<Location> suggestedLocationStructures(Board b){
+       ArrayList<Location> output = new ArrayList<>();
+
+       HashMap<Location, Structure> allAdjStructures = new HashMap<>();
+
+       /*We take all structures adjacent to all structures and roads that belong to the player*/
+       for (Map.Entry structureOwned : structureMap.entrySet()){
+           HashMap<Location,Structure> adjacentStructure = b.getAdjacentStructure((Location) structureOwned.getKey());
+           for (Map.Entry structure : adjacentStructure.entrySet()){
+               adjacentStructure.put((Location)structure.getKey(),(Structure) structure.getValue());
+           }
+       }
+       for (Map.Entry roadOwned : roadsMap.entrySet()){
+           HashMap<Location,Structure> adjacentStructure = b.getAdjacentStructure((Location) roadOwned.getKey());
+           for (Map.Entry structure : adjacentStructure.entrySet()){
+               adjacentStructure.put((Location)structure.getKey(),(Structure) structure.getValue());
+           }
+       }
+       /*we return only locations that haven't any structures in it.*/
+       for (Map.Entry structure : allAdjStructures.entrySet()){
+           if((Structure)structure.getValue() == null) output.add((Location)structure.getKey() );
+       }
+       return output;
+    }
 
     private void doCommerce(String resourceWanted, String resourceExchanged){
         looseResource(resourceExchanged,price.get(resourceWanted));
@@ -453,6 +512,7 @@ public abstract class Player{
             price.replace(ResourceCard.array[specialisation],2);
         }
     }
+
 
         //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 
@@ -560,4 +620,5 @@ public abstract class Player{
     }
 
     public abstract int[] askCoordinatesTile();
+
 }

@@ -91,10 +91,13 @@ public class GameRunner {
 
 
     public static void stolePlayer(Player player,Board b){
-        Player playerStolen= player.choosePlayerToStolen(cleanStolenListPlayer(b.peopleStolen(),player));
-        if (playerStolen!=null){
-            player.stoleACardto(playerStolen);
+        List<Player> players= cleanStolenListPlayer(b.peopleStolen(),player);
+        if (players.isEmpty()){
+            return;
         }
+        Player playerStolen= player.choosePlayerToStolen(players);
+        player.stoleACardto(playerStolen);
+
     }
 
 

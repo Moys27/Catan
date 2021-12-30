@@ -1,5 +1,9 @@
 package Catan.Players;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 import Catan.Board.*;
 import Catan.Card.*;
 import Catan.Run.*;
@@ -60,16 +64,21 @@ public class HumanPlayer extends Player{
         Location loc = Settings.askLocation();
         Settlement settlement = new Settlement(this, loc);
         b.placeStructure(settlement);
-        if (b1){
-            b.getAdjacentTilesStructure(loc);
+        if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
+            ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
+            for (Tile t : tiles){
+                this.winResource(t.getResource(),1);
+            }
         }
-    //todo if b1 true -> winresource
 
     }
 
     @Override
     public void placeFirstRoad(Board b) {
     //todo place les premières routes à côté des premiers settlements
+        Location loc = Settings.askLocation();
+        Road road = new Road(loc,this);
+        b.placeRoad(road);
     }
 
     public void showHand(){
@@ -133,9 +142,6 @@ public class HumanPlayer extends Player{
         }
     }
     public Player choosePlayerToStolen(List<Player> players){
-        if (players==null){
-            return null;
-        }
         System.out.println("Choose the player wich you will stole");
         for (int i=0;i<players.size();i++){
             System.out.println("["+(i+1)+"] "+players.get(i).name);
@@ -146,10 +152,11 @@ public class HumanPlayer extends Player{
 
     @Override
     public int[] askCoordinatesTile() {
+        System.out.println("Move the robber");
         System.out.println("Choose coordinates x of the tile");
-        int x= Settings.chooseANumber(Board.getSizeT());
+        int x= Settings.chooseANumber(Board.getSizeT())-1;
         System.out.println("Choose coordinates y of the tile");
-        int y= Settings.chooseANumber(Board.getSizeT());
+        int y= Settings.chooseANumber(Board.getSizeT())-1;
         return new int[]{x, y};
     }
 }
