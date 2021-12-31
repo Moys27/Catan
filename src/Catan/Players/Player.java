@@ -1,5 +1,8 @@
 package Catan.Players;
 
+import java.lang.reflect.Array;
+import java.util.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +16,14 @@ public abstract class Player{
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
+    private int nbRoads= 15-nbRoadsAllowed;
+    private int nbKnigths=0;
+
 
     private Map<Location,Road> roadsMap = new HashMap<>();
     private Map<Location,Structure> structureMap=new HashMap<>();
-    private Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
-    private Map<String, DevCard> hand = new HashMap<>();
+    Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
+    ArrayList<DevCard> hand= new ArrayList<>();
     Map<String,Integer> price= new HashMap<>();
 
     public Player(String n){
@@ -25,21 +31,35 @@ public abstract class Player{
         this.victoryPoints=0;
         initializeResourceDeck();
         initializePrice();
+
     }
 
     public int getVictoryPoints() {
         return victoryPoints;
     }
 
+    public int getNbKnigths() { return nbKnigths;    }
+
+    public int getNbRoads() { return nbRoads;  }
+
+    public Map<String, Integer> getResourceDeck() {
+        return resourceDeck;
+    }
+
+    public Map<String, Integer> getPrice() {
+        return price;
+    }
+
     /**
      *
      */
     private void initializeResourceDeck(){
-            resourceDeck.put(ResourceCard.Brick,0);
-            resourceDeck.put(ResourceCard.Grain,0);
-            resourceDeck.put(ResourceCard.Wool,0);
-            resourceDeck.put(ResourceCard.Lumber,0);
-            resourceDeck.put(ResourceCard.Ore,0);
+        resourceDeck.put(ResourceCard.Brick,0);
+        resourceDeck.put(ResourceCard.Grain,0);
+        resourceDeck.put(ResourceCard.Wool,0);
+        resourceDeck.put(ResourceCard.Lumber,0);
+        resourceDeck.put(ResourceCard.Ore,0);
+
     }
 
 
@@ -82,19 +102,20 @@ public abstract class Player{
                 grain = 0;
 
         for (Map.Entry resType : res.entrySet()) {
-            if (resType.getKey().equals("wool")) {
+            if (resType.getKey().equals(ResourceCard.Wool)) {
                 wool = (int) resType.getValue();
-            } else if (resType.getKey().equals("ore"))
+            } else if (resType.getKey().equals(ResourceCard.Ore))
                 ore= (int) resType.getValue();
-            else if (resType.getKey().equals("lumber"))
+            else if (resType.getKey().equals(ResourceCard.Lumber))
                 lumber= (int) resType.getValue();
-            else if (resType.getKey().equals("brick"))
+            else if (resType.getKey().equals(ResourceCard.Brick))
                 brick= (int) resType.getValue();
-            else if (resType.getKey().equals("grain"))
+            else if (resType.getKey().equals(ResourceCard.Grain))
                 grain= (int) resType.getValue();
         }
 
-        if (wool > resourceDeck.get("wool") || ore > resourceDeck.get("ore") || lumber > resourceDeck.get("lumber") || brick > resourceDeck.get("brick") || grain > resourceDeck.get("grain"))
+        if (wool > resourceDeck.get(ResourceCard.Wool) || ore > resourceDeck.get(ResourceCard.Ore)
+                || lumber > resourceDeck.get(ResourceCard.Lumber) || brick > resourceDeck.get(ResourceCard.Brick) || grain > resourceDeck.get(ResourceCard.Grain))
             return false;
         else
             return true;
@@ -115,8 +136,8 @@ public abstract class Player{
      * */
     public boolean canBuildRoad(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put("brick",1);
-        resNeeded.put("lumber",1);
+        resNeeded.put(ResourceCard.Brick,1);
+        resNeeded.put(ResourceCard.Lumber,1);
         return (nbRoadsAllowed!=0 && hasResources(resNeeded));
     }
 
@@ -145,8 +166,15 @@ public abstract class Player{
      */
 
     public Road buildRoad(Board b, Location location){
-        looseResource("brick",1);
-        looseResource("lumber",1);
+        looseResource(ResourceCard.Brick,1);
+        looseResource(ResourceCard.Brick,1);
+        Road road = new Road(location,this);
+        roadsMap.put(location,road);
+        nbRoadsAllowed--;
+        return road;
+    }
+
+    public Road buildRoadFree(Board b, Location location){
         Road road = new Road(location,this);
         roadsMap.put(location,road);
         nbRoadsAllowed--;
@@ -166,10 +194,10 @@ public abstract class Player{
      */
     public boolean canBuildSettlement(){
         HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put("brick", 1);
-        resNeeded.put("lumber", 1);
-        resNeeded.put("grain", 1);
-        resNeeded.put("wool", 1);
+        resNeeded.put(ResourceCard.Brick, 1);
+        resNeeded.put(ResourceCard.Lumber, 1);
+        resNeeded.put(ResourceCard.Grain, 1);
+        resNeeded.put(ResourceCard.Wool, 1);
         return (nbSettlementsAllowed!=0 && hasResources(resNeeded));
     }
 
@@ -283,11 +311,20 @@ public abstract class Player{
                 looseResource(ResourceCard.Grain,1);
                 looseResource(ResourceCard.Ore,1);
                 looseResource(ResourceCard.Wool,1);
-                if(card.type==DevCard.victoryPoint) winVictoryPoint(1);
-                hand.put(card.toString(), card);
+                if(card.type==DevCard.getVictoryPoint()) {
+                    System.out.println(name+ " gain a "+ card.getTitle() +" card");
+                    winVictoryPoint(1); //the win of points of victory are automatically
+                    return;
+                }
+                hand.add(card);
+
+                if (this instanceof HumanPlayer){
+                    System.out.println(name+ " gain a "+ card.getTitle() +" card");
+                }
             }
         }
     }
+
 
     /**
      * Adds i victory points to the player's score
@@ -332,30 +369,40 @@ public abstract class Player{
                     board.placeRoad(buildRoad(board,location));
                 }
                 askAction(board,d);
-
+                break;
             case 2:
                 location = Settings.askLocation();
                 if(canBuildSettlementAt(board,location)){
                     board.placeStructure(buildSettlement(board,location));
                 }
                 askAction(board,d);
-
+                break;
             case 3:
                 location=Settings.askLocation();
                 if(canBuildCityAt(board,location)){
                     buildCity(board,location);
                 }
                 askAction(board,d);
-
+                break;
             case 4:
                 if(canBuyDevCard()){
                     buyDevCard(d);
                 }
                 askAction(board,d);
-
-            case 5: commerce();
-                    askAction(board,d);
+                break;
+            case 5:
+                if (!hand.isEmpty()) {
+                    actionDevCard(board);
+                }
+                askAction(board,d);
+                break;
             case 6:
+                if(this instanceof HumanPlayer) System.out.println("Price: "+price);
+                    commerce();
+                    askAction(board,d);
+                    break;
+            case 7:
+                next();
                 break;
         }
     }
@@ -455,15 +502,123 @@ public abstract class Player{
      * @param specialisation
      */
     public void priceReduction(int specialisation){
-        if (specialisation>ResourceCard.ore){
+        if (specialisation>=ResourceCard.ore){
             for (String s: price.keySet()){
                 if (price.get(s)==4){
                     price.replace(s,3);
                 }
             }
         } else {
-            price.replace(ResourceCard.array[specialisation+1],2);
+            price.replace(ResourceCard.array[specialisation],2);
         }
     }
+
+
+        //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
+
+    /**
+     *
+     */
+    public void useDevCard(DevCard card,Board board){
+        switch(card.getTitle()){
+            case "Knights":
+                GameRunner.useRobber(this, board);
+                nbKnigths++;
+                break;
+
+            case "Monopoly":
+
+                break;
+            case "Year Of Plenty":
+                useYearOfPlenty();
+                break;
+            case "Road Building":
+                useRoadBuilding(board);
+            break;
+            default: break;
+        }
+    }
+
+    /**
+     * Use the develop card Road Building
+     * @param board
+     */
+    private void useRoadBuilding(Board board) {
+        for (int i = 0; i < 2; i++) {
+            Location location = Settings.askLocation();
+            if (checkLocationForRoad(board, location) && (nbRoadsAllowed != 0)) {
+                board.placeRoad(buildRoadFree(board, location));
+            }
+        }
+    }
+
+    abstract void useYearOfPlenty();
+    abstract void actionDevCard(Board board);
+
+
+    /**
+     * You can't use the DevCard (but victory point) in the same turn that you have buy it,
+     * so this fonction change the state of DevCard and they can be used, this fonction is only call in the end of the turn of the player
+     */
+
+    public void next(){
+        if(hand==null) return;
+        for(DevCard card: hand){
+            if (!card.getCanUSe()){
+                card.canUse();
+            }
+        }
+    }
+
+    public int howManyCards(){
+        int i= 0;
+        for(String s: resourceDeck.keySet()){
+            i= i+ resourceDeck.get(s);
+        }
+        return i;
+    }
+
+    public abstract void discartCards(int i);
+
+    public void discartExtraCards(){
+        int nbCards= howManyCards();
+        if (nbCards>7){
+            discartCards(nbCards/2);
+        }
+    }
+    public List<Player> cleanStolenListPlayer(List<Player> players){
+        if(players==null){
+            return null;
+        }
+        List<Player> playerList= new ArrayList<>();
+        for(Player p:players){
+            if (!this.equals(p)){
+                playerList.add(p);
+            }
+        }
+        return playerList;
+    }
+
+    public abstract Player choosePlayerToStolen(List<Player> players);
+
+    public void playerMoveRobber(){
+
+    }
+
+    public void stoleACardto(Player player) {
+        Random r= new Random();
+        if(player.howManyCards()==0){
+            return;
+        }
+        String random= ResourceCard.array[r.nextInt(ResourceCard.ore)];
+            if (resourceDeck.get(random)>0){
+                player.looseResource(random,1);
+                this.winResource(random,1);
+            } else {
+                stoleACardto(player);
+        }
+    }
+
+    public abstract int[] askCoordinatesTile();
 
 }

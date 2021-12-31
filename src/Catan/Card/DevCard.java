@@ -8,19 +8,35 @@ package Catan.Card;
 
 public class DevCard extends Card {
     static final int knights = 1; /* lets the player move the robber */
-    public static final int victoryPoint = 2; /* 1 additional Victory Point is added to the owners total and doesn't need to be played to win  */
+    static final int victoryPoint = 2; /* 1 additional Victory Point is added to the owners total and doesn't need to be played to win  */
     static final int monopoly = 3; /* player can claim all resource cards of a specific declared type  */
     static final int yearOfPlenty = 4; /* the player can draw 2 resource cards of their choice from the bank */
     static final int roadBuilding = 5; /* player can place 2 roads as if they just built them*/
 
+    public static int getVictoryPoint() {
+        return victoryPoint;
+    }
+
     private String description;
     private String title;
+    private boolean canUse=false;
 
     public DevCard(int type){
         super(type);
         initialization();
 
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+
+    public boolean getCanUSe(){
+        return canUse;
+    }
+
+
     private void initialization(){
         switch(this.type){
             case knights:
@@ -58,23 +74,9 @@ public class DevCard extends Card {
         return this.title;
     }
 
-    public void useCard(DevCard card){
-        //todo faire correspondre une action a chaque carte
-        switch(card.type){
-            case knights -> {
-            }
-            case victoryPoint -> {
-            }
-            case monopoly -> {
-            }
-            case yearOfPlenty -> {
-            }
-            case roadBuilding -> {
-            }
-            default -> {
-            }
-
-        }
+    public void canUse() {
+        this.canUse = true;
     }
+
 
 }

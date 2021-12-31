@@ -10,6 +10,7 @@ import Catan.Players.*;
 public class Board {
 
     public final Tile[][] tiles;
+    private Tile actuallyRobber;
     private static final int sizeT= 4;
 
     private static final int sizeS= 5;
@@ -48,6 +49,7 @@ public class Board {
     public static int getSpecialisation(Location l){
         return Ports.get(l);
     }
+
 
     /**
      * We distribute the resources and generate Id for each tiles
@@ -90,9 +92,13 @@ public class Board {
 
     }
 
+    /**
+     *
+     * @return an array of ports with their specialisations (specialisation between 0 and 7)
+     */
     public int[] initailisePorts(){
         Random r= new Random();
-        int random= r.nextInt(numberPort) +1;
+        int random= r.nextInt(numberPort);
         int [] ports= new int[numberPort];
         for (int i=0;i<numberPort;i++){
             ports[i]= (random+i)%numberPort;
@@ -102,6 +108,11 @@ public class Board {
         }
         return ports;
     }
+
+    /**
+     * Initialise the ports localisation
+     */
+
 
     public void initailiseCoast() {
         int[] ports= initailisePorts();
@@ -541,6 +552,22 @@ public class Board {
         return false;
     }
 
+    public void moveRobber(int x, int y) {
+        tiles[x][y].moveRobber();
+        if (actuallyRobber != null) {
+            actuallyRobber.removeRobber();
+        }
+        actuallyRobber = tiles[x][y];
+    }
+    public List<Player> peopleStolen(){
+        List<Player> owners= new ArrayList<>();
+        if (!actuallyRobber.getStructureMap().isEmpty()){
+            for (Location l: actuallyRobber.getStructureMap().keySet()){
+                owners.add(actuallyRobber.getStructureMap().get(l).getOwner());
+            }
+        }
+        return owners;
+    }
 
     public void affiche() {
         for(Tile[] tt : tiles){

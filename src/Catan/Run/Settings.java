@@ -68,7 +68,7 @@ public class Settings {
         System.out.println("[1] Yes");
         System.out.println("[2] No (default)");
         try {
-            int answer= Integer.valueOf(scanReponse.nextLine());
+            int answer= scanReponse.nextInt();
             if ((answer!=1)&&(answer!=2)){
                 System.out.println("Choose between option [1] or [2], please");
                 return askHumanPlayers();
@@ -76,6 +76,7 @@ public class Settings {
             return (answer==1);
         }
         catch (NumberFormatException e){
+            scanReponse = new Scanner(System.in);
             return humanPlayersDefault;
         }
     }
@@ -118,6 +119,7 @@ public class Settings {
             answer= scanReponse.nextLine();
             return answer;
         } catch (Exception e){
+            scanReponse = new Scanner(System.in);
             return giveName();
         }
     }
@@ -139,15 +141,13 @@ public class Settings {
      */
 
     public static String choiseRessource() {
-        System.out.println("Choose the ressource :");
-        System.out.println("[1] Brick");
-        System.out.println("[2] Grain");
-        System.out.println("[3] Wool");
-        System.out.println("[4] Lumber");
-        System.out.println("[5] Ore");
         int answer;
         try {
-            answer = Integer.valueOf(scanReponse.nextLine());
+            System.out.println("Choose the ressource :");
+            for (int i=0;i<ResourceCard.array.length;i++){
+                System.out.println("["+(i+1)+"] "+ResourceCard.array[i]);
+            }
+            answer = chooseBetweenCards(ResourceCard.array.length);
             switch (answer) {
                 case 1:
                     return ResourceCard.Brick;
@@ -167,4 +167,57 @@ public class Settings {
         return choiseRessource();
     }
 
+    public static int chooseBetweenCards(int i){
+        int answer;
+        try {
+            answer = scanReponse.nextInt();
+            if ((answer >= 1) && (answer <= i)){
+                return answer;
+        }else {
+                System.out.println("Not valid number. Try again");
+                return chooseBetweenCards(i);
+            }
+        } catch (Exception e){
+            System.out.println("Not a number. Try again");
+            scanReponse = new Scanner(System.in);
+            return chooseBetweenCards(i);
+        }
+    }
+    public static int chooseActionDevCard(){
+        System.out.println("[1] Use");
+        System.out.println("[2] Description");
+        int answer;
+        try {
+            answer = chooseBetweenCards(2);
+            if ((answer == 1) || (answer == 2)) {
+                return answer;
+            }
+        } catch (Exception e){
+            return chooseActionDevCard();
+        }
+        return chooseActionDevCard();
+    }
+
+    /*
+    number include, for array
+     */
+    public static int chooseANumber(int number){
+        for (int i=0;i<number;i++){
+            System.out.println("["+(i+1)+"]");
+        }
+        int answer;
+        try {
+            answer = scanReponse.nextInt();
+            if ((answer >= 1) && (answer <= number)){
+                return answer;
+            }else {
+                System.out.println("Not valid number. Try again");
+                return chooseANumber(number);
+            }
+        } catch (Exception e){
+            System.out.println("Not a number. Try again");
+            scanReponse = new Scanner(System.in);
+            return chooseANumber(number);
+        }
+    }
 }
