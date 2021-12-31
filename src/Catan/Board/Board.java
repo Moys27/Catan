@@ -33,6 +33,10 @@ public class Board {
         return tiles;
     }
 
+    public static int getNumberPort() {
+        return numberPort;
+    }
+
     public static int getSizeS() {
         return sizeS;
     }
