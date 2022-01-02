@@ -20,8 +20,8 @@ public abstract class Player{
     private int nbKnigths=0;
 
 
-    private Map<Location,Road> roadsMap = new HashMap<>();
-    private Map<Location,Structure> structureMap=new HashMap<>();
+    public Map<Location,Road> roadsMap = new HashMap<>();
+    public Map<Location,Structure> structureMap=new HashMap<>();
     Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
     ArrayList<DevCard> hand= new ArrayList<>();
     Map<String,Integer> price= new HashMap<>();
@@ -230,8 +230,10 @@ public abstract class Player{
                structureMap.put(location,settlement);
                winVictoryPoint(1);
                return settlement;
-       }
-        return null;
+       }else{
+            System.out.println("Couldn't buuild the settlement at the location");
+            return null;
+        }
     }
 
     /**
@@ -450,6 +452,13 @@ public abstract class Player{
         return output;
     }
 
+    public void showSuggestedLocationRoads(Board b){
+        System.out.println("\tWhere you may place your road :");
+        for(Location location : suggestedLocationRoads(b)){
+            System.out.println("\t"+location);
+        }
+    }
+
     /**
      * @return location where the player could place a structure
      */
@@ -478,6 +487,13 @@ public abstract class Player{
        return output;
     }
 
+    public void showSuggestedLocationStructure(Board b){
+        System.out.println("\tWhere you may place your structure :");
+        for(Location location : suggestedLocationStructures(b)){
+            System.out.println("\t"+location);
+        }
+    }
+
     private void doCommerce(String resourceWanted, String resourceExchanged){
         looseResource(resourceExchanged,price.get(resourceWanted));
         winResource(resourceWanted,1);
@@ -498,7 +514,7 @@ public abstract class Player{
     }
 
     /**
-     * Fonction charged to reduce the price of the ressource when the player wants to commerce with the bank
+     * charged to reduce the price of the resource when the player wants to commerce with the bank
      * @param specialisation
      */
     public void priceReduction(int specialisation){
@@ -512,9 +528,6 @@ public abstract class Player{
             price.replace(ResourceCard.array[specialisation],2);
         }
     }
-
-
-        //todo réfléchir sur suggestedLocationRoads(Road); suggestedLocationStructures()
 
     /**
      *
@@ -557,8 +570,8 @@ public abstract class Player{
 
 
     /**
-     * You can't use the DevCard (but victory point) in the same turn that you have buy it,
-     * so this fonction change the state of DevCard and they can be used, this fonction is only call in the end of the turn of the player
+     * You can't use the DevCard (but victory point) in the same turn you bought it,
+     * so this function change the state of DevCard and enabled them to be used, it is only called in the end of the player's turn.
      */
 
     public void next(){
@@ -602,8 +615,7 @@ public abstract class Player{
     public abstract Player choosePlayerToStolen(List<Player> players);
 
     public void playerMoveRobber(){
-
-    }
+    } //FIXME
 
     public void stoleACardto(Player player) {
         Random r= new Random();
@@ -621,4 +633,13 @@ public abstract class Player{
 
     public abstract int[] askCoordinatesTile();
 
+    public void showMap(){
+        for(Map.Entry roads : this.roadsMap.entrySet()){
+            System.out.println(roads.getKey()+"  :  "+roads.getValue());
+        }
+        for(Map.Entry struc : this.structureMap.entrySet()){
+            System.out.println(struc.getKey()+"  :  "+struc.getValue());
+        }
+
+    }
 }

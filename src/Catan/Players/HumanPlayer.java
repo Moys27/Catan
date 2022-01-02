@@ -61,8 +61,10 @@ public class HumanPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
+        System.out.println("Choose the location for the settlement.");
         Location loc = Settings.askLocation();
         Settlement settlement = new Settlement(this, loc);
+        structureMap.put(loc,settlement);
         b.placeStructure(settlement);
         if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
             ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
@@ -76,8 +78,10 @@ public class HumanPlayer extends Player{
     @Override
     public void placeFirstRoad(Board b) {
     //todo place les premières routes à côté des premiers settlements
+        System.out.println("Choose the location for the road.");
         Location loc = Settings.askLocation();
         Road road = new Road(loc,this);
+        roadsMap.put(loc,road);
         b.placeRoad(road);
     }
 
@@ -91,7 +95,7 @@ public class HumanPlayer extends Player{
     }
 
     public void showRessource(){
-        System.out.print("Ressources: ");
+        System.out.print("Resources: ");
         System.out.println(resourceDeck);
         System.out.println();
 

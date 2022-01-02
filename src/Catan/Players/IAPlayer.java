@@ -144,7 +144,7 @@ public class IAPlayer extends Player{
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
         ArrayList<Location> loc = suggestedLocationStructures(b);
-        int randLocPos = r.nextInt(loc.size()-1);
+        int randLocPos = r.nextInt(loc.size());
         Location randomLoc = loc.get(randLocPos);
         Settlement settlement = new Settlement(this, randomLoc);
         b.placeStructure(settlement);

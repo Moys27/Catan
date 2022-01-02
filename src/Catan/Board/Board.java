@@ -1,6 +1,8 @@
 package Catan.Board;
 
 import java.util.*;
+
+import Catan.Card.ResourceCard;
 import Catan.Players.*;
 
 /** This class models the board
@@ -13,33 +15,34 @@ public class Board {
     private Tile actuallyRobber;
     private static final int sizeT= 4;
 
-    private static final int sizeS= 5;
-    private static final int numberPort= 8;
+    public static final int sizeS= 5;
+    public static final int numberPort= 8;
 
     private Structure [][] structures = new Structure[sizeS][sizeS];
     private Road [][]  verticalRoads = new Road[sizeS][sizeT];
     private Road [][] horizontalRoads = new Road[sizeT][sizeS];
-    private static HashMap<Location, Integer> Ports= new HashMap<>();
-    //todo: ajout de l'attribut des ports
-    //todo créer un classe pour les ports
-
+    public static HashMap<Location, Integer> Ports= new HashMap<>();
 
     public Board (){
         tiles = new Tile [sizeT][sizeT];
         initializeTiles();
-        initailiseCoast();
+        initialiseCoast();
     }
 
     public Tile[][] getTiles() {
         return tiles;
     }
 
-    public static int getNumberPort() {
-        return numberPort;
+    public Structure[][] getStructures() {
+        return structures;
     }
 
-    public static int getSizeS() {
-        return sizeS;
+    public Road[][] getHorizontalRoads() {
+        return horizontalRoads;
+    }
+
+    public Road[][] getVerticalRoads() {
+        return verticalRoads;
     }
 
     public static int getSizeT() {
@@ -47,7 +50,14 @@ public class Board {
     }
 
     public static int getSpecialisation(Location l){
-        return Ports.get(l);
+        Location coastLoc = null;
+        for(Map.Entry coast : Board.Ports.entrySet()){
+            Location loc = (Location) coast.getKey();
+            if(Location.compareLocation(loc,l))
+                coastLoc = loc;
+        }
+        return (int)Ports.get(coastLoc);
+
     }
 
 
@@ -68,13 +78,13 @@ public class Board {
          * 3 forests produce lumber  (id = 4)
          */
         for (int i =0 ; i <15; i++){
-            if(i<3) resourcesList.add("brick");
-            else if(i<6) resourcesList.add("ore");
-            else if(i<9) resourcesList.add("grain");
-            else if(i<12) resourcesList.add("wool");
-            else resourcesList.add("lumber");
+            if(i<3) resourcesList.add(ResourceCard.Brick);
+            else if(i<6) resourcesList.add(ResourceCard.Ore);
+            else if(i<9) resourcesList.add(ResourceCard.Grain);
+            else if(i<12) resourcesList.add(ResourceCard.Wool);
+            else resourcesList.add(ResourceCard.Lumber);
         }
-        resourcesList.add("desert");
+        resourcesList.add("DESERT");
         Collections.shuffle(resourcesList);
 
         /*
@@ -93,10 +103,10 @@ public class Board {
     }
 
     /**
-     *
-     * @return an array of ports with their specialisations (specialisation between 0 and 7)
+     * @return an array of ports with their specialisations
+     * (specialisation between 0 and 7)
      */
-    public int[] initailisePorts(){
+    public int[] initialisePorts(){
         Random r= new Random();
         int random= r.nextInt(numberPort);
         int [] ports= new int[numberPort];
@@ -114,15 +124,15 @@ public class Board {
      */
 
 
-    public void initailiseCoast() {
-        int[] ports= initailisePorts();
+    public void initialiseCoast() {
+        int[] ports= initialisePorts();
         int a=0;
         for (int i=0; i<sizeS; i++){
             if(i==2) a++;
-            Ports.put(new Location(i,0,-1),ports[a]);
-            Ports.put(new Location(sizeT,i,-1),ports[a+2]);
-            Ports.put(new Location(sizeT-i,sizeT,-1),ports[a+4]);
-            Ports.put(new Location(0,sizeT-i,-1),ports[a+6]);
+            Ports.put(new Location(i,0,2),ports[a]);
+            Ports.put(new Location(sizeT,i,2),ports[a+2]);
+            Ports.put(new Location(sizeT-i,sizeT,2),ports[a+4]);
+            Ports.put(new Location(0,sizeT-i,2),ports[a+6]);
         }
         /*
             Ports.put(new Location(0,0,-1),ports[0]);
@@ -178,15 +188,16 @@ public class Board {
         //ajouter la structure dans tiles
         if(structure != null) {
             Location loc = structure.getLocation();
-            if (structure instanceof Settlement){
-                structures[loc.getX()][loc.getY()]=structure;
-
+            /*if (structure instanceof Settlement){
+                structures[loc.getX()][loc.getY()]=(Settlement) structure;
                     return true;
             }
             if (structure instanceof City){
-                structures[loc.getX()][loc.getY()]=structure;
+                structures[loc.getX()][loc.getY()]= (City)structure;
                     return true;
-            }
+            }*/
+            structures[loc.getX()][loc.getY()]=structure;
+            return true;
         }
         return false;
     }
@@ -334,12 +345,12 @@ public class Board {
     private void getAdjacentStructureForNode(HashMap<Location, Structure> output, int x, int y){
         for (int i = -1 ; i < 2 ; i+=2){
             if(isAValidLocation(x+i, y,4,5)){
-                output.put(new Location(x+i,y,-1),structures[x+i][y]);
+                output.put(new Location(x+i,y,2),structures[x+i][y]);
             }
         }
         for(int i = -1 ; i < 2 ; i+=2){
             if(isAValidLocation(x, y+i,5,4))
-                output.put(new Location(x,y+i,-1),structures[x][y+i]);
+                output.put(new Location(x,y+i,2),structures[x][y+i]);
         }
     }
 
@@ -488,7 +499,7 @@ public class Board {
      * @return if the given location is valid according to either it's a road or a structure
      */
     public boolean isValidLocation(Location loc){
-        if (loc.getOrientation() == -1){
+        if (loc.getOrientation() == 2){
             return (loc.getX()>=0 && loc.getX()<5 && loc.getX()>=0 && loc.getY()<5);
         }
         else if (loc.getOrientation() == 0){
@@ -514,7 +525,7 @@ public class Board {
      * @return the road in a given location , null if there is'nt any
      */
     public Road checkRoadAt(Location loc){
-        if(loc.getOrientation()==-1){
+        if(loc.getOrientation()==2){
             return null;
         }
         if(loc.getOrientation()==0){
@@ -559,6 +570,7 @@ public class Board {
         }
         actuallyRobber = tiles[x][y];
     }
+
     public List<Player> peopleStolen(){
         List<Player> owners= new ArrayList<>();
         if (!actuallyRobber.getStructureMap().isEmpty()){

@@ -7,11 +7,11 @@ public class ResourceCard extends Card{
     public static final int wool = 3;
     public static final int lumber = 4;
     public static final int ore = 5;
-    public static final String Brick = "Brick";
-    public static final String Grain = "Grain";
-    public static final String Wool = "Wool";
-    public static final String Lumber = "Lumber";
-    public static final String Ore = "Ore";
+    public static final String Brick = "BRICK";
+    public static final String Grain = "GRAIN";
+    public static final String Wool = "WOOL";
+    public static final String Lumber = "LUMBER";
+    public static final String Ore = "ORE";
     public static final String [] array = {ResourceCard.Brick,ResourceCard.Grain,ResourceCard.Wool,ResourceCard.Lumber,ResourceCard.Ore};
 
 
@@ -22,12 +22,12 @@ public class ResourceCard extends Card{
     @Override
     public String toString() {
         switch (this.type){
-            case brick : return "brick";
-            case grain : return "grain";
-            case wool : return "wool";
-            case lumber: return "lumber";
-            case ore: return "ore";
-            default: return "none";
+            case brick : return Brick;
+            case grain : return Grain;
+            case wool : return Wool;
+            case lumber: return Lumber;
+            case ore: return Ore;
+            default: return "None";
         }
     }
 

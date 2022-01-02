@@ -22,8 +22,7 @@ public class Main {
         player.askAction(board,new Deck());
 
         System.out.println(player.getResourceDeck().toString());
-
-*/
+        */
     }
 
     public static void TestAddResources(Player player){

@@ -2,6 +2,7 @@ package Catan.Run;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import Catan.Board.*;
 import Catan.Players.*;
@@ -11,7 +12,7 @@ public class GameRunner {
     public final Board board;
     public Player current;
     private Settings settings;
-    private Player [] allPlayers; //fixme : une linkedList ne serait-elle pas mieux ?
+    public Player [] allPlayers; //fixme : une linkedList ne serait-elle pas mieux ?
     private Deck deckCard;
     private int maxVictoryPoint;
     private int minNbRoadForTitle;
@@ -33,6 +34,19 @@ public class GameRunner {
         largestArmy= new Title(2);
     }
 
+    /*GameRunner(){
+        board = new Board();
+        settings = new Settings();
+        deckCard = new Deck();
+        maxVictoryPoint =0;
+        minNbRoadForTitle=3;
+        minNbKnigthsForTitle=3;
+        longestRoad= new Title(1);
+        largestArmy= new Title(2);
+        HumanPlayer p = new HumanPlayer();
+        allPlayers = new Player[]{p};
+    }*/
+
 
     public void createPlayers(){
         current= new HumanPlayer();
@@ -50,9 +64,12 @@ public class GameRunner {
 
     public void placeFirstSettlementsAndRoads(Board b){
         int i = 2;
-        while (i < 0){
+        while (i > 0){
             for (Player p : allPlayers){
+                System.out.println("Hey, " + p.name + " your turn!");
+                if(i==1) p.showSuggestedLocationStructure(b);
                 p.placeFirstSettlement(b,i==1); //todo#1 à implémenter
+                p.showSuggestedLocationRoads(b);
                 p.placeFirstRoad(b);//todo#2
             }
             i--;
@@ -104,7 +121,8 @@ public class GameRunner {
 
     /**
      *
-     * @param player instead of use current player, we can modulaire the parametre and use in the future for the card Develop Knights
+     * @param player instead of use current player, we can modulaire the parametre
+     *               and use in the future for the card Develop Knights
      */
     public static void useRobber(Player player, Board b){
         moveRobber(player,b);
@@ -140,10 +158,10 @@ public class GameRunner {
             if(maxVictoryPoint>=10) endGame=false;
             i++;
             }
-            System.out.println(current.name +" win the game! Congratulations!");
-            System.out.println("You have play " +i+ " turns");
+        System.out.println(current.name +" win the game! Congratulations!");
+        System.out.println("You have play " +i+ " turns");
 
-            }
+    }
 
 
 
