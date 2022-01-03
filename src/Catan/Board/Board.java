@@ -57,7 +57,7 @@ public class Board {
         }
         return Ports.get(coastLoc);
 
-    }
+    } //FIXME ports.get() peut être null pourquoi?
 
 
     /**

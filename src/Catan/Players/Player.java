@@ -609,7 +609,7 @@ public abstract class Player{
                 }
             }
         } else {
-            price.replace(ResourceCard.array[specialisation],2);
+            price.replace(ResourceCard.array[specialisation],2); //FIXME PBM AVEC SPECIALISATION
         }
     }
 
