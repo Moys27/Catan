@@ -1,5 +1,6 @@
 package Catan.Run;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,15 +8,15 @@ import Catan.Board.*;
 import Catan.Players.*;
 import Catan.Card.*;
 
-public class GameRunner {
+public class GameRunner implements Serializable {
     public final Board board;
     public Player current;
     private Settings settings;
-    public Player [] allPlayers; //fixme : une linkedList ne serait-elle pas mieux ?
+    public Player [] allPlayers;
     private Deck deckCard;
     private int maxVictoryPoint;
     private int minNbRoadForTitle;
-    private int minNbKnigthsForTitle;
+    private int minNbKnightsForTitle;
     private Title longestRoad;
     private Title largestArmy;
 
@@ -28,18 +29,18 @@ public class GameRunner {
         createPlayers();
         maxVictoryPoint =0;
         minNbRoadForTitle=3;
-        minNbKnigthsForTitle=3;
+        minNbKnightsForTitle=3;
         longestRoad= new Title(1);
         largestArmy= new Title(2);
     }*/
 
-    GameRunner(){
+    public GameRunner(){
         board = new Board();
         settings = new Settings();
         deckCard = new Deck();
         maxVictoryPoint =0;
         minNbRoadForTitle=3;
-        minNbKnigthsForTitle=3;
+        minNbKnightsForTitle =3;
         longestRoad= new Title(1);
         largestArmy= new Title(2);
         HumanPlayer p = new HumanPlayer();
@@ -67,9 +68,7 @@ public class GameRunner {
         while (i > 0){
             for (Player p : allPlayers){
                 System.out.println("Hey, " + p.name + " your turn!");
-                if(i==1) p.showSuggestedLocationSettlements(b);
                 p.placeFirstSettlement(b,i==1);
-                p.showSuggestedLocationRoads(b);
                 p.placeFirstRoad(b);
             }
             i--;
@@ -77,7 +76,6 @@ public class GameRunner {
     }
 
     public void askActions(Player p){
-
         if( p instanceof HumanPlayer) {
             System.out.println("Hey, " + p.name + " your turn!");
         }
@@ -114,17 +112,14 @@ public class GameRunner {
         }
         Player playerStolen= player.choosePlayerToStolen(players);
         player.stoleACardto(playerStolen);
-
     }
 
 
-
     /**
-     *
-     * @param player instead of use current player, we can modulaire the parametre
+     * @param player instead of using the current player, we can modularize the parameter
      *               and use in the future for the card Develop Knights
      */
-    public static void useRobber(Player player, Board b){
+    public static void useRobber(Player player, Board b){ //FIXME PAS CLAIR LA DESCRIPTION
         moveRobber(player,b);
         stolePlayer(player,b);
     }
@@ -132,6 +127,7 @@ public class GameRunner {
     /*
     Discard the player how takes de action, from the list of players how summit the action
      */
+    //FIXME PAS CLAIR TT
     public static List<Player> cleanStolenListPlayer(List<Player> players, Player player){
         if(players==null){
             return null;
@@ -145,30 +141,10 @@ public class GameRunner {
         return playerList;
     }
 
-    public void run(){
-        placeFirstSettlementsAndRoads(board);
-        boolean endGame= true;
-        int i=0;
-        while (endGame){
-            current = allPlayers[i%allPlayers.length];
-            rollDice(current, board);
-            askActions(current);
-            verifieTitle(current);
-            if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
-            if(maxVictoryPoint>=10) endGame=false;
-            i++;
-            }
-        System.out.println(current.name +" win the game! Congratulations!");
-        System.out.println("You have play " +i+ " turns");
-
-    }
-
-
-
-    public void verifieTitle(Player owner){
+    public void verifyTitle(Player owner){
         if(owner.getNbKnights()>=minNbRoadForTitle){
             largestArmy.setOwner(owner);
-            minNbKnigthsForTitle=owner.getNbKnights()+1;
+            minNbKnightsForTitle =owner.getNbKnights()+1;
             System.out.println(owner.name +" have the Largest Army");
         }
         if(owner.getNbRoads()>=minNbRoadForTitle){
@@ -177,15 +153,21 @@ public class GameRunner {
             System.out.println(owner.name +" have the Longest Road");
         }
     }
-    /*
-    Etapes du jeux:
-        Tirage des des
-        Obtenir des ressources
-        Utiliser carte Develop
-        Commerce
-        Achat carte Develop (Attribut lastDevelopCard, interdiction de l utiliser)
-        Utiliser carte develop
-        Construction
 
-     */
+    public void run(){
+        placeFirstSettlementsAndRoads(board);
+        boolean endGame= true;
+        int i=0;
+        while (endGame){
+            current = allPlayers[i%allPlayers.length];
+            rollDice(current, board);
+            askActions(current);
+            verifyTitle(current);
+            if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
+            if(maxVictoryPoint>=10) endGame=false;
+            i++;
+        }
+        System.out.println(current.name +" win the game! Congratulations!");
+        System.out.println("It's a victory after " +i+ " turns");
+    }
 }

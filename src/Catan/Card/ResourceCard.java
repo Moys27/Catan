@@ -19,6 +19,7 @@ public class ResourceCard extends Card{
     public ResourceCard(int n){
         super(n);
     }
+
     @Override
     public String toString() {
         switch (this.type){

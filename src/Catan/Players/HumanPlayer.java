@@ -9,7 +9,8 @@ import java.util.List;
 
 public class HumanPlayer extends Player{
     public HumanPlayer() {
-        super(Settings.askName());
+        //super(Settings.askName());
+        super("Tania");
     }
 
 
@@ -125,8 +126,8 @@ public class HumanPlayer extends Player{
 
     @Override
     public void placeFirstRoad(Board b) {
-    //todo place les premières routes à côté des premiers settlements
         System.out.println("Choose the location for the road.");
+        showSuggestedLocationRoads(b);
         Location loc = Settings.askLocation();
         Road road = new Road(loc,this);
         roadsMap.put(loc,road);

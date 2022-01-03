@@ -39,8 +39,10 @@ public class CatanBoard extends JPanel {
         g.setColor(Color.black);
         g.setStroke(new BasicStroke(5));
         g.drawRect(x*TILES_DIM+(sW/3), y*TILES_DIM+(sH/5), TILES_DIM, TILES_DIM);
+        //g.drawRect(x, y, TILES_DIM, TILES_DIM);
         g.setColor(c);
         g.fillRect(x*TILES_DIM+(sW/3), y*TILES_DIM+(sH/5), TILES_DIM, TILES_DIM);
+        //g.fillRect(x, y, TILES_DIM, TILES_DIM);
     }
 
     public void doDrawing(Graphics g) {

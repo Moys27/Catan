@@ -125,15 +125,14 @@ public class IAPlayer extends Player{
     }
 
 
-
     public String resourceExchanged(String resourceWanted){
-        ArrayList<String> posibilities= new ArrayList<>();
+        ArrayList<String> possibilities= new ArrayList<>();
         for (String key: price.keySet()){
             if (canPayPrice(key,resourceWanted)){
-                posibilities.add(key);
+                possibilities.add(key);
             }
         }
-        return (String) randomChoiceString(posibilities);
+        return (String) randomChoiceString(possibilities);
     }
 
     public void optionsDevCard(DevCard card, Board board){
@@ -175,6 +174,7 @@ public class IAPlayer extends Player{
             }
         }
     }
+
     public Player choosePlayerToStolen(List<Player> players){
         if (players==null){
             return null;
@@ -192,8 +192,6 @@ public class IAPlayer extends Player{
         return new int[]{r.nextInt(Board.getSizeT() ), r.nextInt(Board.getSizeT() )};
 
     }
-
-
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {

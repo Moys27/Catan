@@ -13,6 +13,10 @@ public class HomePage extends JFrame {
     private JButton aboutButton;
 
     private ButtonController c;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JButton validateButton;
+    private JTextField textField3;
 
     HomePage(){
         setTitle("Catan 2.0");
