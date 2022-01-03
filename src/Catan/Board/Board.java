@@ -132,7 +132,7 @@ public class Board {
             Ports.put(new Location(sizeT,i,2),ports[a+2]);
             Ports.put(new Location(sizeT-i,sizeT,2),ports[a+4]);
             Ports.put(new Location(0,sizeT-i,2),ports[a+6]);
-        }//FIXME
+        }//FIXME PORTS
         /*
             Ports.put(new Location(0,0,-1),ports[0]);
             Ports.put(new Location(1,0,-1),ports[0]);

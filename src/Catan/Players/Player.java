@@ -237,7 +237,7 @@ public abstract class Player{
 
     public Road buildRoad(Board b, Location location){
         looseResource(ResourceCard.Brick,1);
-        looseResource(ResourceCard.Brick,1);
+        looseResource(ResourceCard.Wool,1);
         Road road = new Road(location,this);
         roadsMap.put(location,road);
         nbRoadsAllowed--;
