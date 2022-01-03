@@ -116,7 +116,7 @@ public class Board {
             }
         }
         return ports;
-    }//FIXME
+    }//FIXME PLUS DE DETAILS PLEASE
 
     /**
      * Initialise the ports localisation
@@ -349,11 +349,11 @@ public class Board {
 
         }
         return output; //pour les routes
-    } //todo first resources distribution at the beginning of the game
+    }
 
     public boolean isAValidLocation(int x, int y,int xBounds, int yBounds){
         return (x<xBounds && x>=0 && y<yBounds && y>=0);
-    }//TODO : à mettre dans methods
+    }
 
     /**
      * Gives the structures adjacent to the given location

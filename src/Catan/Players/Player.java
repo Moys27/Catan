@@ -542,7 +542,7 @@ public abstract class Player{
     public abstract Player choosePlayerToStolen(List<Player> players);
 
     public void playerMoveRobber(){
-    } //FIXME
+    } //FIXME ABSTRACT?
 
     public void stoleACardto(Player player) {
         Random r= new Random();
