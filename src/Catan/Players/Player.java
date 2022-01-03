@@ -16,7 +16,7 @@ public abstract class Player{
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
     private int nbRoads= 15-nbRoadsAllowed;
-    private int nbKnigths=0;
+    private int nbKnights =0;
 
 
     public Map<Location,Road> roadsMap = new HashMap<>();
@@ -37,7 +37,7 @@ public abstract class Player{
         return victoryPoints;
     }
 
-    public int getNbKnigths() { return nbKnigths;    }
+    public int getNbKnights() { return nbKnights;    }
 
     public int getNbRoads() { return nbRoads;  }
 
@@ -72,11 +72,11 @@ public abstract class Player{
 
     public abstract  void askAction(Board board, Deck d);
 
-    public void executeAction(int option, Board board, Deck d){
+    public void executeAction(int option, Board board, Deck d){ //FIXME LOCATION
         Location location;
         switch (option){
             case 1 :
-                showSuggestedLocationRoads(board);
+                if(this instanceof HumanPlayer) showSuggestedLocationRoads(board);
                 location = Settings.askLocation();
                 if(canBuildRoadAt(board,location)){
                     board.placeRoad(buildRoad(board,location));
@@ -84,6 +84,7 @@ public abstract class Player{
                 askAction(board,d);
                 break;
             case 2:
+                if(this instanceof HumanPlayer) showSuggestedLocationSettlements(board);
                 location = Settings.askLocation();
                 if(canBuildSettlementAt(board,location)){
                     board.placeStructure(buildSettlement(board,location));
@@ -91,6 +92,7 @@ public abstract class Player{
                 askAction(board,d);
                 break;
             case 3:
+                if(this instanceof HumanPlayer) showSuggestedLocationCities(board);
                 location=Settings.askLocation();
                 if(canBuildCityAt(board,location)){
                     buildCity(board,location);
@@ -506,7 +508,8 @@ public abstract class Player{
         switch(card.getTitle()){
             case "Knights":
                 GameRunner.useRobber(this, board);
-                nbKnigths++;
+                //FIXME ENLEVER LA CARTE DE LA DECK
+                nbKnights++;
                 break;
 
             case "Monopoly":

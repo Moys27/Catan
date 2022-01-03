@@ -165,9 +165,9 @@ public class GameRunner {
 
 
     public void verifieTitle(Player owner){
-        if(owner.getNbKnigths()>=minNbRoadForTitle){
+        if(owner.getNbKnights()>=minNbRoadForTitle){
             largestArmy.setOwner(owner);
-            minNbKnigthsForTitle=owner.getNbKnigths()+1;
+            minNbKnigthsForTitle=owner.getNbKnights()+1;
             System.out.println(owner.name +" have the Largest Army");
         }
         if(owner.getNbRoads()>=minNbRoadForTitle){

@@ -33,7 +33,7 @@ public class IAPlayer extends Player{
         if (canBuyDevCard()){
             possibilities.add(4);
         }
-        //Todo conUseDevCard
+        //Todo canUseDevCard
         if (resourceWanted()!=null){
             possibilities.add(6);
         }
@@ -48,17 +48,18 @@ public class IAPlayer extends Player{
     }
 
     /**
-     * Helps to the IAPlayer to choise between differents options
+     * Helps to the IAPlayer to choose between different options
      */
-    public String randomChoiseString(ArrayList<String> list){
+    public String randomChoiceString(ArrayList<String> list){
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
-    public Integer randomChoiseInteger(ArrayList<Integer> list){
+    public Integer randomChoiceInteger(ArrayList<Integer> list){
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
 
+    //FIXME FONCTIONS?
     public String resourceWanted(){
         int random = r.nextInt(ResourceCard.array.length);
         for(int i=0;i<ResourceCard.array.length;i++) {
@@ -80,14 +81,14 @@ public class IAPlayer extends Player{
                 posibilities.add(key);
             }
         }
-        return (String) randomChoiseString(posibilities);
+        return (String) randomChoiceString(posibilities);
     }
 
     public void optionsDevCard(DevCard card, Board board){
         useDevCard(card,board);
     }
 
-    public String randomRessource(){
+    public String randomResource(){
         return ResourceCard.array[r.nextInt(ResourceCard.ore)];
     }
 
@@ -115,7 +116,7 @@ public class IAPlayer extends Player{
     @Override
     public void discardCards(int i) {
         while(i>0){
-            String random= randomRessource();
+            String random= randomResource();
             if (resourceDeck.get(random)>0){
                 looseResource(random,1);
                 i--;
@@ -133,6 +134,7 @@ public class IAPlayer extends Player{
         return choosed;
     }
 
+    //FIXME FONCTIONS?
     @Override
     public int[] askCoordinatesTile() {
         return new int[]{r.nextInt(Board.getSizeT() ), r.nextInt(Board.getSizeT() )};
