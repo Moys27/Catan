@@ -43,7 +43,8 @@ public class GameRunner {
         longestRoad= new Title(1);
         largestArmy= new Title(2);
         HumanPlayer p = new HumanPlayer();
-        allPlayers = new Player[]{p};
+        IAPlayer p2 = new IAPlayer();
+        allPlayers = new Player[]{p,p2};
     }
 
 

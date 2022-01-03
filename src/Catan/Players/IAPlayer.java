@@ -197,25 +197,24 @@ public class IAPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
-        ArrayList<Location> loc = suggestedLocationSettlements(b);
-        int randLocPos = r.nextInt(loc.size());
-        Location randomLoc = loc.get(randLocPos);
+        Location randomLoc = chooseRandomLocation( b.suggestedLocationFirstSettlements());
         Settlement settlement = new Settlement(this, randomLoc);
+        structureMap.put(randomLoc,settlement);
         b.placeStructure(settlement);
         if (b1){
             ArrayList<Tile> tiles = b.getAdjacentTilesStructure(randomLoc);
             for (Tile t : tiles){
-                this.winResource(t.getResource(),1);
+                if(t.getResource()!= "DESERT")
+                    this.winResource(t.getResource(),1);
             }
         }
     }
 
     @Override
     public void placeFirstRoad(Board b) {
-        ArrayList<Location> loc = suggestedLocationRoads(b);
-        int randLocPos = r.nextInt(loc.size()-1);
-        Location randomLoc = loc.get(randLocPos);
+        Location randomLoc = chooseRandomLocation(suggestedLocationRoads(b));
         Road road = new Road(randomLoc,this);
+        roadsMap.put(randomLoc,road);
         b.placeRoad(road);
     }
 

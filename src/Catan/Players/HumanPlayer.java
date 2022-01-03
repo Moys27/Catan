@@ -108,6 +108,7 @@ public class HumanPlayer extends Player{
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
         System.out.println("Choose the location for the settlement.");
+        b.showSuggestedLocationFirstSettlements();
         Location loc = Settings.askLocation();
         Settlement settlement = new Settlement(this, loc);
         structureMap.put(loc,settlement);

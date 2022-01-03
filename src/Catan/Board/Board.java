@@ -14,7 +14,6 @@ public class Board {
     public final Tile[][] tiles;
     private Tile actualRobber;
     private static final int sizeT= 4;
-
     public static final int sizeS= 5;
     public static final int numberPort= 8;
 
@@ -188,7 +187,7 @@ public class Board {
         int y = location.getY();
         for(int i = -1 ; i < 1 ; i++){
             for (int j = -1; j <1; j++){
-                if( x+i >=0 && y+j >= 0){
+                if(isAValidLocation(x+i,y+j,sizeT,sizeT)){
                     Tile t = tiles[x+i][y+j];
                     t.structureMap.put(location,structure);
                 }
@@ -240,6 +239,23 @@ public class Board {
                     t.roadMap.put(location, road);
                 }
             }
+        }
+    }
+
+    public ArrayList<Location> suggestedLocationFirstSettlements(){
+        ArrayList <Location> locations = new ArrayList<>();
+        for(int i = 0 ; i < sizeS ; i++){
+            for(int j = 0 ; j < sizeS ; j++){
+                if(structures[i][j] == null) locations.add(new Location(i,j,2));
+            }
+        }
+        return locations;
+    }
+
+    public void showSuggestedLocationFirstSettlements(){
+        System.out.println("\tWhere you may place your first settlement");
+        for (Location l : suggestedLocationFirstSettlements()){
+            System.out.println("\t"+l);
         }
     }
     /**

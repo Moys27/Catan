@@ -15,7 +15,7 @@ public abstract class Player{
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
-    private int nbRoads= 15-nbRoadsAllowed;
+    private int nbRoads= 15 - nbRoadsAllowed;
     private int nbKnights =0;
 
 
@@ -58,7 +58,6 @@ public abstract class Player{
         resourceDeck.put(ResourceCard.Wool,0);
         resourceDeck.put(ResourceCard.Lumber,0);
         resourceDeck.put(ResourceCard.Ore,0);
-
     }
 
 
@@ -191,7 +190,7 @@ public abstract class Player{
 
     public Road buildRoad(Board b, Location location){
         looseResource(ResourceCard.Brick,1);
-        looseResource(ResourceCard.Wool,1);
+        looseResource(ResourceCard.Lumber,1);
         Road road = new Road(location,this);
         roadsMap.put(location,road);
         nbRoadsAllowed--;
@@ -353,6 +352,9 @@ public abstract class Player{
             System.out.println("\t"+location);
         }
     }
+
+
+
 
     /**
      * @return location where the player may place a structure from a
