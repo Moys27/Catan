@@ -1,9 +1,6 @@
 package Catan.Players;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 import Catan.Board.*;
 import Catan.Card.*;
 import Catan.Run.*;
@@ -39,7 +36,6 @@ public class HumanPlayer extends Player{
         System.out.println("[7]Continue");
         int option=Settings.chooseBetweenCards(7);
         executeAction(option, board, d);
-
     }
 
     public String resourceWanted() {
@@ -69,7 +65,8 @@ public class HumanPlayer extends Player{
         if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
             ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
             for (Tile t : tiles){
-                this.winResource(t.getResource(),1);
+                if(t.getResource()!= "DESERT")
+                    this.winResource(t.getResource(),1);
             }
         }
 
@@ -139,7 +136,7 @@ public class HumanPlayer extends Player{
     }
 
     @Override
-    public void discartCards(int i) {
+    public void discardCards(int i) {
         System.out.println("You need to discard "+i+" card(s)");
         for (int j=0;j<i;j++){
             looseResource(Settings.choiseRessource(),1);

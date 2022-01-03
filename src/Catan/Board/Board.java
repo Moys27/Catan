@@ -12,15 +12,15 @@ import Catan.Players.*;
 public class Board {
 
     public final Tile[][] tiles;
-    private Tile actuallyRobber;
+    private Tile actualRobber;
     private static final int sizeT= 4;
 
     public static final int sizeS= 5;
     public static final int numberPort= 8;
 
-    private Structure [][] structures = new Structure[sizeS][sizeS];
-    private Road [][]  verticalRoads = new Road[sizeS][sizeT];
-    private Road [][] horizontalRoads = new Road[sizeT][sizeS];
+    private final Structure [][] structures = new Structure[sizeS][sizeS];
+    private final Road [][]  verticalRoads = new Road[sizeT][sizeS];
+    private final Road [][] horizontalRoads = new Road[sizeS][sizeT];
     public static HashMap<Location, Integer> Ports= new HashMap<>();
 
     public Board (){
@@ -49,14 +49,14 @@ public class Board {
         return sizeT;
     }
 
-    public static int getSpecialisation(Location l){
+    public static int getSpecification(Location l){
         Location coastLoc = null;
         for(Map.Entry coast : Board.Ports.entrySet()){
             Location loc = (Location) coast.getKey();
             if(Location.compareLocation(loc,l))
                 coastLoc = loc;
         }
-        return (int)Ports.get(coastLoc);
+        return Ports.get(coastLoc);
 
     }
 
@@ -95,7 +95,7 @@ public class Board {
         for (int i = 0; i<tiles.length; i++){
             for(int j=0; j< tiles[i].length;j++){
                 String resource = resourcesList.get(k++);
-                int idTiles= (resource.equals("desert") ? id.get(id.size()-1) : id.get(K++));
+                int idTiles= (resource.equals("DESERT") ? id.get(id.size()-1) : id.get(K++));
                 tiles[i][j]=new Tile(idTiles, resource);
             }
         }
@@ -104,7 +104,7 @@ public class Board {
 
     /**
      * @return an array of ports with their specialisations
-     * (specialisation between 0 and 7)
+     * (specification between 0 and 7)
      */
     public int[] initialisePorts(){
         Random r= new Random();
@@ -117,12 +117,11 @@ public class Board {
             }
         }
         return ports;
-    }
+    }//FIXME
 
     /**
      * Initialise the ports localisation
      */
-
 
     public void initialiseCoast() {
         int[] ports= initialisePorts();
@@ -133,7 +132,7 @@ public class Board {
             Ports.put(new Location(sizeT,i,2),ports[a+2]);
             Ports.put(new Location(sizeT-i,sizeT,2),ports[a+4]);
             Ports.put(new Location(0,sizeT-i,2),ports[a+6]);
-        }
+        }//FIXME
         /*
             Ports.put(new Location(0,0,-1),ports[0]);
             Ports.put(new Location(1,0,-1),ports[0]);
@@ -181,11 +180,27 @@ public class Board {
 
 
     /**
+     * Fill the structureMap of every Tile that has
+     * @param structure in its vertex.
+     */
+    private void fillTileMapForStructure(Location location,Structure structure){
+        int x = location.getX();
+        int y = location.getY();
+        for(int i = -1 ; i < 1 ; i++){
+            for (int j = -1; j <1; j++){
+                if( x+i >=0 && y+j >= 0){
+                    Tile t = tiles[x+i][y+j];
+                    t.structureMap.put(location,structure);
+                }
+            }
+        }
+    }
+
+    /**
      * Proceeds to the placement of structures
      * @returns if the structure was placed successfully
      * */
     public boolean placeStructure(Structure structure){
-        //ajouter la structure dans tiles
         if(structure != null) {
             Location loc = structure.getLocation();
             /*if (structure instanceof Settlement){
@@ -197,11 +212,36 @@ public class Board {
                     return true;
             }*/
             structures[loc.getX()][loc.getY()]=structure;
+            fillTileMapForStructure(loc,structure);
             return true;
         }
         return false;
     }
 
+    /**
+     * Fill the roadMap of every Tile that has
+     * @param road in its edge.
+     */
+    public void fillTilesMapForRoad(Location location, Road road){
+        int x = location.getX();
+        int y = location.getY();
+        int o= location.getOrientation();
+        if(o==0){
+            for(int i = -1; i<1;i++){
+                if(isAValidLocation(x+i,y,sizeT,sizeT)){
+                    Tile t = tiles[x+i][y];
+                    t.roadMap.put(location, road);
+                }
+            }
+        }else{
+            for(int i = -1; i<2;i++){
+                if(isAValidLocation(x,y+i,sizeT,sizeT)){
+                    Tile t = tiles[x][y+i];
+                    t.roadMap.put(location, road);
+                }
+            }
+        }
+    }
     /**
      * Proceeds to the placement of roads
      * @returns if the road was placed successfully
@@ -211,10 +251,12 @@ public class Board {
             Location loc = road.getLocation();
             if(loc.getOrientation() == 0 ){
                 horizontalRoads[loc.getX()][loc.getY()]=road;
+                fillTilesMapForRoad(loc,road);
                 return true;
             }
             if (loc.getOrientation() == 1) {
                 verticalRoads[loc.getX()][loc.getY()]=road;
+                fillTilesMapForRoad(loc,road);
                 return true;
             }
         }
@@ -236,7 +278,7 @@ public class Board {
             ArrayList<Structure> rollStructures = new ArrayList<Structure>();
 
             for (Map.Entry structure : t.structureMap.entrySet()){
-                rollStructures.add((Structure) structure);
+                rollStructures.add((Structure) structure.getValue());
             }
 
             for (Structure s : rollStructures) {
@@ -293,9 +335,9 @@ public class Board {
         return output; //pour les routes
     } //todo first resources distribution at the beginning of the game
 
-    private boolean isAValidLocation(int x, int y,int xBounds, int yBounds){
+    public boolean isAValidLocation(int x, int y,int xBounds, int yBounds){
         return (x<xBounds && x>=0 && y<yBounds && y>=0);
-    }
+    }//TODO : à mettre dans methods
 
     /**
      * Gives the structures adjacent to the given location
@@ -565,29 +607,22 @@ public class Board {
 
     public void moveRobber(int x, int y) {
         tiles[x][y].moveRobber();
-        if (actuallyRobber != null) {
-            actuallyRobber.removeRobber();
+        if (actualRobber != null) {
+            actualRobber.removeRobber();
         }
-        actuallyRobber = tiles[x][y];
+        actualRobber = tiles[x][y];
     }
 
     public List<Player> peopleStolen(){
         List<Player> owners= new ArrayList<>();
-        if (!actuallyRobber.getStructureMap().isEmpty()){
-            for (Location l: actuallyRobber.getStructureMap().keySet()){
-                owners.add(actuallyRobber.getStructureMap().get(l).getOwner());
+        if (!actualRobber.getStructureMap().isEmpty()){
+            for (Location l: actualRobber.getStructureMap().keySet()){
+                owners.add(actualRobber.getStructureMap().get(l).getOwner());
             }
         }
         return owners;
     }
 
-    public void affiche() {
-        for(Tile[] tt : tiles){
-            for(Tile t : tt){
-                System.out.println(t);
-            }
-        }
-    }//fixme : ameliorer l'affichage du tableau
     /*
     * exemple affichage par tiles avec les roads et strutures presents*/
 }

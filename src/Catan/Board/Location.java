@@ -41,7 +41,8 @@ public class Location {
     }
 
     public boolean isCoast() {
-        return ((x%Board.getSizeT()==0)||(y%Board.getSizeT()==0));
+        return (
+                (x%Board.getSizeT()==0)||(y%Board.getSizeT()==0));
     }
 
     @Override

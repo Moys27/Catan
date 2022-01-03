@@ -4,8 +4,6 @@ import Catan.Board.*;
 import Catan.Players.HumanPlayer;
 import Catan.Players.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Test {
@@ -65,7 +63,7 @@ public class Test {
         p.roadsMap.put(location4,road2);
         System.out.println(b.placeRoad(road2));
 
-        p.showSuggestedLocationStructure(b);
+        p.showSuggestedLocationSettlements(b);
         //p.showSuggestedLocationRoads(b);
 
 

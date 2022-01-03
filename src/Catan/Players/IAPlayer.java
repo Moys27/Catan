@@ -43,7 +43,7 @@ public class IAPlayer extends Player{
             return;
         }
         int randomOption= r.nextInt(possibilities.size());
-        executeAction( possibilities.get(randomOption), board, d);
+        executeAction(possibilities.get(randomOption), board, d);
 
     }
 
@@ -113,7 +113,7 @@ public class IAPlayer extends Player{
     }
 
     @Override
-    public void discartCards(int i) {
+    public void discardCards(int i) {
         while(i>0){
             String random= randomRessource();
             if (resourceDeck.get(random)>0){
@@ -143,7 +143,7 @@ public class IAPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
-        ArrayList<Location> loc = suggestedLocationStructures(b);
+        ArrayList<Location> loc = suggestedLocationSettlements(b);
         int randLocPos = r.nextInt(loc.size());
         Location randomLoc = loc.get(randLocPos);
         Settlement settlement = new Settlement(this, randomLoc);

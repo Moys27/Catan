@@ -1,6 +1,5 @@
 package Catan.Players;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public abstract class Player{
 
     public Map<Location,Road> roadsMap = new HashMap<>();
     public Map<Location,Structure> structureMap=new HashMap<>();
-    Map<String, Integer> resourceDeck = new HashMap<String, Integer>();
+    Map<String, Integer> resourceDeck = new HashMap<>();
     ArrayList<DevCard> hand= new ArrayList<>();
     Map<String,Integer> price= new HashMap<>();
 
@@ -71,11 +70,69 @@ public abstract class Player{
         price.put(ResourceCard.Ore,4);
     }
 
+    public abstract  void askAction(Board board, Deck d);
+
+    public void executeAction(int option, Board board, Deck d){
+        Location location;
+        switch (option){
+            case 1 :
+                showSuggestedLocationRoads(board);
+                location = Settings.askLocation();
+                if(canBuildRoadAt(board,location)){
+                    board.placeRoad(buildRoad(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 2:
+                location = Settings.askLocation();
+                if(canBuildSettlementAt(board,location)){
+                    board.placeStructure(buildSettlement(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 3:
+                location=Settings.askLocation();
+                if(canBuildCityAt(board,location)){
+                    buildCity(board,location);
+                }
+                askAction(board,d);
+                break;
+            case 4:
+                if(canBuyDevCard()){
+                    buyDevCard(d);
+                }
+                askAction(board,d);
+                break;
+            case 5:
+                if (!hand.isEmpty()) {
+                    actionDevCard(board);
+                }
+                askAction(board,d);
+                break;
+            case 6:
+                if(this instanceof HumanPlayer) System.out.println("Price: "+price);
+                commerce();
+                askAction(board,d);
+                break;
+            case 7:
+                next();
+                break;
+        }
+    }
+
     /**
-     *
-     * @param resourceCard
-     * @param number
+     * Adds i victory points to the player's score
      */
+    public void winVictoryPoint(int i){
+        this.victoryPoints+=i;
+    }
+
+    /**
+     * Removes i victory points to the player's score
+     */
+    public  void looseVictoryPoint(int i){
+        this.victoryPoints-=i;
+    }
 
     public void winResource(String resourceCard, int number){
         int actualValue = resourceDeck.get(resourceCard);
@@ -88,6 +145,17 @@ public abstract class Player{
         else System.out.println("ERROR: Insufficient resources.");
     }
 
+
+    /**
+     * Places first roads at the beginning of the game
+     */
+    public abstract void placeFirstRoad(Board b);
+
+    /**
+     * Places first settlements at the beginning of the game
+     * @param b1 flag when the player win his firt resources
+     */
+    public abstract  void placeFirstSettlement(Board b, boolean b1);
 
    /**
      * Checks if this Player has the specified resources
@@ -120,6 +188,8 @@ public abstract class Player{
         else
             return true;
     }
+
+
     /**
      * Check if the location is valid :
      *       if there are roads which reach the location
@@ -294,6 +364,110 @@ public abstract class Player{
         return null;
     }
 
+
+    /**
+     * @return a location where the player may place a road
+     */
+    public ArrayList<Location> suggestedLocationRoads(Board b){
+        ArrayList<Location> output = new ArrayList<>();
+        HashMap<Location , Road> allAdjRoads = new HashMap<>();
+
+        /*We take all roads adjacent to all structures and roads that belong to the player*/
+        for (Map.Entry structureOwned : structureMap.entrySet()){
+            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) structureOwned.getKey());
+            for (Map.Entry road : adjRoads.entrySet()){
+                allAdjRoads.putIfAbsent((Location)road.getKey(),(Road)road.getValue());
+            }
+        }
+        for (Map.Entry roadOwned : roadsMap.entrySet()){
+            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) roadOwned.getKey());
+            for (Map.Entry road : adjRoads.entrySet()){
+                allAdjRoads.putIfAbsent((Location)road.getKey(),(Road)road.getValue());
+            }
+        }
+        /*we return only locations that haven't any road in it.*/
+        for (Map.Entry road : allAdjRoads.entrySet()){
+            if((Road)road.getValue() == null) output.add((Location)road.getKey() );
+        }
+
+        return output;
+    }
+
+    public void showSuggestedLocationRoads(Board b){
+        System.out.println("\tWhere you may place your road :");
+        for(Location location : suggestedLocationRoads(b)){
+            System.out.println("\t"+location);
+        }
+    }
+
+    /**
+     * @return location where the player may place a structure from a
+     * @param location in
+     * @param b the board.
+     */
+    private ArrayList<Location> suggestedLocationSettlementFrom (Board b, Location location){
+        int x = location.getX();
+        int y = location.getY();
+
+        ArrayList<Location> locations = new ArrayList<>();
+
+        /*
+         * The loop encloses all location possibilities to place a structure from another structure
+         * according to the game rules.
+         */
+        for(int i = -1 ; i < 2; i+=2){
+            for(int j = -1; j<2; j+=2){
+                if(canBuildSettlementAt(b,location))
+                    locations.add(new Location(x+i,y+j,2));
+            }
+        }
+        return locations;
+    }
+
+    /**
+     * @return location where the player may place a settlement
+     */
+   public ArrayList<Location> suggestedLocationSettlements(Board b){
+       ArrayList<Location> output = new ArrayList<>();
+
+       for(Map.Entry structureOwned : structureMap.entrySet()){
+           for(Location loc : suggestedLocationSettlementFrom (b, (Location) structureOwned.getKey())){
+                output.add(loc);
+           }
+       }
+       return output;
+    }
+
+    public void showSuggestedLocationSettlements(Board b){
+        System.out.println("\tWhere you may place your settlement :");
+        for(Location location : suggestedLocationSettlements(b)){
+            System.out.println("\t"+location);
+        }
+    }
+
+    /**
+     * @return location where the player could place a city
+     */
+    public ArrayList<Location> suggestedLocationCities(Board b){
+        ArrayList<Location> output = new ArrayList<>();
+
+        for(Map.Entry structureOwned : structureMap.entrySet()){
+            if(structureOwned.getValue() instanceof Settlement)
+                if(canBuildCityAt(b, (Location) structureOwned.getKey())) output.add((Location) structureOwned.getKey());
+        }
+        return output;
+    }
+
+    public void showSuggestedLocationCities(Board b){
+        System.out.println("\tWhere you may place your city :");
+        for(Location location : suggestedLocationCities(b)){
+            System.out.println("\t"+location);
+        }
+    }
+
+
+    //FUNCTIONS RELATED TO DEVELOPMENT CARDS
+
     /**
      * @return if the player can build a development card
      */
@@ -328,210 +502,6 @@ public abstract class Player{
     }
 
 
-    /**
-     * Adds i victory points to the player's score
-     */
-    public void winVictoryPoint(int i){
-        this.victoryPoints+=i;
-    }
-
-    /**
-     * Removes i victory points to the player's score
-     */
-    public  void looseVictoryPoint(int i){
-        this.victoryPoints-=i;
-    }
-
-    /**
-     * Places first roads at the beginning of the game
-     */
-    public abstract void placeFirstRoad(Board b);
-
-    /**
-     * Places first settlements at the beginning of the game
-     * @param b1 flag when the player win his firt resources
-     */
-    public abstract  void placeFirstSettlement(Board b, boolean b1);
-
-
-    public abstract  void askAction(Board board, Deck d);
-
-    /**
-     *
-     * @param option
-     * @param board
-     * @param d
-     */
-    public void executeAction(int option, Board board, Deck d){
-        Location location;
-        switch (option){
-            case 1 :
-                location = Settings.askLocation();
-                if(canBuildRoadAt(board,location)){
-                    board.placeRoad(buildRoad(board,location));
-                }
-                askAction(board,d);
-                break;
-            case 2:
-                location = Settings.askLocation();
-                if(canBuildSettlementAt(board,location)){
-                    board.placeStructure(buildSettlement(board,location));
-                }
-                askAction(board,d);
-                break;
-            case 3:
-                location=Settings.askLocation();
-                if(canBuildCityAt(board,location)){
-                    buildCity(board,location);
-                }
-                askAction(board,d);
-                break;
-            case 4:
-                if(canBuyDevCard()){
-                    buyDevCard(d);
-                }
-                askAction(board,d);
-                break;
-            case 5:
-                if (!hand.isEmpty()) {
-                    actionDevCard(board);
-                }
-                askAction(board,d);
-                break;
-            case 6:
-                if(this instanceof HumanPlayer) System.out.println("Price: "+price);
-                    commerce();
-                    askAction(board,d);
-                    break;
-            case 7:
-                next();
-                break;
-        }
-    }
-
-    public abstract String resourceWanted();
-    public abstract String resourceExchanged(String wanted);
-
-    /**
-     *
-     * @param rE is the resourceExchanged,
-     * @param rW resourceWarned
-     * @return
-     */
-    public boolean canPayPrice(String rE, String rW){
-        HashMap<String, Integer> resNeeded = new HashMap<>();
-        resNeeded.put(rE, price.get(rW));
-        return (hasResources(resNeeded));
-    }
-
-    /**
-     * @return a location where the player could place a road
-     */
-    public ArrayList<Location> suggestedLocationRoads(Board b){
-        ArrayList<Location> output = new ArrayList<>();
-
-        HashMap<Location, Road> allAdjRoads = new HashMap<>();
-
-        /*We take all roads adjacent to all structures and roads that belong to the player*/
-        for (Map.Entry structureOwned : structureMap.entrySet()){
-            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) structureOwned.getKey());
-            for (Map.Entry road : adjRoads.entrySet()){
-                allAdjRoads.put((Location)road.getKey(),(Road)road.getValue());
-            }
-        }
-        for (Map.Entry roadOwned : roadsMap.entrySet()){
-            HashMap<Location,Road> adjRoads= b.getAdjacentRoads((Location) roadOwned.getKey());
-            for (Map.Entry road : adjRoads.entrySet()){
-                allAdjRoads.put((Location)road.getKey(),(Road)road.getValue());
-            }
-        }
-        /*we return only locations that haven't any road in it.*/
-        for (Map.Entry road : allAdjRoads.entrySet()){
-            if((Road)road.getValue() == null) output.add((Location)road.getKey() );
-        }
-        return output;
-    }
-
-    public void showSuggestedLocationRoads(Board b){
-        System.out.println("\tWhere you may place your road :");
-        for(Location location : suggestedLocationRoads(b)){
-            System.out.println("\t"+location);
-        }
-    }
-
-    /**
-     * @return location where the player could place a structure
-     */
-   public ArrayList<Location> suggestedLocationStructures(Board b){
-       ArrayList<Location> output = new ArrayList<>();
-
-       HashMap<Location, Structure> allAdjStructures = new HashMap<>();
-
-       /*We take all structures adjacent to all structures and roads that belong to the player*/
-       for (Map.Entry structureOwned : structureMap.entrySet()){
-           HashMap<Location,Structure> adjacentStructure = b.getAdjacentStructure((Location) structureOwned.getKey());
-           for (Map.Entry structure : adjacentStructure.entrySet()){
-               adjacentStructure.put((Location)structure.getKey(),(Structure) structure.getValue());
-           }
-       }
-       for (Map.Entry roadOwned : roadsMap.entrySet()){
-           HashMap<Location,Structure> adjacentStructure = b.getAdjacentStructure((Location) roadOwned.getKey());
-           for (Map.Entry structure : adjacentStructure.entrySet()){
-               adjacentStructure.put((Location)structure.getKey(),(Structure) structure.getValue());
-           }
-       }
-       /*we return only locations that haven't any structures in it.*/
-       for (Map.Entry structure : allAdjStructures.entrySet()){
-           if((Structure)structure.getValue() == null) output.add((Location)structure.getKey() );
-       }
-       return output;
-    }
-
-    public void showSuggestedLocationStructure(Board b){
-        System.out.println("\tWhere you may place your structure :");
-        for(Location location : suggestedLocationStructures(b)){
-            System.out.println("\t"+location);
-        }
-    }
-
-    private void doCommerce(String resourceWanted, String resourceExchanged){
-        looseResource(resourceExchanged,price.get(resourceWanted));
-        winResource(resourceWanted,1);
-
-    }
-
-    private void commerce(){
-        String resourceWanted= resourceWanted();
-        if (resourceWanted==null){
-            return;
-        }
-        String resourceExchaged = resourceExchanged(resourceWanted);
-        if (resourceExchaged!=null) {
-            doCommerce(resourceWanted,resourceExchaged);
-        } else{
-            System.out.println("Error: Can not do the trade");
-        }
-    }
-
-    /**
-     * charged to reduce the price of the resource when the player wants to commerce with the bank
-     * @param specialisation
-     */
-    public void priceReduction(int specialisation){
-        if (specialisation>=ResourceCard.ore){
-            for (String s: price.keySet()){
-                if (price.get(s)==4){
-                    price.replace(s,3);
-                }
-            }
-        } else {
-            price.replace(ResourceCard.array[specialisation],2);
-        }
-    }
-
-    /**
-     *
-     */
     public void useDevCard(DevCard card,Board board){
         switch(card.getTitle()){
             case "Knights":
@@ -547,7 +517,7 @@ public abstract class Player{
                 break;
             case "Road Building":
                 useRoadBuilding(board);
-            break;
+                break;
             default: break;
         }
     }
@@ -591,12 +561,12 @@ public abstract class Player{
         return i;
     }
 
-    public abstract void discartCards(int i);
+    public abstract void discardCards(int i);
 
-    public void discartExtraCards(){
+    public void discardExtraCards(){
         int nbCards= howManyCards();
         if (nbCards>7){
-            discartCards(nbCards/2);
+            discardCards(nbCards/2);
         }
     }
     public List<Player> cleanStolenListPlayer(List<Player> players){
@@ -623,13 +593,69 @@ public abstract class Player{
             return;
         }
         String random= ResourceCard.array[r.nextInt(ResourceCard.ore)];
-            if (resourceDeck.get(random)>0){
-                player.looseResource(random,1);
-                this.winResource(random,1);
-            } else {
-                stoleACardto(player);
+        if (resourceDeck.get(random)>0){
+            player.looseResource(random,1);
+            this.winResource(random,1);
+        } else {
+            stoleACardto(player);
         }
     }
+
+
+
+    //FUNCTIONS RELATED TO TRADES
+
+
+    public abstract String resourceWanted();
+    public abstract String resourceExchanged(String wanted);
+
+    /**
+     *
+     * @param rE is the resourceExchanged,
+     * @param rW resourceWarned
+     * @return
+     */
+    public boolean canPayPrice(String rE, String rW){
+        HashMap<String, Integer> resNeeded = new HashMap<>();
+        resNeeded.put(rE, price.get(rW));
+        return (hasResources(resNeeded));
+    }
+
+    private void doCommerce(String resourceWanted, String resourceExchanged){
+        looseResource(resourceExchanged,price.get(resourceWanted));
+        winResource(resourceWanted,1);
+
+    }
+
+    private void commerce(){
+        String resourceWanted= resourceWanted();
+        if (resourceWanted==null){
+            return;
+        }
+        String resourceExchaged = resourceExchanged(resourceWanted);
+        if (resourceExchaged!=null) {
+            doCommerce(resourceWanted,resourceExchaged);
+        } else{
+            System.out.println("Error: Can not do the trade");
+        }
+    }
+
+    /**
+     * charged to reduce the price of the resource when the player wants to commerce with the bank
+     * @param specialisation
+     */
+    public void priceReduction(int specialisation){
+        if (specialisation>=ResourceCard.ore){
+            for (String s: price.keySet()){
+                if (price.get(s)==4){
+                    price.replace(s,3);
+                }
+            }
+        } else {
+            price.replace(ResourceCard.array[specialisation],2);
+        }
+    }
+
 
     public abstract int[] askCoordinatesTile();
 

@@ -2,7 +2,6 @@ package Catan.Run;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import Catan.Board.*;
 import Catan.Players.*;
@@ -22,7 +21,7 @@ public class GameRunner {
 
 
 
-    GameRunner() {
+    /*GameRunner() {
         board = new Board();
         settings = new Settings();
         deckCard = new Deck();
@@ -32,9 +31,9 @@ public class GameRunner {
         minNbKnigthsForTitle=3;
         longestRoad= new Title(1);
         largestArmy= new Title(2);
-    }
+    }*/
 
-    /*GameRunner(){
+    GameRunner(){
         board = new Board();
         settings = new Settings();
         deckCard = new Deck();
@@ -45,7 +44,7 @@ public class GameRunner {
         largestArmy= new Title(2);
         HumanPlayer p = new HumanPlayer();
         allPlayers = new Player[]{p};
-    }*/
+    }
 
 
     public void createPlayers(){
@@ -67,10 +66,10 @@ public class GameRunner {
         while (i > 0){
             for (Player p : allPlayers){
                 System.out.println("Hey, " + p.name + " your turn!");
-                if(i==1) p.showSuggestedLocationStructure(b);
-                p.placeFirstSettlement(b,i==1); //todo#1 à implémenter
+                if(i==1) p.showSuggestedLocationSettlements(b);
+                p.placeFirstSettlement(b,i==1);
                 p.showSuggestedLocationRoads(b);
-                p.placeFirstRoad(b);//todo#2
+                p.placeFirstRoad(b);
             }
             i--;
         }
@@ -97,7 +96,7 @@ public class GameRunner {
 
     public void discardCards(){
         for (int i=0;i<allPlayers.length;i++){
-            allPlayers[i].discartExtraCards();
+            allPlayers[i].discardExtraCards();
         }
     }
 

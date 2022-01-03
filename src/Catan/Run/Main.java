@@ -1,9 +1,6 @@
 package Catan.Run;
 
-import Catan.Board.Board;
-import Catan.Card.Deck;
 import Catan.Card.ResourceCard;
-import Catan.Players.HumanPlayer;
 import Catan.Players.Player;
 
 public class Main {

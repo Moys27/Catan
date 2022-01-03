@@ -1,15 +1,18 @@
 package Catan.Run;
 
+import Catan.Board.Board;
+import Catan.Board.Location;
+
 import java.util.Random;
 
 public class TestElementaire {
     public static void main(String[] args) {
-        Random r = new Random();
-        int random=0;
+        Board b = new Board();
+        for (int i = 0 ; i < 4; i++){
+                Location loc = new Location(i,0,2);
+                if (loc.isCoast()) System.out.println(b.getSpecification(loc));
 
-        for (int i = 0 ; i< 100 ; i++){
-            random = r.nextInt(8) ;
-            System.out.print(random+"\t");
+
         }
     }
 
