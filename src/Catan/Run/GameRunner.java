@@ -19,9 +19,19 @@ public class GameRunner {
     private Title longestRoad;
     private Title largestArmy;
 
+public Player[] getAllPlayers(){
+         return allPlayers;
+    }
 
+    public Player getCurrent() {
+        return current;
+    }
 
-    GameRunner() {
+    public Deck getDeckCard() {
+        return deckCard;
+    }
+
+    public GameRunner() {
         board = new Board();
         settings = new Settings();
         deckCard = new Deck();
@@ -142,6 +152,25 @@ public class GameRunner {
             }
             System.out.println(current.name +" win the game! Congratulations!");
             System.out.println("You have play " +i+ " turns");
+
+            }
+
+            public void runTest(){
+                placeFirstSettlementsAndRoads(board);
+                boolean endGame= true;
+                int i=0;
+                while (endGame){
+                    current = allPlayers[i%allPlayers.length];
+                    Main.TestAddResources(current);
+                    rollDice(current, board);
+                    askActions(current);
+                    verifieTitle(current);
+                    if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
+                    if(maxVictoryPoint>=10) endGame=false;
+                    i++;
+                }
+                System.out.println(current.name +" win the game! Congratulations!");
+                System.out.println("You have play " +i+ " turns");
 
             }
 

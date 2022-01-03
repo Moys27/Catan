@@ -484,7 +484,7 @@ public abstract class Player{
 
     }
 
-    private void commerce(){
+    public void commerce(){
         String resourceWanted= resourceWanted();
         if (resourceWanted==null){
             return;

@@ -1,11 +1,16 @@
 package Catan.gui;
 
+import Catan.Run.GameRunner;
+
 public class UIWindow {
     private View wind;
+    private GameRunner game;
 
     UIWindow(){
-        wind = new View();
+        game= new GameRunner();
+        wind = new View(game);
         wind.setVisible(true);
+        game.runTest();
     }
 
     public static void main(String[] args) {

@@ -10,6 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         GameRunner g = new GameRunner();
+        TestAddResources(g.getAllPlayers()[0]);
         g.run();
         /**
         Board board= new Board();
