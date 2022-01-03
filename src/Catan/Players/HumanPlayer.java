@@ -38,6 +38,56 @@ public class HumanPlayer extends Player{
         executeAction(option, board, d);
     }
 
+    public void executeAction(int option, Board board, Deck d){
+        Location location;
+        switch (option){
+            case 1 :
+                showSuggestedLocationRoads(board);
+                location = Settings.askLocation();
+                if(canBuildRoadAt(board,location)){
+                    board.placeRoad(buildRoad(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 2:
+                showSuggestedLocationSettlements(board);
+                location = Settings.askLocation();
+                if(canBuildSettlementAt(board,location)){
+                    board.placeStructure(buildSettlement(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 3:
+                showSuggestedLocationCities(board);
+                location=Settings.askLocation();
+                if(canBuildCityAt(board,location)){
+                    buildCity(board,location);
+                }
+                askAction(board,d);
+                break;
+            case 4:
+                if(canBuyDevCard()){
+                    buyDevCard(d);
+                }
+                askAction(board,d);
+                break;
+            case 5:
+                if (!hand.isEmpty()) {
+                    actionDevCard(board);
+                }
+                askAction(board,d);
+                break;
+            case 6:
+                System.out.println("Price: "+price);
+                commerce();
+                askAction(board,d);
+                break;
+            case 7:
+                next();
+                break;
+        }
+    }
+
     public String resourceWanted() {
         System.out.println("What do you want?");
         return Settings.choiseRessource();

@@ -44,7 +44,59 @@ public class IAPlayer extends Player{
         }
         int randomOption= r.nextInt(possibilities.size());
         executeAction(possibilities.get(randomOption), board, d);
+    }
 
+    @Override
+    public void executeAction(int option, Board board, Deck d){
+        Location location;
+        switch (option){
+            case 1 :
+                location = chooseRandomLocation(suggestedLocationRoads(board));
+                if(canBuildRoadAt(board,location)){
+                    board.placeRoad(buildRoad(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 2:
+                location = chooseRandomLocation(suggestedLocationSettlements(board));
+                if(canBuildSettlementAt(board,location)){
+                    board.placeStructure(buildSettlement(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 3:
+                location = chooseRandomLocation(suggestedLocationCities(board));
+                if(canBuildCityAt(board,location)){
+                    buildCity(board,location);
+                }
+                askAction(board,d);
+                break;
+            case 4:
+                if(canBuyDevCard()){
+                    buyDevCard(d);
+                }
+                askAction(board,d);
+                break;
+            case 5:
+                if (!hand.isEmpty()) {
+                    actionDevCard(board);
+                }
+                askAction(board,d);
+                break;
+            case 6:
+                System.out.println("Price: "+price);
+                commerce();
+                askAction(board,d);
+                break;
+            case 7:
+                next();
+                break;
+        }
+    }
+
+
+    private Location chooseRandomLocation(ArrayList<Location> suggestedLocation) {
+        return suggestedLocation.get(r.nextInt(suggestedLocation.size()));
     }
 
     /**

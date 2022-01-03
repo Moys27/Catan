@@ -72,55 +72,7 @@ public abstract class Player{
 
     public abstract  void askAction(Board board, Deck d);
 
-    public void executeAction(int option, Board board, Deck d){ //FIXME LOCATION
-        Location location;
-        switch (option){
-            case 1 :
-                if(this instanceof HumanPlayer) showSuggestedLocationRoads(board);
-                location = Settings.askLocation();
-                if(canBuildRoadAt(board,location)){
-                    board.placeRoad(buildRoad(board,location));
-                }
-                askAction(board,d);
-                break;
-            case 2:
-                if(this instanceof HumanPlayer) showSuggestedLocationSettlements(board);
-                location = Settings.askLocation();
-                if(canBuildSettlementAt(board,location)){
-                    board.placeStructure(buildSettlement(board,location));
-                }
-                askAction(board,d);
-                break;
-            case 3:
-                if(this instanceof HumanPlayer) showSuggestedLocationCities(board);
-                location=Settings.askLocation();
-                if(canBuildCityAt(board,location)){
-                    buildCity(board,location);
-                }
-                askAction(board,d);
-                break;
-            case 4:
-                if(canBuyDevCard()){
-                    buyDevCard(d);
-                }
-                askAction(board,d);
-                break;
-            case 5:
-                if (!hand.isEmpty()) {
-                    actionDevCard(board);
-                }
-                askAction(board,d);
-                break;
-            case 6:
-                if(this instanceof HumanPlayer) System.out.println("Price: "+price);
-                commerce();
-                askAction(board,d);
-                break;
-            case 7:
-                next();
-                break;
-        }
-    }
+    public abstract void executeAction(int option, Board board, Deck d);
 
     /**
      * Adds i victory points to the player's score
@@ -630,7 +582,7 @@ public abstract class Player{
 
     }
 
-    private void commerce(){
+    protected void commerce(){
         String resourceWanted= resourceWanted();
         if (resourceWanted==null){
             return;
