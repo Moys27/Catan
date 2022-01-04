@@ -2,6 +2,7 @@ package Catan.Run;
 import Catan.Board.Location;
 import Catan.Card.ResourceCard;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 /**
@@ -167,22 +168,23 @@ public class Settings {
         return choiseRessource();
     }
 
-    public static int chooseBetweenCards(int i){
+    public static int chooseBetweenCards(int i) {
         int answer;
-        try {
-            answer = scanReponse.nextInt();
-            if ((answer >= 1) && (answer <= i)){
-                return answer;
-        }else {
-                System.out.println("Not valid number. Try again");
+            try {
+                answer = scanReponse.nextInt();
+                if ((answer >= 1) && (answer <= i)) {
+                    return answer;
+                } else {
+                    System.out.println("Not valid number. Try again");
+                    return chooseBetweenCards(i);
+                }
+            } catch (Exception e) {
+                System.out.println("Not a number. Try again");
+                scanReponse = new Scanner(System.in);
                 return chooseBetweenCards(i);
             }
-        } catch (Exception e){
-            System.out.println("Not a number. Try again");
-            scanReponse = new Scanner(System.in);
-            return chooseBetweenCards(i);
         }
-    }
+
     public static int chooseActionDevCard(){
         System.out.println("[1] Use");
         System.out.println("[2] Description");
@@ -219,5 +221,6 @@ public class Settings {
             scanReponse = new Scanner(System.in);
             return chooseANumber(number);
         }
+
     }
 }

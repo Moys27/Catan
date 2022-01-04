@@ -104,6 +104,9 @@ public class Board {
     /**
      * @return an array of ports with their specialisations
      * (specification between 0 and 7)
+     * Creer et jetter au hazar une liste de Port avec leur respectives resources.
+     * random+i%numberPort et le specification du por, de 1 a 5 pour les ressource et de 6 a 8 pour les generales
+     * Je devais avois jusqu'a oui, pour ça j'ai ecris que si le modulo, alors au leiu de donner un specification=0, sera une specification = 8= nbPorts
      */
     public int[] initialisePorts(){
         Random r= new Random();
@@ -116,10 +119,17 @@ public class Board {
             }
         }
         return ports;
-    }//FIXME PLUS DE DETAILS PLEASE
+    }
 
     /**
      * Initialise the ports localisation
+     *
+     * Une fois que j'avais creer le type de ports au hazard, il fallairt que j'attribu c'est 8 port à la cote de notre jeu
+     * C'est pour ça je j'utilise un HashMap avec des localisations.
+     * En vrai, comme notre jeu est carré toutes les settlement on acces a un port, mais ce n'est pas toujours le meme
+     * Cette fonction elle serve a distinguer les ports deux à deux, alors pour reflechir a la distribution donc j'ai lister toutes
+     * les localisations et les differents ports qu'elles devaient contenir (code commenter)
+     * et finalement je l'ai optimisé avec le code qui est en bas, mais c'est exactement la meme chose
      */
 
     public void initialiseCoast() {
@@ -131,7 +141,7 @@ public class Board {
             Ports.put(new Location(sizeT,i,2),ports[a+2]);
             Ports.put(new Location(sizeT-i,sizeT,2),ports[a+4]);
             Ports.put(new Location(0,sizeT-i,2),ports[a+6]);
-        }//FIXME PORTS
+        }
         /*
             Ports.put(new Location(0,0,-1),ports[0]);
             Ports.put(new Location(1,0,-1),ports[0]);

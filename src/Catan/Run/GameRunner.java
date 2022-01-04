@@ -20,19 +20,18 @@ public class GameRunner implements Serializable {
     private Title longestRoad;
     private Title largestArmy;
 
+public Player[] getAllPlayers(){
+         return allPlayers;
+    }
 
+    public Player getCurrent() {
+        return current;
+    }
 
-    /*GameRunner() {
-        board = new Board();
-        settings = new Settings();
-        deckCard = new Deck();
-        createPlayers();
-        maxVictoryPoint =0;
-        minNbRoadForTitle=3;
-        minNbKnightsForTitle=3;
-        longestRoad= new Title(1);
-        largestArmy= new Title(2);
-    }*/
+    public Deck getDeckCard() {
+        return deckCard;
+    }
+
 
     public GameRunner(){
         board = new Board();
@@ -166,8 +165,43 @@ public class GameRunner implements Serializable {
             if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
             if(maxVictoryPoint>=10) endGame=false;
             i++;
+            }
+            System.out.println(current.name +" win the game! Congratulations!");
+            System.out.println("You have play " +i+ " turns");
+
+            }
+
+            public void runTest(){
+                placeFirstSettlementsAndRoads(board);
+                boolean endGame= true;
+                int i=0;
+                while (endGame){
+                    current = allPlayers[i%allPlayers.length];
+                    Main.TestAddResources(current);
+                    rollDice(current, board);
+                    askActions(current);
+                    verifieTitle(current);
+                    if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
+                    if(maxVictoryPoint>=10) endGame=false;
+                    i++;
+                }
+                System.out.println(current.name +" win the game! Congratulations!");
+                System.out.println("You have play " +i+ " turns");
+
+            }
+
+
+
+    public void verifieTitle(Player owner){
+        if(owner.getNbKnights()>=minNbRoadForTitle){
+            largestArmy.setOwner(owner);
+            minNbKnightsForTitle=owner.getNbKnights()+1;
+            System.out.println(owner.name +" have the Largest Army");
         }
-        System.out.println(current.name +" win the game! Congratulations!");
-        System.out.println("It's a victory after " +i+ " turns");
+        if(owner.getNbRoads()>=minNbRoadForTitle){
+            longestRoad.setOwner(owner);
+            minNbRoadForTitle=owner.getNbRoads()+1;
+            System.out.println(owner.name +" have the Longest Road");
+        }
     }
 }

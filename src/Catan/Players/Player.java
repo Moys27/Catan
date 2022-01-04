@@ -401,6 +401,7 @@ public abstract class Player{
         }
     }
 
+
     /**
      * @return location where the player could place a city
      */
@@ -462,7 +463,7 @@ public abstract class Player{
         switch(card.getTitle()){
             case "Knights":
                 GameRunner.useRobber(this, board);
-                //FIXME ENLEVER LA CARTE DE LA DECK
+                hand.remove(card);
                 nbKnights++;
                 break;
 
@@ -471,9 +472,12 @@ public abstract class Player{
                 break;
             case "Year Of Plenty":
                 useYearOfPlenty();
+                hand.remove(card);
+
                 break;
             case "Road Building":
                 useRoadBuilding(board);
+                hand.remove(card);
                 break;
             default: break;
         }

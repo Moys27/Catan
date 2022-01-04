@@ -33,7 +33,9 @@ public class IAPlayer extends Player{
         if (canBuyDevCard()){
             possibilities.add(4);
         }
-        //Todo canUseDevCard
+        if (!hand.isEmpty()) {
+            possibilities.add(5);
+        }
         if (resourceWanted()!=null){
             possibilities.add(6);
         }
@@ -84,7 +86,6 @@ public class IAPlayer extends Player{
                 askAction(board,d);
                 break;
             case 6:
-                System.out.println("Price: "+price);
                 commerce();
                 askAction(board,d);
                 break;
@@ -111,7 +112,10 @@ public class IAPlayer extends Player{
         return list.get(randomOption);
     }
 
-    //FIXME FONCTIONS?
+    /**
+     * Choissi une ressource que l'IA puisse acheter
+     * @return
+     */
     public String resourceWanted(){
         int random = r.nextInt(ResourceCard.array.length);
         for(int i=0;i<ResourceCard.array.length;i++) {
@@ -186,7 +190,11 @@ public class IAPlayer extends Player{
         return choosed;
     }
 
-    //FIXME FONCTIONS?
+
+    /**
+     * Demande la Tile o`tu veux placer le voleur
+     * @return
+     */
     @Override
     public int[] askCoordinatesTile() {
         return new int[]{r.nextInt(Board.getSizeT() ), r.nextInt(Board.getSizeT() )};
