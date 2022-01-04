@@ -1,8 +1,9 @@
-package Catan.gui.view;
+package Catan.gui.view.run;
 
 import Catan.Run.GameRunner;
 import Catan.gui.controller.GameController;
 import Catan.gui.model.GameModel;
+import Catan.gui.view.object.BoardPanel;
 import Catan.gui.view.object.CatanBoard;
 import Catan.gui.view.object.WarningDialog;
 
@@ -19,6 +20,8 @@ public class GameView extends JFrame {
     private JTextField getY;
     private JTextField getO;
     private JButton validateButton;
+
+    private BoardPanel board;
 
     GameView(GameRunner gameRunner){
         model = new GameModel(gameRunner);
@@ -39,8 +42,8 @@ public class GameView extends JFrame {
         setUpLocationPanel();
         mainPanel.add(locationPanel, BorderLayout.SOUTH);
 
-        CatanBoard boardView = new CatanBoard(model.getBoard());
-        mainPanel.add(boardView, BorderLayout.CENTER);
+        board = new BoardPanel(model.getBoard());
+        mainPanel.add(board, BorderLayout.CENTER);
 
         this.add(mainPanel);
     }
@@ -56,7 +59,6 @@ public class GameView extends JFrame {
         getO.setBorder(BorderFactory.createTitledBorder("orientation"));
 
         validateButton = new JButton("Validate");
-
         locationPanel.add(getX);
         locationPanel.add(getY);
         locationPanel.add(getO);

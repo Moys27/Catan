@@ -1,4 +1,4 @@
-package Catan.gui.view;
+package Catan.gui.view.run;
 
 import Catan.Board.Board;
 import Catan.gui.view.object.CatanBoard;
@@ -29,11 +29,6 @@ public class MainWindow extends JFrame {
      * Application running
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
-        });
+        EventQueue.invokeLater(() -> new MainWindow().setVisible(true));
     }
 }
