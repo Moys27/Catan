@@ -1,9 +1,6 @@
 package Catan.Players;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 import Catan.Board.*;
 import Catan.Card.*;
 import Catan.Run.*;
@@ -12,7 +9,8 @@ import java.util.List;
 
 public class HumanPlayer extends Player{
     public HumanPlayer() {
-        super(Settings.askName());
+        //super(Settings.askName());
+        super("Tania");
     }
 
 
@@ -39,7 +37,56 @@ public class HumanPlayer extends Player{
         System.out.println("[7]Continue");
         int option=Settings.chooseBetweenCards(7);
         executeAction(option, board, d);
+    }
 
+    public void executeAction(int option, Board board, Deck d){
+        Location location;
+        switch (option){
+            case 1 :
+                showSuggestedLocationRoads(board);
+                location = Settings.askLocation();
+                if(canBuildRoadAt(board,location)){
+                    board.placeRoad(buildRoad(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 2:
+                showSuggestedLocationSettlements(board);
+                location = Settings.askLocation();
+                if(canBuildSettlementAt(board,location)){
+                    board.placeStructure(buildSettlement(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 3:
+                showSuggestedLocationCities(board);
+                location=Settings.askLocation();
+                if(canBuildCityAt(board,location)){
+                    buildCity(board,location);
+                }
+                askAction(board,d);
+                break;
+            case 4:
+                if(canBuyDevCard()){
+                    buyDevCard(d);
+                }
+                askAction(board,d);
+                break;
+            case 5:
+                if (!hand.isEmpty()) {
+                    actionDevCard(board);
+                }
+                askAction(board,d);
+                break;
+            case 6:
+                System.out.println("Price: "+price);
+                commerce();
+                askAction(board,d);
+                break;
+            case 7:
+                next();
+                break;
+        }
     }
 
     public String resourceWanted() {
@@ -61,13 +108,17 @@ public class HumanPlayer extends Player{
 
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
+        System.out.println("Choose the location for the settlement.");
+        b.showSuggestedLocationFirstSettlements();
         Location loc = Settings.askLocation();
         Settlement settlement = new Settlement(this, loc);
+        structureMap.put(loc,settlement);
         b.placeStructure(settlement);
         if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
             ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
             for (Tile t : tiles){
-                this.winResource(t.getResource(),1);
+                if(t.getResource()!= "DESERT")
+                    this.winResource(t.getResource(),1);
             }
         }
 
@@ -75,9 +126,11 @@ public class HumanPlayer extends Player{
 
     @Override
     public void placeFirstRoad(Board b) {
-    //todo place les premières routes à côté des premiers settlements
+        System.out.println("Choose the location for the road.");
+        showSuggestedLocationRoads(b);
         Location loc = Settings.askLocation();
         Road road = new Road(loc,this);
+        roadsMap.put(loc,road);
         b.placeRoad(road);
     }
 
@@ -91,7 +144,7 @@ public class HumanPlayer extends Player{
     }
 
     public void showRessource(){
-        System.out.print("Ressources: ");
+        System.out.print("Resources: ");
         System.out.println(resourceDeck);
         System.out.println();
 
@@ -135,7 +188,7 @@ public class HumanPlayer extends Player{
     }
 
     @Override
-    public void discartCards(int i) {
+    public void discardCards(int i) {
         System.out.println("You need to discard "+i+" card(s)");
         for (int j=0;j<i;j++){
             looseResource(Settings.choiseRessource(),1);

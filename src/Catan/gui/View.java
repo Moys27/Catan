@@ -76,7 +76,7 @@ public class View extends JFrame{
         JPanel victoryPoints= newPanel("Victory Points: "+game.getAllPlayers()[id].getVictoryPoints());
         JPanel nbCards = newPanel("Ressources Cards: "+game.getAllPlayers()[id].howManyCards());
         JPanel nbRoad= newPanel("Roads: "+game.getAllPlayers()[id].getNbRoads());
-        JPanel nbKnigths= newPanel("Knigths: " +game.getAllPlayers()[id].getNbKnigths());
+        JPanel nbKnigths= newPanel("Knigths: " +game.getAllPlayers()[id].getNbKnights());
         player.add(name);
         player.add(victoryPoints);
         player.add(nbKnigths);

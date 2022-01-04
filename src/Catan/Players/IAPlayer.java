@@ -33,7 +33,9 @@ public class IAPlayer extends Player{
         if (canBuyDevCard()){
             possibilities.add(4);
         }
-        //Todo conUseDevCard
+        if (!hand.isEmpty()) {
+            possibilities.add(5);
+        }
         if (resourceWanted()!=null){
             possibilities.add(6);
         }
@@ -43,22 +45,77 @@ public class IAPlayer extends Player{
             return;
         }
         int randomOption= r.nextInt(possibilities.size());
-        executeAction( possibilities.get(randomOption), board, d);
+        executeAction(possibilities.get(randomOption), board, d);
+    }
 
+    @Override
+    public void executeAction(int option, Board board, Deck d){
+        Location location;
+        switch (option){
+            case 1 :
+                location = chooseRandomLocation(suggestedLocationRoads(board));
+                if(canBuildRoadAt(board,location)){
+                    board.placeRoad(buildRoad(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 2:
+                location = chooseRandomLocation(suggestedLocationSettlements(board));
+                if(canBuildSettlementAt(board,location)){
+                    board.placeStructure(buildSettlement(board,location));
+                }
+                askAction(board,d);
+                break;
+            case 3:
+                location = chooseRandomLocation(suggestedLocationCities(board));
+                if(canBuildCityAt(board,location)){
+                    buildCity(board,location);
+                }
+                askAction(board,d);
+                break;
+            case 4:
+                if(canBuyDevCard()){
+                    buyDevCard(d);
+                }
+                askAction(board,d);
+                break;
+            case 5:
+                if (!hand.isEmpty()) {
+                    actionDevCard(board);
+                }
+                askAction(board,d);
+                break;
+            case 6:
+                commerce();
+                askAction(board,d);
+                break;
+            case 7:
+                next();
+                break;
+        }
+    }
+
+
+    private Location chooseRandomLocation(ArrayList<Location> suggestedLocation) {
+        return suggestedLocation.get(r.nextInt(suggestedLocation.size()));
     }
 
     /**
-     * Helps to the IAPlayer to choise between differents options
+     * Helps to the IAPlayer to choose between different options
      */
-    public String randomChoiseString(ArrayList<String> list){
+    public String randomChoiceString(ArrayList<String> list){
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
-    public Integer randomChoiseInteger(ArrayList<Integer> list){
+    public Integer randomChoiceInteger(ArrayList<Integer> list){
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
 
+    /**
+     * Choissi une ressource que l'IA puisse acheter
+     * @return
+     */
     public String resourceWanted(){
         int random = r.nextInt(ResourceCard.array.length);
         for(int i=0;i<ResourceCard.array.length;i++) {
@@ -72,22 +129,21 @@ public class IAPlayer extends Player{
     }
 
 
-
     public String resourceExchanged(String resourceWanted){
-        ArrayList<String> posibilities= new ArrayList<>();
+        ArrayList<String> possibilities= new ArrayList<>();
         for (String key: price.keySet()){
             if (canPayPrice(key,resourceWanted)){
-                posibilities.add(key);
+                possibilities.add(key);
             }
         }
-        return (String) randomChoiseString(posibilities);
+        return (String) randomChoiceString(possibilities);
     }
 
     public void optionsDevCard(DevCard card, Board board){
         useDevCard(card,board);
     }
 
-    public String randomRessource(){
+    public String randomResource(){
         return ResourceCard.array[r.nextInt(ResourceCard.ore)];
     }
 
@@ -113,15 +169,16 @@ public class IAPlayer extends Player{
     }
 
     @Override
-    public void discartCards(int i) {
+    public void discardCards(int i) {
         while(i>0){
-            String random= randomRessource();
+            String random= randomResource();
             if (resourceDeck.get(random)>0){
                 looseResource(random,1);
                 i--;
             }
         }
     }
+
     public Player choosePlayerToStolen(List<Player> players){
         if (players==null){
             return null;
@@ -133,35 +190,37 @@ public class IAPlayer extends Player{
         return choosed;
     }
 
+
+    /**
+     * Demande la Tile o`tu veux placer le voleur
+     * @return
+     */
     @Override
     public int[] askCoordinatesTile() {
         return new int[]{r.nextInt(Board.getSizeT() ), r.nextInt(Board.getSizeT() )};
 
     }
 
-
-
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
-        ArrayList<Location> loc = suggestedLocationStructures(b);
-        int randLocPos = r.nextInt(loc.size()-1);
-        Location randomLoc = loc.get(randLocPos);
+        Location randomLoc = chooseRandomLocation( b.suggestedLocationFirstSettlements());
         Settlement settlement = new Settlement(this, randomLoc);
+        structureMap.put(randomLoc,settlement);
         b.placeStructure(settlement);
         if (b1){
             ArrayList<Tile> tiles = b.getAdjacentTilesStructure(randomLoc);
             for (Tile t : tiles){
-                this.winResource(t.getResource(),1);
+                if(t.getResource()!= "DESERT")
+                    this.winResource(t.getResource(),1);
             }
         }
     }
 
     @Override
     public void placeFirstRoad(Board b) {
-        ArrayList<Location> loc = suggestedLocationRoads(b);
-        int randLocPos = r.nextInt(loc.size()-1);
-        Location randomLoc = loc.get(randLocPos);
+        Location randomLoc = chooseRandomLocation(suggestedLocationRoads(b));
         Road road = new Road(randomLoc,this);
+        roadsMap.put(randomLoc,road);
         b.placeRoad(road);
     }
 

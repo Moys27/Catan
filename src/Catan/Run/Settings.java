@@ -24,9 +24,9 @@ public class Settings {
 
     public static Location askLocation() { //todo : trouver un moyen de pouvoir donner les positions valables
         System.out.println("Insert the location. [Valid format : 'posX/posY/Orientation'] " +
-                "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, -1 for Structure)");
+                "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, 2 for Structure)");
         String input = scanReponse.next();
-        String[] inputs = input.split("-");
+        String[] inputs = input.split("/");
         if(inputs.length ==3){
             int posX= Integer.parseInt(inputs[0]);
             int posY = Integer.parseInt(inputs[1]);

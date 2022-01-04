@@ -9,7 +9,7 @@ public class Settlement implements Structure{
         this.owner=p;
         this.location=l;
         if (hasAPort()){
-            owner.priceReduction(Board.getSpecialisation(l));
+            owner.priceReduction(Board.getSpecification(l));
         }
     }
     @Override
