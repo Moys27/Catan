@@ -17,9 +17,9 @@ public class Board {
     public static final int sizeS= 5;
     public static final int numberPort= 8;
 
-    private final Structure [][] structures = new Structure[sizeS][sizeS];
-    private final Road [][]  verticalRoads = new Road[sizeT][sizeS];
-    private final Road [][] horizontalRoads = new Road[sizeS][sizeT];
+    private  Structure [][] structures = new Structure[sizeS][sizeS];
+    private  Road [][]  verticalRoads = new Road[sizeT][sizeS];
+    private  Road [][] horizontalRoads = new Road[sizeS][sizeT];
     public static HashMap<Location, Integer> Ports= new HashMap<>();
 
     public Board (){

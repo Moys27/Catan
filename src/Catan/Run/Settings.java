@@ -2,7 +2,6 @@ package Catan.Run;
 import Catan.Board.Location;
 import Catan.Card.ResourceCard;
 
-import javax.swing.*;
 import java.util.Scanner;
 
 /**

@@ -9,8 +9,8 @@ import java.util.List;
 
 public class HumanPlayer extends Player{
     public HumanPlayer() {
-        //super(Settings.askName());
-        super("Tania");
+        super(Settings.askName());
+        //super("Tania");
     }
 
 

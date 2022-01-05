@@ -10,10 +10,10 @@ import Catan.Card.*;
 
 public class GameRunner implements Serializable {
     public final Board board;
-    public Player current;
+    private Player current;
     private Settings settings;
     public Player [] allPlayers;
-    private Deck deckCard;
+    public Deck deckCard;
     private int maxVictoryPoint;
     private int minNbRoadForTitle;
     private int minNbKnightsForTitle;

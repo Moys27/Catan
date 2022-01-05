@@ -69,9 +69,9 @@ public abstract class Player{
         price.put(ResourceCard.Ore,4);
     }
 
-    public abstract  void askAction(Board board, Deck d);
+    public abstract  void askAction(Board b, Deck d);
 
-    public abstract void executeAction(int option, Board board, Deck d);
+    public abstract void executeAction(int o, Board b, Deck d);
 
     /**
      * Adds i victory points to the player's score
