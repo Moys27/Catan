@@ -22,7 +22,6 @@ public class MainWindow extends JFrame {
         Board b = new Board(); //à mettre en paramètre
         CatanBoard board = new CatanBoard(b);
         add(board);
-
     }
 
     /**

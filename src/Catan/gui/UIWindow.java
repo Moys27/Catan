@@ -10,7 +10,6 @@ public class UIWindow {
         game= new GameRunner();
         wind = new View(game);
         wind.setVisible(true);
-        game.runTest();
     }
 
     public static void main(String[] args) {

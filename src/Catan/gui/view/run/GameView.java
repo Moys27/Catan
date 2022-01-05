@@ -1,6 +1,7 @@
 package Catan.gui.view.run;
 
 import Catan.Run.GameRunner;
+import Catan.Run.InterfaceConsole;
 import Catan.gui.controller.GameController;
 import Catan.gui.model.GameModel;
 import Catan.gui.view.object.BoardPanel;
@@ -75,6 +76,7 @@ public class GameView extends JFrame {
     }
 
     public static void main(String[] args) {
+        InterfaceConsole.welcoming();
         GameView view = new GameView(new GameRunner());
         view.setVisible(true);
     }

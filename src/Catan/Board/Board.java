@@ -358,7 +358,7 @@ public class Board {
             }
 
         }
-        return output; //pour les routes
+        return output;
     }
 
     public boolean isAValidLocation(int x, int y,int xBounds, int yBounds){
@@ -649,6 +649,4 @@ public class Board {
         return owners;
     }
 
-    /*
-    * exemple affichage par tiles avec les roads et strutures presents*/
 }

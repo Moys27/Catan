@@ -58,16 +58,4 @@ public class BoardPanel extends JPanel {
         constraints.gridx = 0;
     }
 
-    public static void main(String[] args) {
-        JFrame j = new JFrame();
-        JPanel board = new BoardPanel(new Board());
-        j.add(board);
-        j.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        j.setBounds(0,0,screenSize.width, screenSize.height);
-
-        j.setVisible(true);
-
-    }
 }

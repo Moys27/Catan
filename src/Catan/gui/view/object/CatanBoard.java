@@ -65,4 +65,10 @@ public class CatanBoard extends JPanel {
 
     }
 
+    public static void main(String[] args) {
+        JFrame j = new JFrame();
+        CatanBoard c = new CatanBoard(new Board());
+        j.getContentPane().add(c);
+        j.setVisible(true);
+    }
 }

@@ -15,7 +15,7 @@ public abstract class Player{
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
-    private int nbRoads= 15 - nbRoadsAllowed;
+    private int nbRoads=0;
     private int nbKnights =0;
 
 
@@ -27,6 +27,7 @@ public abstract class Player{
 
     public Player(String n){
         name =n;
+
         this.victoryPoints=0;
         initializeResourceDeck();
         initializePrice();
@@ -193,6 +194,7 @@ public abstract class Player{
         looseResource(ResourceCard.Lumber,1);
         Road road = new Road(location,this);
         roadsMap.put(location,road);
+        updateNbRoad(b,location);
         nbRoadsAllowed--;
         return road;
     }
@@ -200,8 +202,14 @@ public abstract class Player{
     public Road buildRoadFree(Board b, Location location){
         Road road = new Road(location,this);
         roadsMap.put(location,road);
+        updateNbRoad(b,location);
         nbRoadsAllowed--;
         return road;
+    }
+
+    protected void updateNbRoad(Board b, Location loc){
+        int nbR = b.countRoadsFromLocation(loc,this);
+        if(nbR > nbRoads) nbRoads = nbR;
     }
 
     /**

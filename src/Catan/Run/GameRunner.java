@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import Catan.Board.*;
 import Catan.Players.*;
 import Catan.Card.*;
@@ -20,7 +21,7 @@ public class GameRunner implements Serializable {
     private Title longestRoad;
     private Title largestArmy;
 
-public Player[] getAllPlayers(){
+    public Player[] getAllPlayers(){
          return allPlayers;
     }
 
@@ -42,17 +43,18 @@ public Player[] getAllPlayers(){
         minNbKnightsForTitle =3;
         longestRoad= new Title(1);
         largestArmy= new Title(2);
-        HumanPlayer p = new HumanPlayer();
-        IAPlayer p2 = new IAPlayer();
-        allPlayers = new Player[]{p,p2};
+        createPlayers();
     }
 
 
+    /**
+     * Initialize players
+     */
     public void createPlayers(){
         current= new HumanPlayer();
-        allPlayers= new Player[settings.numberPlayers()];
+        allPlayers= new Player[settings.setNumberPlayers()];
         allPlayers[0]= current;
-        int numHP= settings.HumanPlayers(allPlayers.length);
+        int numHP= settings.setUpHumanPlayers(allPlayers.length);
         for (int i = 1; i<=numHP; i++ ){
             System.out.println("Player "+(i+1)+":"); //Player 1 = allPla
             allPlayers[i]= new HumanPlayer();
@@ -126,7 +128,6 @@ public Player[] getAllPlayers(){
     /*
     Discard the player how takes de action, from the list of players how summit the action
      */
-    //FIXME PAS CLAIR TT
     public static List<Player> cleanStolenListPlayer(List<Player> players, Player player){
         if(players==null){
             return null;
@@ -165,43 +166,8 @@ public Player[] getAllPlayers(){
             if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
             if(maxVictoryPoint>=10) endGame=false;
             i++;
-            }
-            System.out.println(current.name +" win the game! Congratulations!");
-            System.out.println("You have play " +i+ " turns");
-
-            }
-
-            public void runTest(){
-                placeFirstSettlementsAndRoads(board);
-                boolean endGame= true;
-                int i=0;
-                while (endGame){
-                    current = allPlayers[i%allPlayers.length];
-                    Main.TestAddResources(current);
-                    rollDice(current, board);
-                    askActions(current);
-                    verifieTitle(current);
-                    if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
-                    if(maxVictoryPoint>=10) endGame=false;
-                    i++;
-                }
-                System.out.println(current.name +" win the game! Congratulations!");
-                System.out.println("You have play " +i+ " turns");
-
-            }
-
-
-
-    public void verifieTitle(Player owner){
-        if(owner.getNbKnights()>=minNbRoadForTitle){
-            largestArmy.setOwner(owner);
-            minNbKnightsForTitle=owner.getNbKnights()+1;
-            System.out.println(owner.name +" have the Largest Army");
         }
-        if(owner.getNbRoads()>=minNbRoadForTitle){
-            longestRoad.setOwner(owner);
-            minNbRoadForTitle=owner.getNbRoads()+1;
-            System.out.println(owner.name +" have the Longest Road");
-        }
+        System.out.println(current.name +" win the game! Congratulations!");
+        System.out.println("You have play " +i+ " turns");
     }
 }
