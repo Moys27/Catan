@@ -9,7 +9,8 @@ import java.util.List;
 
 public class HumanPlayer extends Player{
     public HumanPlayer() {
-        super(Settings.setName());
+        //super(Settings.setName());
+        super("Tania");
     }
 
     public void  askAction(Board board, Deck d){

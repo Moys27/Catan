@@ -42,6 +42,18 @@ public abstract class Player{
 
     public int getNbRoads() { return nbRoads;  }
 
+    public int getNbRoadsAllowed() {
+        return nbRoadsAllowed;
+    }
+
+    public int getNbCitiesAllowed() {
+        return nbCitiesAllowed;
+    }
+
+    public int getNbSettlementsAllowed() {
+        return nbSettlementsAllowed;
+    }
+
     public Map<String, Integer> getResourceDeck() {
         return resourceDeck;
     }
@@ -522,7 +534,7 @@ public abstract class Player{
         }
     }
 
-    public int howManyCards(){
+    public int getNbCardsInHand(){
         int i= 0;
         for(String s: resourceDeck.keySet()){
             i= i+ resourceDeck.get(s);
@@ -533,7 +545,7 @@ public abstract class Player{
     public abstract void discardCards(int i);
 
     public void discardExtraCards(){
-        int nbCards= howManyCards();
+        int nbCards= getNbCardsInHand();
         if (nbCards>7){
             discardCards(nbCards/2);
         }
@@ -558,7 +570,7 @@ public abstract class Player{
 
     public void stoleACardto(Player player) {
         Random r= new Random();
-        if(player.howManyCards()==0){
+        if(player.getNbCardsInHand()==0){
             return;
         }
         String random= ResourceCard.array[r.nextInt(ResourceCard.ore)];
@@ -601,9 +613,9 @@ public abstract class Player{
         if (resourceWanted==null){
             return;
         }
-        String resourceExchaged = resourceExchanged(resourceWanted);
-        if (resourceExchaged!=null) {
-            doCommerce(resourceWanted,resourceExchaged);
+        String resourceExchanged = resourceExchanged(resourceWanted);
+        if (resourceExchanged!=null) {
+            doCommerce(resourceWanted,resourceExchanged);
         } else{
             System.out.println("Error: Can not do the trade");
         }
@@ -627,14 +639,5 @@ public abstract class Player{
 
 
     public abstract int[] askCoordinatesTile();
-
-    public void showMap(){
-        for(Map.Entry roads : this.roadsMap.entrySet()){
-            System.out.println(roads.getKey()+"  :  "+roads.getValue());
-        }
-        for(Map.Entry struc : this.structureMap.entrySet()){
-            System.out.println(struc.getKey()+"  :  "+struc.getValue());
-        }
-
-    }
+    
 }

@@ -21,7 +21,7 @@ public class Settings {
      * @return the given location
      * */
 
-    public static Location askLocation() { //todo : trouver un moyen de pouvoir donner les positions valables
+    public static Location askLocation() {
         System.out.println("Insert the location. [Valid format : 'posX/posY/Orientation'] " +
                 "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, 2 for Structure)");
         String input = scanReponse.next();
@@ -81,8 +81,6 @@ public class Settings {
 
     /**
      *
-     * @param maximumPlayers
-     * @return
      */
     public static int setUpHumanPlayers(int maximumPlayers){
         System.out.println("Who many humans will play with you?");
@@ -96,7 +94,7 @@ public class Settings {
         try {
             answer= Integer.valueOf(scanReponse.nextLine());
             if ((answer!=0)&&(answer!=1)&&(answer!=2)&&(answer!=3)){
-                System.out.println("Choose betweean 0 and "+(maximumPlayers-1)+", please");
+                System.out.println("Choose between 0 and "+(maximumPlayers-1)+", please");
                 return setNumberPlayers();
             }
             return answer;
@@ -107,8 +105,7 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     * Set the name of the main user
      */
     public static String setName(){
         System.out.println("What is your name?");
@@ -123,7 +120,7 @@ public class Settings {
     }
 
     /**
-     *Attributes name for IA players
+     * Attributes name for IA players
      */
     public static String setIAName(){
         String [] nameList= {"Ada","Linux","Pixel"};
@@ -132,7 +129,7 @@ public class Settings {
     }
 
     /**
-     * @return The type of resource that the player want to commerce
+     * @return The type of resource that the player want to trade
      */
 
     public static String chooseResource() {
@@ -194,9 +191,7 @@ public class Settings {
         return chooseActionDevCard();
     }
 
-    /*
-    number include, for array
-     */
+
     public static int chooseANumber(int number){
         for (int i=0;i<number;i++){
             System.out.println("["+(i+1)+"]");

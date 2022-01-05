@@ -1,7 +1,6 @@
 package Catan.gui;
 
 import Catan.Run.GameRunner;
-import Catan.Run.Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,12 +73,12 @@ public class View extends JFrame{
         player.setLayout(new GridLayout(3,1));
         JPanel name= newPanel(game.getAllPlayers()[id].name);
         JPanel victoryPoints= newPanel("Victory Points: "+game.getAllPlayers()[id].getVictoryPoints());
-        JPanel nbCards = newPanel("Ressources Cards: "+game.getAllPlayers()[id].howManyCards());
+        JPanel nbCards = newPanel("Resources Cards: "+game.getAllPlayers()[id].getNbCardsInHand());
         JPanel nbRoad= newPanel("Roads: "+game.getAllPlayers()[id].getNbRoads());
-        JPanel nbKnigths= newPanel("Knigths: " +game.getAllPlayers()[id].getNbKnights());
+        JPanel nbKnights= newPanel("Knights: " +game.getAllPlayers()[id].getNbKnights());
         player.add(name);
         player.add(victoryPoints);
-        player.add(nbKnigths);
+        player.add(nbKnights);
         player.add(nbRoad);
         player.add(nbCards);
         return player;
