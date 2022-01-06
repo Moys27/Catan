@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class Settings {
     private static Scanner scanReponse = new Scanner(System.in);
-    //todo traiter les cas où l'utilisateur insère un mauvais format comme réponse (débug)
     private static  int numberPlayersDefault=4;
     private static boolean humanPlayersDefault=false;
     public static int countPlayer=-1;

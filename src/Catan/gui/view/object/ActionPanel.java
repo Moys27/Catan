@@ -8,6 +8,7 @@ import Catan.gui.model.GameModel;
 import javax.swing.*;
 import java.awt.*;
 
+
 public class ActionPanel extends JPanel {
     private Player p;
     private GameController c;
@@ -63,6 +64,7 @@ public class ActionPanel extends JPanel {
         tradeBox.addActionListener(e -> c.executeAction(6));
         btnG.add(tradeBox);
         this.add(tradeBox);
+
         continueBox = new JRadioButton("Continue");
         continueBox.addActionListener(e -> c.executeAction(7));
         btnG.add(continueBox);

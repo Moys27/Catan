@@ -134,7 +134,6 @@ public class HumanPlayer extends Player{
 
         /*The player will be able to place a settlement only in the location suggested*/
         if (Location.init(b.suggestedLocationFirstSettlements(),loc)){
-            System.out.println("HEEEERRRREEE "+Location.init(b.suggestedLocationFirstSettlements(),loc));
             Settlement settlement = new Settlement(this, loc);
             structureMap.put(loc,settlement);
             b.placeStructure(settlement);

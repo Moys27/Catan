@@ -1,7 +1,6 @@
 package Catan.Players;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import Catan.Card.*;
@@ -108,7 +107,7 @@ public class IAPlayer extends Player{
     }
 
     /**
-     * Choissi une ressource que l'IA puisse acheter
+     * Generate random type of resource the IA would choose
      * @return
      */
     public String resourceWanted(){

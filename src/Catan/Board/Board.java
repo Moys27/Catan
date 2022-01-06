@@ -211,14 +211,6 @@ public class Board {
     public boolean placeStructure(Structure structure){
         if(structure != null) {
             Location loc = structure.getLocation();
-            /*if (structure instanceof Settlement){
-                structures[loc.getX()][loc.getY()]=(Settlement) structure;
-                    return true;
-            }
-            if (structure instanceof City){
-                structures[loc.getX()][loc.getY()]= (City)structure;
-                    return true;
-            }*/
             structures[loc.getX()][loc.getY()]=structure;
             fillTileMapForStructure(loc,structure);
             return true;
@@ -337,18 +329,6 @@ public class Board {
     public ArrayList<Tile> getAdjacentTilesStructure(Location loc) {
         ArrayList<Tile> output = new ArrayList<Tile>();
         if (loc.isaNode()){
-            /*if(isAValidLocation(loc.getX()-1, loc.getY()-1,4,4))
-                output.add(tiles[loc.getX()-1][loc.getY()-1]);
-
-            if(isAValidLocation(loc.getX()-1, loc.getY(),4,4))
-                output.add(tiles[loc.getX()-1][loc.getY()]);
-
-            if(isAValidLocation(loc.getX(), loc.getY()-1,4,4))
-                output.add(tiles[loc.getX()][loc.getY()-1]);
-
-            if(isAValidLocation(loc.getX(), loc.getY(),4,4))
-                output.add(tiles[loc.getX()][loc.getY()]);*/
-
             for (int i = -1 ; i < 1 ; i++){
                 for (int j = -1 ; j< 1; j++){
                     if (isAValidLocation(loc.getX()+i, loc.getY()+j,4,4))
@@ -375,35 +355,14 @@ public class Board {
         int o = loc.getOrientation();
         HashMap<Location,Structure> output = new HashMap<>();
         if(loc.isaNode()){
-            /*if(isAValidLocation(x-1, y,4,5))
-                output.add(structures[x-1][y]);
-
-            if(isAValidLocation(x+1, y,4,5))
-                output.add(structures[x+1][y]);
-
-            if(isAValidLocation(x, y-1,5,4))
-                output.add(structures[x][y-1]);
-
-            if(isAValidLocation(x, y+1,5,4))
-                output.add(structures[x][y+1]);*/
             getAdjacentStructureForNode(output,x,y);
 
 
         }else if (o == 0){
-            /*if(isAValidLocation(x, y,5,5))
-                output.add(structures[x][y]);
-
-            if(isAValidLocation(x, y+1,5,5))
-                output.add(structures[x][y+1]);*/
             getAdjacentStructureForHorizontalRoads(output, x, y);
 
 
         }else if (o == 1){
-            /*if(isAValidLocation(x, y,5,5))
-                output.add(structures[x][y]);
-
-            if(isAValidLocation(x+1, y,5,5))
-                output.add(structures[x+1][y]);*/
             getAdjacentStructureForVerticalRoads(output,x,y);
         }
         return output;
@@ -448,61 +407,15 @@ public class Board {
         int y = loc.getY();
         HashMap<Location, Road> output = new HashMap<>();
         if (loc.isaNode()) {
-            /*if(isAValidLocation(x-1, y,4,5))
-                output.add(verticalRoads[x-1][y]);
-
-            if(isAValidLocation(x, y,4,5))
-                output.add(verticalRoads[x][y]);
-
-
-            if(isAValidLocation(x, y-1,5,4))
-                output.add(horizontalRoads[x][y-1]);
-
-            if(isAValidLocation(x, y,5,4))
-                output.add(horizontalRoads[x][y]);*/
             getAdjacentRoadsForNode(output,x,y);
 
         }else{
 
             if (loc.getOrientation() == 0){
-                /*if(isAValidLocation(x-1, y,4,5))
-                    output.add(verticalRoads[x-1][y]);
-
-                if(isAValidLocation(x-1, y+1,4,5))
-                    output.add(verticalRoads[x-1][y+1]);
-
-                if(isAValidLocation(x, y,4,5))
-                    output.add(verticalRoads[x][y]);
-
-                if(isAValidLocation(x, y+1,4,5))
-                    output.add(verticalRoads[x][y+1]);
-
-                if(isAValidLocation(x, y-1,5,4))
-                    output.add(horizontalRoads[x][y-1]);
-
-                if(isAValidLocation(x, y+1,5,4))
-                    output.add(horizontalRoads[x][y+1]);*/
                 getAdjacentRoadsForHorizontalRoads(output,x,y);
 
             }
             else {
-                /*if(isAValidLocation(x-1, y,4,5))
-                    output.add(verticalRoads[x-1][y]);
-
-                if(isAValidLocation(x+1, y,4,5))
-                    output.add(verticalRoads[x+1][y]);
-
-                if(isAValidLocation(x, y-1,5,4))
-                    output.add(horizontalRoads[x][y-1]);
-
-                if(isAValidLocation(x, y,5,4))
-                    output.add(horizontalRoads[x][y]);
-
-                if(isAValidLocation(x+1, y-1,5,4))
-                    output.add(horizontalRoads[x+1][y-1]);
-
-                if(isAValidLocation(x+1, y,5,4))
-                    output.add(horizontalRoads[x+1][y]);*/
                 getAdjacentRoadsForVerticalRoads(output,x,y);
 
             }

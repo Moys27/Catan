@@ -264,20 +264,15 @@ public abstract class Player{
      * @return the built settlement
      */
     public Structure buildSettlement(Board b, Location location){
-        if(canBuildSettlementAt(b,location)){
-               looseResource(ResourceCard.Brick, 1);
-               looseResource(ResourceCard.Lumber, 1);
-               looseResource(ResourceCard.Grain, 1);
-               looseResource(ResourceCard.Wool, 1);
-               Structure settlement = new Settlement(this, location);
-               nbSettlementsAllowed--;
-               structureMap.put(location,settlement);
-               winVictoryPoint(1);
-               return settlement;
-       }else{
-            System.out.println("Couldn't build the settlement at the location");
-            return null;
-        }
+           looseResource(ResourceCard.Brick, 1);
+           looseResource(ResourceCard.Lumber, 1);
+           looseResource(ResourceCard.Grain, 1);
+           looseResource(ResourceCard.Wool, 1);
+           Structure settlement = new Settlement(this, location);
+           nbSettlementsAllowed--;
+           structureMap.put(location,settlement);
+           winVictoryPoint(1);
+           return settlement;
     }
 
     /**
@@ -317,8 +312,7 @@ public abstract class Player{
      * @return if conditions related the location of an eventual city construction are fullfilled
      */
     public boolean checkLocationForCity(Board b, Location location){
-        return b.haveAdjacentRoads(location,this)
-                && haveAntecedentSettlement(b,location);
+        return haveAntecedentSettlement(b,location);
     }
 
     /**
@@ -326,7 +320,6 @@ public abstract class Player{
      * @return the built city
      */
     public Structure buildCity(Board b, Location location){
-        if(canBuildCityAt(b,location)){
             looseResource(ResourceCard.Grain,2);
             looseResource(ResourceCard.Ore,3);
             Structure city= new City(this,location);
@@ -334,8 +327,6 @@ public abstract class Player{
             winVictoryPoint(2);
             nbCitiesAllowed--;
             return city;
-        }
-        return null;
     }
 
 
@@ -431,7 +422,8 @@ public abstract class Player{
 
         for(Map.Entry structureOwned : structureMap.entrySet()){
             if(structureOwned.getValue() instanceof Settlement)
-                if(canBuildCityAt(b, (Location) structureOwned.getKey())) output.add((Location) structureOwned.getKey());
+                //if(canBuildCityAt(b, (Location) structureOwned.getKey()))
+                    output.add((Location) structureOwned.getKey());
         }
         return output;
     }
@@ -516,11 +508,9 @@ public abstract class Player{
     }
 
     /**
-     * Use the development card Road Building
-     * @param board
+     * Use of development card
      */
     abstract void useRoadBuilding(Board board);
-
     abstract void useYearOfPlenty();
     abstract void actionDevCard(Board board);
 
