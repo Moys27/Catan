@@ -242,8 +242,15 @@ public class HumanPlayer extends Player{
     @Override
     public void discardCards(int i) {
         System.out.println("You need to discard "+i+" card(s)");
-        for (int j=0;j<i;j++){
-            looseResource(Settings.chooseResource(),1);
+        int rest = i;
+        while (rest>0){
+            String resource = Settings.chooseResource();
+            if (resourceDeck.get(resource)>=1){
+                looseResource(resource,1);
+                rest--;
+            } else{
+                System.out.println("You don't have enough resources of this kind");
+            }
         }
     }
     public Player choosePlayerToStolen(List<Player> players){

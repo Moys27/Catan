@@ -74,11 +74,12 @@ public abstract class Player{
 
 
     private void initializePrice(){
-        price.put(ResourceCard.Brick,4);
-        price.put(ResourceCard.Grain,4);
-        price.put(ResourceCard.Wool,4);
-        price.put(ResourceCard.Lumber,4);
-        price.put(ResourceCard.Ore,4);
+        int basicPriceForResource= 4;
+        price.put(ResourceCard.Brick,basicPriceForResource);
+        price.put(ResourceCard.Grain,basicPriceForResource);
+        price.put(ResourceCard.Wool,basicPriceForResource);
+        price.put(ResourceCard.Lumber,basicPriceForResource);
+        price.put(ResourceCard.Ore,basicPriceForResource);
     }
 
     public abstract  void askAction(Board b, Deck d);
@@ -580,7 +581,7 @@ public abstract class Player{
         }
         Random r= new Random();
         String random= ResourceCard.array[r.nextInt(ResourceCard.ore)];
-        if (resourceDeck.get(random)>=1){
+        if (player.resourceDeck.get(random)>=1){
             player.looseResource(random,1);
             this.winResource(random,1);
         } else {
