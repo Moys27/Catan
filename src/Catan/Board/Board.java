@@ -136,10 +136,10 @@ public class Board {
         int a=0;
         for (int i=0; i<sizeS; i++){
             if(i==2) a++;
-            Ports.put(new Location(i,0,2),ports[a]);
-            Ports.put(new Location(sizeT,i,2),ports[a+2]);
-            Ports.put(new Location(sizeT-i,sizeT,2),ports[a+4]);
-            Ports.put(new Location(0,sizeT-i,2),ports[a+6]);
+            Ports.put(new Location(i,0,Location.SETTLEMENT_ORIENTATION),ports[a]);
+            Ports.put(new Location(sizeT,i,Location.SETTLEMENT_ORIENTATION),ports[a+2]);
+            Ports.put(new Location(sizeT-i,sizeT,Location.SETTLEMENT_ORIENTATION),ports[a+4]);
+            Ports.put(new Location(0,sizeT-i,Location.SETTLEMENT_ORIENTATION),ports[a+6]);
         }
         /*
             Ports.put(new Location(0,0,-1),ports[0]);
@@ -247,7 +247,7 @@ public class Board {
         ArrayList <Location> locations = new ArrayList<>();
         for(int i = 0 ; i < sizeS ; i++){
             for(int j = 0 ; j < sizeS ; j++){
-                if(structures[i][j] == null) locations.add(new Location(i,j,2));
+                if(structures[i][j] == null) locations.add(new Location(i,j,Location.SETTLEMENT_ORIENTATION));
             }
         }
         return locations;
@@ -266,12 +266,12 @@ public class Board {
     public boolean placeRoad(Road road){
         if (road != null){
             Location loc = road.getLocation();
-            if(loc.getOrientation() == 0 ){
+            if(loc.getOrientation() == Location.ROAD_HORIZONTAL ){
                 horizontalRoads[loc.getX()][loc.getY()]=road;
                 fillTilesMapForRoad(loc,road);
                 return true;
             }
-            if (loc.getOrientation() == 1) {
+            if (loc.getOrientation() == Location.ROAD_VERTICAL) {
                 verticalRoads[loc.getX()][loc.getY()]=road;
                 fillTilesMapForRoad(loc,road);
                 return true;
@@ -358,11 +358,11 @@ public class Board {
             getAdjacentStructureForNode(output,x,y);
 
 
-        }else if (o == 0){
+        }else if (o == Location.ROAD_HORIZONTAL){
             getAdjacentStructureForHorizontalRoads(output, x, y);
 
 
-        }else if (o == 1){
+        }else if (o == Location.ROAD_VERTICAL){
             getAdjacentStructureForVerticalRoads(output,x,y);
         }
         return output;
@@ -371,26 +371,26 @@ public class Board {
     private void getAdjacentStructureForNode(HashMap<Location, Structure> output, int x, int y){
         for (int i = -1 ; i < 2 ; i+=2){
             if(isAValidLocation(x+i, y,4,5)){
-                output.put(new Location(x+i,y,2),structures[x+i][y]);
+                output.put(new Location(x+i,y,Location.SETTLEMENT_ORIENTATION),structures[x+i][y]);
             }
         }
         for(int i = -1 ; i < 2 ; i+=2){
             if(isAValidLocation(x, y+i,5,4))
-                output.put(new Location(x,y+i,2),structures[x][y+i]);
+                output.put(new Location(x,y+i,Location.SETTLEMENT_ORIENTATION),structures[x][y+i]);
         }
     }
 
     private void getAdjacentStructureForHorizontalRoads(HashMap<Location, Structure> output, int x, int y){
         for (int i = 0; i < 2 ; i++){
             if(isAValidLocation(x, y+i,5,5))
-                output.put(new Location(x,y+i,0),structures[x][y+i]);
+                output.put(new Location(x,y+i,Location.ROAD_HORIZONTAL),structures[x][y+i]);
         }
     }
 
     private void getAdjacentStructureForVerticalRoads(HashMap<Location, Structure> output, int x, int y){
         for (int i = 0; i < 2 ; i++){
             if(isAValidLocation(x+i, y,5,5))
-                output.put(new Location(x+i,y,1),structures[x+i][y]);
+                output.put(new Location(x+i,y,Location.ROAD_VERTICAL),structures[x+i][y]);
         }
     }
 
@@ -426,32 +426,32 @@ public class Board {
     private void getAdjacentRoadsForNode(HashMap<Location, Road> output, int x, int y){
         for (int i = -1 ; i <1 ; i++){
             if(isAValidLocation(x+i, y,4,5))
-                output.put(new Location(x+i,y,1),verticalRoads[x+i][y]);
+                output.put(new Location(x+i,y,Location.ROAD_VERTICAL),verticalRoads[x+i][y]);
             if(isAValidLocation(x, y+i,5,4))
-                output.put(new Location(x,y+i,0),horizontalRoads[x][y+i]);
+                output.put(new Location(x,y+i,Location.ROAD_HORIZONTAL),horizontalRoads[x][y+i]);
         }
     }
     private void getAdjacentRoadsForHorizontalRoads(HashMap<Location, Road> output, int x, int y){
         for (int i = -1 ; i < 1 ; i++){
             for (int j = 0 ; j<2 ; j++){
                 if(isAValidLocation(x+i, y+j,4,5))
-                    output.put(new Location(x+i,y+j,1),verticalRoads[x+i][y+j]);
+                    output.put(new Location(x+i,y+j,Location.ROAD_VERTICAL),verticalRoads[x+i][y+j]);
             }
         }
         for (int j = -1 ; j <2 ; j+=2){
             if(isAValidLocation(x, y+j,5,4))
-                output.put(new Location(x,y+j,0),horizontalRoads[x][y+j]);
+                output.put(new Location(x,y+j,Location.ROAD_HORIZONTAL),horizontalRoads[x][y+j]);
         }
     }
     private void getAdjacentRoadsForVerticalRoads(HashMap<Location, Road> output, int x, int y){
         for (int i = -1 ; i <2 ; i+=2){
             if(isAValidLocation(x+i, y,4,5))
-                output.put(new Location(x+i,y,1),verticalRoads[x+i][y]);
+                output.put(new Location(x+i,y,Location.ROAD_VERTICAL),verticalRoads[x+i][y]);
         }
         for (int i = 0; i <2; i++){
             for (int j = -1 ; j <1;  j++){
                 if(isAValidLocation(x+i, y+j,5,4))
-                    output.put(new Location(x+i,y+j,0),horizontalRoads[x+i][y+j]);
+                    output.put(new Location(x+i,y+j,Location.ROAD_HORIZONTAL),horizontalRoads[x+i][y+j]);
             }
         }
     }
@@ -483,10 +483,10 @@ public class Board {
      * @return if the given location is valid according to either it's a road or a structure
      */
     public boolean isValidLocation(Location loc){
-        if (loc.getOrientation() == 2){
+        if (loc.getOrientation() == Location.SETTLEMENT_ORIENTATION){
             return (loc.getX()>=0 && loc.getX()<5 && loc.getX()>=0 && loc.getY()<5);
         }
-        else if (loc.getOrientation() == 0){
+        else if (loc.getOrientation() == Location.ROAD_HORIZONTAL){
             return (loc.getX()>=0 && loc.getX()<4 && loc.getX()>=0 && loc.getY()<5);
         }else{
              return (loc.getX()>=0 && loc.getX()<5 && loc.getX()>=0 && loc.getY()<4);
@@ -509,13 +509,13 @@ public class Board {
      * @return the road in a given location , null if there is'nt any
      */
     public Road checkRoadAt(Location loc){
-        if(loc.getOrientation()==2){
+        if(loc.getOrientation()==Location.SETTLEMENT_ORIENTATION){
             return null;
         }
-        if(loc.getOrientation()==0){
+        if(loc.getOrientation()==Location.ROAD_HORIZONTAL){
             return horizontalRoads[loc.getX()][loc.getY()];
         }
-        if(loc.getOrientation()==1){
+        if(loc.getOrientation()==Location.ROAD_VERTICAL){
             return verticalRoads[loc.getX()][loc.getY()];
         }
         return null;
