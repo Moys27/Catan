@@ -11,11 +11,8 @@ import java.util.Scanner;
 public class InterfaceConsole {
 
     public static void main(String[] args) {
-        //welcoming();
+        welcoming();
         GameRunner g = new GameRunner();
-
-
-
 
         g.run();
         /*

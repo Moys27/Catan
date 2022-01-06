@@ -156,7 +156,7 @@ public class HumanPlayer extends Player{
     public void optionsDevCard(DevCard card, Board board){
         int i= Settings.chooseActionDevCard();
         if (i==1){
-            if (card.getCanUSe())
+            if (card.canBeUSed())
                 useDevCard(card,board);
             else {
                 System.out.println("You cannot use this card in this turn");

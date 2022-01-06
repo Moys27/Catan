@@ -19,7 +19,7 @@ public class DevCard extends Card {
 
     private String description;
     private String title;
-    private boolean canUse=false;
+    private boolean available =false;
 
     public DevCard(int type){
         super(type);
@@ -32,8 +32,8 @@ public class DevCard extends Card {
     }
 
 
-    public boolean getCanUSe(){
-        return canUse;
+    public boolean canBeUSed(){
+        return available;
     }
 
 
@@ -75,7 +75,7 @@ public class DevCard extends Card {
     }
 
     public void canUse() {
-        this.canUse = true;
+        this.available = true;
     }
 
 

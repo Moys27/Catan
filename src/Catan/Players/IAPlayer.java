@@ -40,10 +40,10 @@ public class IAPlayer extends Player{
         Random r= new Random();
         if(possibilities.size()==0){
             executeAction( 7, board, d);
-            return;
+        } else{
+            int randomOption= r.nextInt(possibilities.size());
+            executeAction(possibilities.get(randomOption), board, d);
         }
-        int randomOption= r.nextInt(possibilities.size());
-        executeAction(possibilities.get(randomOption), board, d);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class IAPlayer extends Player{
     void actionDevCard(Board board) {
         ArrayList<DevCard> options= new ArrayList();
         for( DevCard card:hand){
-            if (card.getCanUSe()){
+            if (card.canBeUSed()){
                 options.add(card);
             }
         }

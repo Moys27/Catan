@@ -525,9 +525,9 @@ public abstract class Player{
      */
 
     public void next(){
-        if(hand==null) return;
+        if(hand.isEmpty()) return;
         for(DevCard card: hand){
-            if (!card.getCanUSe()){
+            if (!card.canBeUSed()){
                 card.canUse();
             }
         }
