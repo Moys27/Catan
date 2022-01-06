@@ -32,7 +32,7 @@ public class DevCard extends Card {
     }
 
 
-    public boolean canBeUSed(){
+    public boolean canBeUsed(){
         return available;
     }
 

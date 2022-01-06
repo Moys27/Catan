@@ -11,16 +11,15 @@ import java.util.Scanner;
 public class InterfaceConsole {
 
     public static void main(String[] args) {
-        welcoming();
-        GameRunner g = new GameRunner();
+        letsPlay();
 
-        g.run();
-        /*
+/*
         HumanPlayer humanPlayer= new HumanPlayer();
         TestAddResources(humanPlayer);
-        humanPlayer.askAction(new Board(),new Deck());
-        humanPlayer.getPrice();
-    */
+        while (true) {
+            humanPlayer.askAction(new Board(), new Deck());
+        }
+*/
     }
 
     public static void welcoming(){
@@ -30,11 +29,25 @@ public class InterfaceConsole {
                 "\n\tTo end the program press CTRL+C.");
         Scanner s = new Scanner(System.in);
         String readString = s.nextLine();
-        while(readString!=null) {
             if (readString.isEmpty()) {
-                break;
+                System.out.println("Starting game...");
+                System.out.println("");
+            } else{
+               endGame();
             }
-        }
+
+    }
+
+    public static void endGame(){
+        System.out.println("Game Over. Thanks for play to Catan 2.0 by Tania Mahandry and Ana Parres Cerezo");
+        System.exit(0);
+    }
+
+    public static void letsPlay(){
+        welcoming();
+        GameRunner game= new GameRunner();
+        game.run();
+        endGame();
     }
 
     public static void TestAddResources(Player player){

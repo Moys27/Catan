@@ -479,6 +479,17 @@ public abstract class Player{
         }
     }
 
+    public boolean canUseDevCard(){
+        if (hand.isEmpty()){
+            return false;
+        }
+        for (DevCard card: hand){
+            if (card.canBeUsed()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void useDevCard(DevCard card,Board board){
         switch(card.getTitle()){
@@ -522,7 +533,7 @@ public abstract class Player{
     public void next(){
         if(hand.isEmpty()) return;
         for(DevCard card: hand){
-            if (!card.canBeUSed()){
+            if (!card.canBeUsed()){
                 card.canUse();
             }
         }
@@ -537,6 +548,8 @@ public abstract class Player{
     }
 
     public abstract void discardCards(int i);
+    public abstract int[] askCoordinatesTile();
+
 
     public void discardExtraCards(){
         int nbCards= getNbCardsInHand();
@@ -559,16 +572,15 @@ public abstract class Player{
 
     public abstract Player choosePlayerToStolen(List<Player> players);
 
-    public void playerMoveRobber(){
-    } //FIXME ABSTRACT?
+
 
     public void stoleACardto(Player player) {
-        Random r= new Random();
         if(player.getNbCardsInHand()==0){
             return;
         }
+        Random r= new Random();
         String random= ResourceCard.array[r.nextInt(ResourceCard.ore)];
-        if (resourceDeck.get(random)>0){
+        if (resourceDeck.get(random)>=1){
             player.looseResource(random,1);
             this.winResource(random,1);
         } else {
@@ -632,6 +644,5 @@ public abstract class Player{
     }
 
 
-    public abstract int[] askCoordinatesTile();
-    
+
 }

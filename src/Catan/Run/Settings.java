@@ -2,6 +2,7 @@ package Catan.Run;
 import Catan.Board.Location;
 import Catan.Card.ResourceCard;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -176,6 +177,7 @@ public class Settings {
             }
         }
 
+
     public static int chooseActionDevCard(){
         System.out.println("[1] Use");
         System.out.println("[2] Description");
@@ -210,6 +212,21 @@ public class Settings {
             scanReponse = new Scanner(System.in);
             return chooseANumber(number);
         }
-
     }
+    public static int chooseANumber(ArrayList options){{
+        Integer answer;
+        try {
+            answer = scanReponse.nextInt();
+            if (options.contains(answer)){
+                return answer;
+            }else {
+                System.out.println("Invalid number. Try again");
+                return chooseANumber(options);
+            }
+        } catch (Exception e){
+            System.out.println("Not a number. Try again");
+            scanReponse = new Scanner(System.in);
+            return chooseANumber(options);
+        }
+    }}
 }
