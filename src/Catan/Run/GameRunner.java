@@ -125,9 +125,7 @@ public class GameRunner implements Serializable {
         stolePlayer(player,b);
     }
 
-    /*
-    Discard the player how takes de action, from the list of players how summit the action
-     */
+
     public static List<Player> cleanStolenListPlayer(List<Player> players, Player player){
         if(players==null){
             return null;

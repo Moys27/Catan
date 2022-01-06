@@ -39,7 +39,7 @@ public class InterfaceConsole {
     }
 
     public static void endGame(){
-        System.out.println("Game Over. Thanks for play to Catan 2.0 by Tania Mahandry and Ana Parres Cerezo");
+        System.out.println("Game Over. Thanks for playing Catan 2.0 by Tania Mahandry and Ana Parres Cerezo");
         System.exit(0);
     }
 
