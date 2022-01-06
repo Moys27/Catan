@@ -14,13 +14,20 @@ L'adaptation reprend les règles générales du jeu, c'est-à-dire que :
 * Le joueur ayant atteint 10 points de victoire gagne la partie
 
 #Lancement du jeu
-Pour pouvoir lancer le jeu, il faut exécuter la commande :
+Pour pouvoir lancer le jeu, il faut exécuter les lignes de commandes suivantes :
 
-``$ javac catan.Run.Main.java``
+``$ cd src/ ``
 
-``$ java Main``
+``$ javac -Xlint:unchecked Catan/Board/*.java Catan/Card/*.java Catan/gui/controller/*.java Catan/gui/model/*.java Catan/gui/view/object/*.java Catan/gui/view/run/*.java Catan/Players/*.java Catan/Run/*.java
+``
 
-depuis la ligne de commande du terminal. 
+``$ java Catan.Run.InterfaceConsole`` 
+pour l'interface console, ou bien :
+``$ java Catan.gui.view.run.GUI `` pour l'interface graphique.
+
+
+**Projet conçu, implémenté et déployé par Ana Parres Cerezo et Tania Mahandry.**
+
 
 
 
