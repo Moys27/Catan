@@ -78,7 +78,7 @@ public class IAPlayer extends Player{
                 askAction(board,d);
                 break;
             case 5:
-                if (!hand.isEmpty()) {
+                if (canUseDevCard()) {
                     actionDevCard(board);
                 }
                 askAction(board,d);
@@ -152,7 +152,7 @@ public class IAPlayer extends Player{
     void actionDevCard(Board board) {
         ArrayList<DevCard> options= new ArrayList();
         for( DevCard card:hand){
-            if (card.canBeUSed()){
+            if (card.canBeUsed()){
                 options.add(card);
             }
         }

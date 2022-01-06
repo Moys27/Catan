@@ -27,7 +27,7 @@ public class HumanPlayer extends Player{
         if (canBuyDevCard()){
             System.out.println("[4]Buy Develop Card");
         }
-        if (!hand.isEmpty()){
+        if (canUseDevCard()){
             System.out.println("[5]Use Develop Card");
         }
         System.out.println("[6]Trade");
@@ -70,7 +70,7 @@ public class HumanPlayer extends Player{
                 askAction(board,d);
                 break;
             case 5:
-                if (!hand.isEmpty()) {
+                if (canUseDevCard()) {
                     actionDevCard(board);
                 }
                 askAction(board,d);
@@ -155,8 +155,9 @@ public class HumanPlayer extends Player{
 
     public void optionsDevCard(DevCard card, Board board){
         int i= Settings.chooseActionDevCard();
-        if (i==1){
-            if (card.canBeUSed())
+        int optionUseDevCard=1;
+        if (i==optionUseDevCard){
+            if (card.canBeUsed())
                 useDevCard(card,board);
             else {
                 System.out.println("You cannot use this card in this turn");

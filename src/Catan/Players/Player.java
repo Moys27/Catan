@@ -477,6 +477,17 @@ public abstract class Player{
         }
     }
 
+    public boolean canUseDevCard(){
+        if (hand.isEmpty()){
+            return false;
+        }
+        for (DevCard card: hand){
+            if (card.canBeUsed()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void useDevCard(DevCard card,Board board){
         switch(card.getTitle()){
@@ -527,7 +538,7 @@ public abstract class Player{
     public void next(){
         if(hand.isEmpty()) return;
         for(DevCard card: hand){
-            if (!card.canBeUSed()){
+            if (!card.canBeUsed()){
                 card.canUse();
             }
         }
