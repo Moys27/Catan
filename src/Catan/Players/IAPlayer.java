@@ -150,7 +150,7 @@ public class IAPlayer extends Player{
 
     @Override
     void actionDevCard(Board board) {
-        ArrayList<DevCard> options= new ArrayList();
+        ArrayList<DevCard> options= new ArrayList<>();
         for( DevCard card:hand){
             if (card.canBeUsed()){
                 options.add(card);

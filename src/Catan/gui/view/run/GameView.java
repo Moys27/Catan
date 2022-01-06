@@ -38,8 +38,6 @@ public class GameView extends JFrame {
 
     private void setUpFrame() {
         mainPanel = new JPanel();
-        //mainPanel.setLayout(new BorderLayout());
-        //mainPanel.add(locationPanel(), BorderLayout.SOUTH);
 
         JPanel middle = new JPanel(new GridLayout(1,3));
         middle.add(setPlayersPanel());
@@ -48,11 +46,6 @@ public class GameView extends JFrame {
 
         JPanel middleEast = new JPanel(new GridLayout(2,1));
         middleEast.add(new ActionPanel(model,controller));
-
-        JButton diceRolling = new JButton("Roll Dice");
-        diceRolling.setPreferredSize(new Dimension(40, 40));
-
-        middleEast.add(diceRolling);
 
         middle.add(middleEast);
 
