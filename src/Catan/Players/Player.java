@@ -317,11 +317,11 @@ public abstract class Player{
     }
 
     /**
-     * Check if the player can place a settlement at the given locatio
-     * @return if conditions related the location of an eventual city construction are fullfilled
+     * Check if the player can place a city at the given location
+     * @return if conditions related the location of an eventual city construction are fulfilled
      */
     public boolean checkLocationForCity(Board b, Location location){
-        return haveAntecedentSettlement(b,location);
+        return Location.init(suggestedLocationCities(b),location);
     }
 
     /**

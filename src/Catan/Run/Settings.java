@@ -25,15 +25,20 @@ public class Settings {
         System.out.println("Insert the location. [Valid format : 'posX/posY/Orientation'] " +
                 "(NB: Orientation : 0 for horizontal roads, 1 for Vertical Roads, 2 for Structure)");
         String input = scanReponse.next();
-        String[] inputs = input.split("/");
-        if(inputs.length ==3){
-            int posX=  Integer.parseInt(inputs[0]);
-            int posY = Integer.parseInt(inputs[1]);
-            int orientation = Integer.parseInt(inputs[2]);
-            return new Location(posX,posY,orientation);
+        try{
+            String[] inputs = input.split("/");
+            if(inputs.length ==3){
+                int posX=  Integer.parseInt(inputs[0]);
+                int posY = Integer.parseInt(inputs[1]);
+                int orientation = Integer.parseInt(inputs[2]);
+                return new Location(posX,posY,orientation);
+            }
+            System.out.println("Wrong location, please retry.");
+            return askLocation();
+        }catch(NumberFormatException e){
+            System.out.println("Wrong number format, please retry.");
+            return askLocation();
         }
-        System.out.println("Wrong location, please retry.");
-        return askLocation();
     }
 
     /**
