@@ -6,10 +6,9 @@ import Catan.Board.Tile;
 import javax.swing.*;
 import java.awt.*;
 
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
- * Affichage du plateau de jeu sur l'interface
+ * This class models the board display
  */
 public class BoardPanel extends JPanel {
 
@@ -24,10 +23,9 @@ public class BoardPanel extends JPanel {
     }
 
     /**
-     * Initialise l'affichage en fonction du plateau
-     *
-     * @param tiles       represente le plateau de jeu
-     * @param constraints organise l'affichage
+     * Initializes the board display
+     * @param tiles       represents the game board
+     * @param constraints organizes the display
      */
     private void initBoard(Tile[][] tiles, GridBagConstraints constraints) {
         this.putOceansPanel(tiles.length, constraints);

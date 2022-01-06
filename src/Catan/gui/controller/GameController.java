@@ -18,17 +18,4 @@ public class GameController {
 
     }
 
-    public void insertLocation() {
-        int [] location = new int [3];
-        int i =0;
-        for (JTextField f : view.getLocationTextField()){
-                try{
-                    location[i++]= Integer.parseInt(f.getText());
-                    f.setText(null);
-                }catch(NumberFormatException e){
-                    view.showWarning("Wrong input format!");
-                    f.setText(null);
-                }
-        }
-    }
 }

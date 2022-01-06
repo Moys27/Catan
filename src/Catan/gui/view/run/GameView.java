@@ -1,11 +1,12 @@
 package Catan.gui.view.run;
 
+import Catan.Players.Player;
 import Catan.Run.GameRunner;
-import Catan.Run.InterfaceConsole;
 import Catan.gui.controller.GameController;
 import Catan.gui.model.GameModel;
+import Catan.gui.view.object.ActionPanel;
 import Catan.gui.view.object.BoardPanel;
-import Catan.gui.view.object.CatanBoard;
+import Catan.gui.view.object.PlayerPanel;
 import Catan.gui.view.object.WarningDialog;
 
 import javax.swing.*;
@@ -16,11 +17,11 @@ public class GameView extends JFrame {
     GameController controller;
 
     private JPanel mainPanel;
-    private JPanel locationPanel;
     private JTextField getX;
     private JTextField getY;
     private JTextField getO;
-    private JButton validateButton;
+
+    private PlayerPanel [] players;
 
     private BoardPanel board;
 
@@ -32,6 +33,7 @@ public class GameView extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0,0,screenSize.width, screenSize.height);
 
+        players = new PlayerPanel[model.getSettlers().length];
 
         setUpFrame();
 
@@ -39,48 +41,39 @@ public class GameView extends JFrame {
 
     private void setUpFrame() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        setUpLocationPanel();
-        mainPanel.add(locationPanel, BorderLayout.SOUTH);
+        //mainPanel.setLayout(new BorderLayout());
+        //mainPanel.add(locationPanel(), BorderLayout.SOUTH);
 
+        JPanel middle = new JPanel(new GridLayout(1,3));
+        middle.add(setPlayersPanel());
         board = new BoardPanel(model.getBoard());
-        mainPanel.add(board, BorderLayout.CENTER);
+        middle.add(board);
 
+        JPanel middleEast = new JPanel(new GridLayout(2,1));
+        middleEast.add(new ActionPanel(model));
+
+        JButton diceRolling = new JButton("Roll Dice");
+        diceRolling.setPreferredSize(new Dimension(40, 40));
+
+        middleEast.add(diceRolling);
+
+        middle.add(middleEast);
+
+        mainPanel.add(middle);
         this.add(mainPanel);
     }
 
-    private void setUpLocationPanel(){
-        locationPanel=new JPanel();
-        locationPanel.setLayout(new GridLayout(1,4));
-        getX = new JTextField();
-        getX.setBorder(BorderFactory.createTitledBorder("x"));
-        getY = new JTextField();
-        getY.setBorder(BorderFactory.createTitledBorder("y"));
-        getO = new JTextField();
-        getO.setBorder(BorderFactory.createTitledBorder("orientation"));
 
-        validateButton = new JButton("Validate");
-        locationPanel.add(getX);
-        locationPanel.add(getY);
-        locationPanel.add(getO);
-        locationPanel.add(validateButton);
 
-        locationPanel.setBorder(BorderFactory.createTitledBorder("Insert a location"));
-
-        validateButton.addActionListener(e -> controller.insertLocation());
-
+    private JPanel setPlayersPanel(){
+        JPanel panel = new JPanel(new GridLayout(players.length,1));
+        int i = 0 ;
+        for (Player p : model.getSettlers()){
+            players[i] = new PlayerPanel(p);
+            panel.add(players[i++]);
+        }
+        return panel;
     }
-
-    public JTextField [] getLocationTextField(){
-        return new JTextField[]{getX,getY,getO};
-    }
-
-    public static void main(String[] args) {
-        InterfaceConsole.welcoming();
-        GameView view = new GameView(new GameRunner());
-        view.setVisible(true);
-    }
-
 
     public void showWarning(String s) {
         WarningDialog warn = new WarningDialog(s);
