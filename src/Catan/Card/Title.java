@@ -5,6 +5,9 @@ public class Title extends Card{
 
     private String nomination;
     protected Player owner;
+    public static final int LONGEST_ROAD=1;
+    public static final int LARGEST_ARMY=2;
+
     public Title(int type) {
         super(type);
         owner = null;
@@ -13,8 +16,8 @@ public class Title extends Card{
 
     private void setNomination(){
         switch (this.type) {
-            case 1 -> nomination = "Longest Road";
-            case 2 -> nomination = "Largest Army";
+            case LONGEST_ROAD -> nomination = "Longest Road";
+            case LARGEST_ARMY -> nomination = "Largest Army";
             default -> {
             }
         }

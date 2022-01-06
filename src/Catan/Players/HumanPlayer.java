@@ -134,7 +134,7 @@ public class HumanPlayer extends Player{
 
         /*The player will be able to place a settlement only in the location suggested*/
         if (Location.init(b.suggestedLocationFirstSettlements(),loc)){
-            Settlement settlement = new Settlement(this, loc);
+            Settlement settlement = (Settlement) buildSettlementFree(b,loc);
             structureMap.put(loc,settlement);
             b.placeStructure(settlement);
 
@@ -161,7 +161,7 @@ public class HumanPlayer extends Player{
 
         /*The player will be able to place a road only in the location suggested*/
         if (Location.init(suggestedLocationRoads(b),loc)){
-            Road road = new Road(loc,this);
+            Road road = buildRoadFree(b,loc);
             updateNbRoad(b,loc);
             roadsMap.put(loc,road);
             b.placeRoad(road);

@@ -193,7 +193,7 @@ public class IAPlayer extends Player{
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
         Location randomLoc = chooseRandomLocation( b.suggestedLocationFirstSettlements());
-        Settlement settlement = new Settlement(this, randomLoc);
+        Settlement settlement = (Settlement) buildSettlementFree(b,randomLoc);
         structureMap.put(randomLoc,settlement);
         b.placeStructure(settlement);
         if (b1){
@@ -216,7 +216,7 @@ public class IAPlayer extends Player{
     @Override
     public void placeFirstRoad(Board b) {
         Location randomLoc = chooseRandomLocation(suggestedLocationRoads(b));
-        Road road = new Road(randomLoc,this);
+        Road road = buildRoadFree(b,randomLoc);
         roadsMap.put(randomLoc,road);
         b.placeRoad(road);
     }

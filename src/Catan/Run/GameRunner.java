@@ -84,13 +84,14 @@ public class GameRunner implements Serializable {
     }
 
     public void rollDice(Player p, Board b){
+        int ROBBER=7;
        Random r= new Random();
-       int num = r.nextInt(6)+1 +r.nextInt(6)+1;
-        if(num==7){
+       int DICE = r.nextInt(6)+1 +r.nextInt(6)+1;
+        if(DICE==ROBBER){
             discardCards();
             useRobber(p,b);
        } else {
-           board.distributeResources(num);
+           board.distributeResources(DICE);
        }
     }
 
@@ -155,17 +156,27 @@ public class GameRunner implements Serializable {
     public void run(){
         placeFirstSettlementsAndRoads(board);
         boolean endGame= true;
-        int i=0;
+        int NUMBER_OF_TURNS=0;
         while (endGame){
-            current = allPlayers[i%allPlayers.length];
+            current = allPlayers[NUMBER_OF_TURNS%allPlayers.length];
             rollDice(current, board);
             askActions(current);
             verifyTitle(current);
+            if (current instanceof HumanPlayer) printVictoryPoints();
             if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
             if(maxVictoryPoint>=10) endGame=false;
-            i++;
+            NUMBER_OF_TURNS++;
         }
         System.out.println(current.name +" win the game! Congratulations!");
-        System.out.println("You have play " +i+ " turns");
+        System.out.println("You have play " +NUMBER_OF_TURNS+ " turns");
+    }
+    public void printVictoryPoints(){
+        System.out.println();
+        System.out.print("Victory Points:");
+        for (int i =0;i<allPlayers.length;i++) {
+            System.out.print(" " + allPlayers[i].name + "= " + allPlayers[i].getVictoryPoints());
+        }
+        System.out.println();
+
     }
 }

@@ -74,12 +74,12 @@ public abstract class Player{
 
 
     private void initializePrice(){
-        int basicPriceForResource= 4;
-        price.put(ResourceCard.Brick,basicPriceForResource);
-        price.put(ResourceCard.Grain,basicPriceForResource);
-        price.put(ResourceCard.Wool,basicPriceForResource);
-        price.put(ResourceCard.Lumber,basicPriceForResource);
-        price.put(ResourceCard.Ore,basicPriceForResource);
+        int BASIC_PRICE_FOR_RESOURCE= 4;
+        price.put(ResourceCard.Brick,BASIC_PRICE_FOR_RESOURCE);
+        price.put(ResourceCard.Grain,BASIC_PRICE_FOR_RESOURCE);
+        price.put(ResourceCard.Wool,BASIC_PRICE_FOR_RESOURCE);
+        price.put(ResourceCard.Lumber,BASIC_PRICE_FOR_RESOURCE);
+        price.put(ResourceCard.Ore,BASIC_PRICE_FOR_RESOURCE);
     }
 
     public abstract  void askAction(Board b, Deck d);
@@ -274,6 +274,14 @@ public abstract class Player{
            structureMap.put(location,settlement);
            winVictoryPoint(1);
            return settlement;
+    }
+
+    public Structure buildSettlementFree(Board b, Location location){
+        Structure settlement = new Settlement(this, location);
+        nbSettlementsAllowed--;
+        structureMap.put(location,settlement);
+        winVictoryPoint(1);
+        return settlement;
     }
 
     /**
@@ -630,7 +638,7 @@ public abstract class Player{
                 }
             }
         } else {
-            price.replace(ResourceCard.array[specialisation],2); //FIXME PBM AVEC SPECIALISATION
+            price.replace(ResourceCard.array[specialisation],2);
         }
     }
 

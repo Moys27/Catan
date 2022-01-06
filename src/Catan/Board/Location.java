@@ -14,11 +14,17 @@ public class Location {
     private int x, y ;
     private boolean node ;
     private int orientation;
+    public static final int SETTLEMENT_ORIENTATION=2;
+    public static final int ROAD_HORIZONTAL=0;
+    public static final int ROAD_VERTICAL=1;
+
+
+
 
     public Location(int x, int y, int orientation){
         this.x = x;
         this.y=y;
-        this.node= (orientation==2);
+        this.node= (orientation==SETTLEMENT_ORIENTATION);
         this.orientation= orientation;
     }
 
