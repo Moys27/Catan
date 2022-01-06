@@ -11,12 +11,10 @@ import Catan.Run.*;
 public class IAPlayer extends Player{
     private Random r;
     public IAPlayer() {
-        super(Settings.giveName());
+        super(Settings.setIAName());
         r = new Random();
     }
 
-
-    //Todo Creer quelque chose empechant les numeros magiques et les strings magiques
     @Override
     public void  askAction(Board board, Deck d){
         HashMap<Integer,Integer> option= new HashMap<>();
@@ -107,10 +105,6 @@ public class IAPlayer extends Player{
         int randomOption= r.nextInt(list.size());
         return list.get(randomOption);
     }
-    public Integer randomChoiceInteger(ArrayList<Integer> list){
-        int randomOption= r.nextInt(list.size());
-        return list.get(randomOption);
-    }
 
     /**
      * Choissi une ressource que l'IA puisse acheter
@@ -162,7 +156,7 @@ public class IAPlayer extends Player{
                 options.add(card);
             }
         }
-        if (options!=null){
+        if (!options.isEmpty()){
             int random= r.nextInt(options.size());
             useDevCard(options.get(random),board);
         }
@@ -186,15 +180,10 @@ public class IAPlayer extends Player{
         if (players.isEmpty()){
             return null;
         }
-        Player choosed= players.get(r.nextInt(players.size()));
-        return choosed;
+        Player chosen= players.get(r.nextInt(players.size()));
+        return chosen;
     }
 
-
-    /**
-     * Demande la Tile o`tu veux placer le voleur
-     * @return
-     */
     @Override
     public int[] askCoordinatesTile() {
         return new int[]{r.nextInt(Board.getSizeT() ), r.nextInt(Board.getSizeT() )};

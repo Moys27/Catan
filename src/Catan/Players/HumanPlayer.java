@@ -9,14 +9,11 @@ import java.util.List;
 
 public class HumanPlayer extends Player{
     public HumanPlayer() {
-        //super(Settings.askName());
-        super("Tania");
+        super(Settings.setName());
     }
 
-
-
     public void  askAction(Board board, Deck d){
-        showRessource();
+        showResource();
         System.out.println("Choose an action to make:");
         if(canBuildRoad()){
             System.out.println("[1]Build Road");
@@ -91,13 +88,13 @@ public class HumanPlayer extends Player{
 
     public String resourceWanted() {
         System.out.println("What do you want?");
-        return Settings.choiseRessource();
+        return Settings.chooseResource();
     }
 
     @Override
     public String resourceExchanged(String wanted) {
         System.out.println("In exchange of what?");
-        String s= Settings.choiseRessource();
+        String s= Settings.chooseResource();
         if (canPayPrice(s,wanted)){
             return s;
         }
@@ -130,6 +127,7 @@ public class HumanPlayer extends Player{
         showSuggestedLocationRoads(b);
         Location loc = Settings.askLocation();
         Road road = new Road(loc,this);
+        updateNbRoad(b,loc);
         roadsMap.put(loc,road);
         b.placeRoad(road);
     }
@@ -143,10 +141,9 @@ public class HumanPlayer extends Player{
         System.out.println();
     }
 
-    public void showRessource(){
+    public void showResource(){
         System.out.print("Resources: ");
-        System.out.println(resourceDeck);
-        System.out.println();
+        System.out.println(resourceDeck+"\n");
 
     }
 
@@ -156,29 +153,28 @@ public class HumanPlayer extends Player{
 
     }
 
-
-
     public void optionsDevCard(DevCard card, Board board){
         int i= Settings.chooseActionDevCard();
         if (i==1){
             if (card.getCanUSe())
                 useDevCard(card,board);
             else {
-                System.out.println("You can not use this card in this turn");
+                System.out.println("You cannot use this card in this turn");
             }
         } else {
             System.out.println(card.getDescription());
             System.out.println();
         }
     }
+
     @Override
     void useYearOfPlenty() {
         System.out.println("You can choose 2 resources for free.");
         System.out.println("First:");
-        String First= Settings.choiseRessource();
+        String First= Settings.chooseResource();
         winResource(First,1);
         System.out.println("Second:");
-        winResource(Settings.choiseRessource(),1);
+        winResource(Settings.chooseResource(),1);
     }
 
     @Override
@@ -191,16 +187,16 @@ public class HumanPlayer extends Player{
     public void discardCards(int i) {
         System.out.println("You need to discard "+i+" card(s)");
         for (int j=0;j<i;j++){
-            looseResource(Settings.choiseRessource(),1);
+            looseResource(Settings.chooseResource(),1);
         }
     }
     public Player choosePlayerToStolen(List<Player> players){
-        System.out.println("Choose the player wich you will stole");
+        System.out.println("Choose the player which you will stole");
         for (int i=0;i<players.size();i++){
             System.out.println("["+(i+1)+"] "+players.get(i).name);
         }
-        Player choosed= players.get(Settings.chooseBetweenCards(players.size()));
-        return choosed;
+        Player chosen= players.get(Settings.chooseBetweenCards(players.size())-1);
+        return chosen;
     }
 
     @Override

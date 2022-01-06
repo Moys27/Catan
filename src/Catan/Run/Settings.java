@@ -2,7 +2,6 @@ package Catan.Run;
 import Catan.Board.Location;
 import Catan.Card.ResourceCard;
 
-import javax.swing.*;
 import java.util.Scanner;
 
 /**
@@ -28,7 +27,7 @@ public class Settings {
         String input = scanReponse.next();
         String[] inputs = input.split("/");
         if(inputs.length ==3){
-            int posX= Integer.parseInt(inputs[0]);
+            int posX=  Integer.parseInt(inputs[0]);
             int posY = Integer.parseInt(inputs[1]);
             int orientation = Integer.parseInt(inputs[2]);
             return new Location(posX,posY,orientation);
@@ -38,10 +37,9 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     * Determines the number of game players
      */
-    public static int numberPlayers(){
+    public static int setNumberPlayers(){
         System.out.println("Choose the number of players:");
         System.out.println("[3]");
         System.out.println("[4] (default)");
@@ -50,7 +48,7 @@ public class Settings {
             answer= Integer.valueOf(scanReponse.nextLine());
             if ((answer!=3)&&(answer!=4)){
                 System.out.println("Choose 3 or 4, please");
-                return numberPlayers();
+                return setNumberPlayers();
             }
             return answer;
         }
@@ -60,12 +58,11 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     *  Determines the number of human player that will play except the main user.
      */
 
     public static boolean askHumanPlayers(){
-        System.out.println("Will you play with anothers humans?");
+        System.out.println("Will you play with another humans?");
         System.out.println("[1] Yes");
         System.out.println("[2] No (default)");
         try {
@@ -87,7 +84,7 @@ public class Settings {
      * @param maximumPlayers
      * @return
      */
-    public static int HumanPlayers( int maximumPlayers){
+    public static int setUpHumanPlayers(int maximumPlayers){
         System.out.println("Who many humans will play with you?");
         System.out.println("[0] (default)");
         System.out.println("[1] ");
@@ -100,7 +97,7 @@ public class Settings {
             answer= Integer.valueOf(scanReponse.nextLine());
             if ((answer!=0)&&(answer!=1)&&(answer!=2)&&(answer!=3)){
                 System.out.println("Choose betweean 0 and "+(maximumPlayers-1)+", please");
-                return numberPlayers();
+                return setNumberPlayers();
             }
             return answer;
         }
@@ -113,7 +110,7 @@ public class Settings {
      *
      * @return
      */
-    public static String askName(){
+    public static String setName(){
         System.out.println("What is your name?");
         String answer;
         try {
@@ -121,30 +118,27 @@ public class Settings {
             return answer;
         } catch (Exception e){
             scanReponse = new Scanner(System.in);
-            return giveName();
+            return setIAName();
         }
     }
 
     /**
-     *
-     * @return
+     *Attributes name for IA players
      */
-    public static String giveName(){
+    public static String setIAName(){
         String [] nameList= {"Ada","Linux","Pixel"};
         countPlayer++;
         return nameList[countPlayer];
-
     }
 
     /**
-     *
-     * @return The type of ressource wich the player want to commerce
+     * @return The type of resource that the player want to commerce
      */
 
-    public static String choiseRessource() {
+    public static String chooseResource() {
         int answer;
         try {
-            System.out.println("Choose the ressource :");
+            System.out.println("Choose the resource :");
             for (int i=0;i<ResourceCard.array.length;i++){
                 System.out.println("["+(i+1)+"] "+ResourceCard.array[i]);
             }
@@ -162,10 +156,10 @@ public class Settings {
                     return ResourceCard.Ore;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Choose a ressource (between the numbers)");
-            return choiseRessource();
+            System.out.println("Choose a resource (between the numbers)");
+            return chooseResource();
         }
-        return choiseRessource();
+        return chooseResource();
     }
 
     public static int chooseBetweenCards(int i) {
@@ -213,7 +207,7 @@ public class Settings {
             if ((answer >= 1) && (answer <= number)){
                 return answer;
             }else {
-                System.out.println("Not valid number. Try again");
+                System.out.println("Invalid number. Try again");
                 return chooseANumber(number);
             }
         } catch (Exception e){

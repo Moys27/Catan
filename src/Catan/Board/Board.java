@@ -17,9 +17,9 @@ public class Board {
     public static final int sizeS= 5;
     public static final int numberPort= 8;
 
-    private final Structure [][] structures = new Structure[sizeS][sizeS];
-    private final Road [][]  verticalRoads = new Road[sizeT][sizeS];
-    private final Road [][] horizontalRoads = new Road[sizeS][sizeT];
+    private  Structure [][] structures = new Structure[sizeS][sizeS];
+    private  Road [][]  verticalRoads = new Road[sizeT][sizeS];
+    private  Road [][] horizontalRoads = new Road[sizeS][sizeT];
     public static HashMap<Location, Integer> Ports= new HashMap<>();
 
     public Board (){
@@ -358,7 +358,7 @@ public class Board {
             }
 
         }
-        return output; //pour les routes
+        return output;
     }
 
     public boolean isAValidLocation(int x, int y,int xBounds, int yBounds){
@@ -550,11 +550,15 @@ public class Board {
     public int countRoadsFromLocation(Location loc, Player player){
         HashMap<Location, Road> adjacentRoads = this.getAdjacentRoads(loc);
         List<Integer> roads = new ArrayList<>();
-        for (Map.Entry road : adjacentRoads.entrySet()){
-            if(((Road)road.getValue()).getOwner() == player)
-                roads.add(1 + countRoadsFromLocation((Location) road.getKey(),player));
-        }
         int max=0;
+        if (player.getNbRoads()==0){
+            return max;
+        }
+        for (Map.Entry road : adjacentRoads.entrySet()){
+            if(((Road)road.getValue()).getOwner() == player) {
+                roads.add(1 + countRoadsFromLocation((Location) road.getKey(), player));
+            }
+        }
         if(!roads.isEmpty()){
             for (Integer i : roads) {
                 if(max<i) max = i;
@@ -649,6 +653,4 @@ public class Board {
         return owners;
     }
 
-    /*
-    * exemple affichage par tiles avec les roads et strutures presents*/
 }

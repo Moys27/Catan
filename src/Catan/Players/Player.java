@@ -15,7 +15,7 @@ public abstract class Player{
     private int nbRoadsAllowed = 15;
     private int nbSettlementsAllowed = 5;
     private int nbCitiesAllowed = 4;
-    private int nbRoads= 15 - nbRoadsAllowed;
+    private int nbRoads=0;
     private int nbKnights =0;
 
 
@@ -69,9 +69,9 @@ public abstract class Player{
         price.put(ResourceCard.Ore,4);
     }
 
-    public abstract  void askAction(Board board, Deck d);
+    public abstract  void askAction(Board b, Deck d);
 
-    public abstract void executeAction(int option, Board board, Deck d);
+    public abstract void executeAction(int o, Board b, Deck d);
 
     /**
      * Adds i victory points to the player's score
@@ -193,6 +193,7 @@ public abstract class Player{
         looseResource(ResourceCard.Lumber,1);
         Road road = new Road(location,this);
         roadsMap.put(location,road);
+        updateNbRoad(b,location);
         nbRoadsAllowed--;
         return road;
     }
@@ -200,8 +201,14 @@ public abstract class Player{
     public Road buildRoadFree(Board b, Location location){
         Road road = new Road(location,this);
         roadsMap.put(location,road);
+        updateNbRoad(b,location);
         nbRoadsAllowed--;
         return road;
+    }
+
+    protected void updateNbRoad(Board b, Location loc){
+        int nbR = b.countRoadsFromLocation(loc,this);
+        if(nbR > nbRoads) nbRoads = nbR;
     }
 
     /**

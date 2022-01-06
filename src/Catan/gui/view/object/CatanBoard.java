@@ -38,11 +38,11 @@ public class CatanBoard extends JPanel {
     private void draw (Graphics2D g, Color c, int x , int y){
         g.setColor(Color.black);
         g.setStroke(new BasicStroke(5));
-        g.drawRect(x*TILES_DIM+(sW/3), y*TILES_DIM+(sH/5), TILES_DIM, TILES_DIM);
-        //g.drawRect(x, y, TILES_DIM, TILES_DIM);
+        //g.drawRect(x*TILES_DIM+(sW/3), y*TILES_DIM+(sH/5), TILES_DIM, TILES_DIM);
+        g.drawRect(x*TILES_DIM, y*TILES_DIM, TILES_DIM, TILES_DIM);
         g.setColor(c);
-        g.fillRect(x*TILES_DIM+(sW/3), y*TILES_DIM+(sH/5), TILES_DIM, TILES_DIM);
-        //g.fillRect(x, y, TILES_DIM, TILES_DIM);
+        //g.fillRect(x*TILES_DIM+(sW/3), y*TILES_DIM+(sH/5), TILES_DIM, TILES_DIM);
+        g.fillRect(x*TILES_DIM, y*TILES_DIM, TILES_DIM, TILES_DIM);
     }
 
     public void doDrawing(Graphics g) {
@@ -65,4 +65,10 @@ public class CatanBoard extends JPanel {
 
     }
 
+    public static void main(String[] args) {
+        JFrame j = new JFrame();
+        CatanBoard c = new CatanBoard(new Board());
+        j.getContentPane().add(c);
+        j.setVisible(true);
+    }
 }

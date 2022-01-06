@@ -8,7 +8,7 @@ public class Settlement implements Structure{
     public Settlement(Player p, Location l){
         this.owner=p;
         this.location=l;
-        if (hasAPort()){
+        if (Board.Ports.containsKey(l)){
             owner.priceReduction(Board.getSpecification(l));
         }
     }

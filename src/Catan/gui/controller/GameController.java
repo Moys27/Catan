@@ -1,7 +1,7 @@
 package Catan.gui.controller;
 
 import Catan.gui.model.GameModel;
-import Catan.gui.view.GameView;
+import Catan.gui.view.run.GameView;
 
 import javax.swing.*;
 
