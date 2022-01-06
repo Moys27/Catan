@@ -68,7 +68,7 @@ public class GameRunner implements Serializable {
         int i = 2;
         while (i > 0){
             for (Player p : allPlayers){
-                System.out.println("Hey, " + p.name + " your turn!");
+                if (p instanceof HumanPlayer)System.out.println("Hey, " + p.name + " your turn!");
                 p.placeFirstSettlement(b,i==1);
                 p.placeFirstRoad(b);
             }

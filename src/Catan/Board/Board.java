@@ -550,11 +550,15 @@ public class Board {
     public int countRoadsFromLocation(Location loc, Player player){
         HashMap<Location, Road> adjacentRoads = this.getAdjacentRoads(loc);
         List<Integer> roads = new ArrayList<>();
-        for (Map.Entry road : adjacentRoads.entrySet()){
-            if(((Road)road.getValue()).getOwner() == player)
-                roads.add(1 + countRoadsFromLocation((Location) road.getKey(),player));
-        }
         int max=0;
+        if (player.getNbRoads()==0){
+            return max;
+        }
+        for (Map.Entry road : adjacentRoads.entrySet()){
+            if(((Road)road.getValue()).getOwner() == player) {
+                roads.add(1 + countRoadsFromLocation((Location) road.getKey(), player));
+            }
+        }
         if(!roads.isEmpty()){
             for (Integer i : roads) {
                 if(max<i) max = i;

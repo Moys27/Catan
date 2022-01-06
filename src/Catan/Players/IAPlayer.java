@@ -156,7 +156,7 @@ public class IAPlayer extends Player{
                 options.add(card);
             }
         }
-        if (options!=null){
+        if (!options.isEmpty()){
             int random= r.nextInt(options.size());
             useDevCard(options.get(random),board);
         }

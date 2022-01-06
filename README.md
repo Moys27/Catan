@@ -2,7 +2,7 @@
 Ce projet est une reprise moins élaborée que l'original des "COLONS DE CATAN" purement codé en java,
 plus précisément avec la version 17.1 de Java.
 
-Le jeu se joue à plusieurs (3 ou 4 joueurs) : 
+Le jeu se joue à plusieurs (3 ou 4 joueurs) :
 * soit avec des adversaires virtuelles (ie par le bia d'IA, dont les décisions sont purement aléatoire pour l'instant)
 * soit avec des adversaires humains dont les données sont configurées au début du jeu.
 
@@ -16,7 +16,7 @@ L'adaptation reprend les règles générales du jeu, c'est-à-dire que :
 #Lancement du jeu
 Pour pouvoir lancer le jeu, il faut exécuter la commande :
 
-``$ javac catan.Run.Main.java`` 
+``$ javac catan.Run.Main.java``
 
 ``$ java Main``
 

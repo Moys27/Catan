@@ -27,7 +27,6 @@ public abstract class Player{
 
     public Player(String n){
         name =n;
-
         this.victoryPoints=0;
         initializeResourceDeck();
         initializePrice();

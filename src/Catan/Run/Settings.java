@@ -27,7 +27,7 @@ public class Settings {
         String input = scanReponse.next();
         String[] inputs = input.split("/");
         if(inputs.length ==3){
-            int posX= Integer.parseInt(inputs[0]);
+            int posX=  Integer.parseInt(inputs[0]);
             int posY = Integer.parseInt(inputs[1]);
             int orientation = Integer.parseInt(inputs[2]);
             return new Location(posX,posY,orientation);

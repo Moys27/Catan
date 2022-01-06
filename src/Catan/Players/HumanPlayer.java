@@ -195,7 +195,7 @@ public class HumanPlayer extends Player{
         for (int i=0;i<players.size();i++){
             System.out.println("["+(i+1)+"] "+players.get(i).name);
         }
-        Player chosen= players.get(Settings.chooseBetweenCards(players.size()));
+        Player chosen= players.get(Settings.chooseBetweenCards(players.size())-1);
         return chosen;
     }
 

@@ -1,6 +1,9 @@
 package Catan.Run;
 
+import Catan.Board.Board;
+import Catan.Card.Deck;
 import Catan.Card.ResourceCard;
+import Catan.Players.HumanPlayer;
 import Catan.Players.Player;
 
 import java.util.Scanner;
@@ -8,10 +11,19 @@ import java.util.Scanner;
 public class InterfaceConsole {
 
     public static void main(String[] args) {
-        welcoming();
+        //welcoming();
         GameRunner g = new GameRunner();
-        g.run();
 
+
+
+
+        g.run();
+        /*
+        HumanPlayer humanPlayer= new HumanPlayer();
+        TestAddResources(humanPlayer);
+        humanPlayer.askAction(new Board(),new Deck());
+        humanPlayer.getPrice();
+    */
     }
 
     public static void welcoming(){
