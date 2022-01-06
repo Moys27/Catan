@@ -49,11 +49,10 @@ public class Board {
     }
 
     public static int getSpecification(Location l){
-        Location coastLoc = null;
-        for(Map.Entry coast : Board.Ports.entrySet()){
-            Location loc = (Location) coast.getKey();
-            if(Location.compareLocation(loc,l))
-                coastLoc = loc;
+        Location coastLoc= null;
+        for(Location location : Board.Ports.keySet()){
+            if(Location.compareLocation(location,l))
+                coastLoc = location;
         }
         return Ports.get(coastLoc);
 

@@ -273,7 +273,7 @@ public abstract class Player{
                winVictoryPoint(1);
                return settlement;
        }else{
-            System.out.println("Couldn't buuild the settlement at the location");
+            System.out.println("Couldn't build the settlement at the location");
             return null;
         }
     }
@@ -553,6 +553,8 @@ public abstract class Player{
     }
 
     public abstract void discardCards(int i);
+    public abstract int[] askCoordinatesTile();
+
 
     public void discardExtraCards(){
         int nbCards= getNbCardsInHand();
@@ -575,16 +577,15 @@ public abstract class Player{
 
     public abstract Player choosePlayerToStolen(List<Player> players);
 
-    public void playerMoveRobber(){
-    } //FIXME ABSTRACT?
+
 
     public void stoleACardto(Player player) {
-        Random r= new Random();
         if(player.getNbCardsInHand()==0){
             return;
         }
+        Random r= new Random();
         String random= ResourceCard.array[r.nextInt(ResourceCard.ore)];
-        if (resourceDeck.get(random)>0){
+        if (resourceDeck.get(random)>=1){
             player.looseResource(random,1);
             this.winResource(random,1);
         } else {
@@ -648,6 +649,5 @@ public abstract class Player{
     }
 
 
-    public abstract int[] askCoordinatesTile();
-    
+
 }

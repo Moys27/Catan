@@ -11,15 +11,15 @@ import java.util.Scanner;
 public class InterfaceConsole {
 
     public static void main(String[] args) {
-        //letsPlay();
+        letsPlay();
 
-
+/*
         HumanPlayer humanPlayer= new HumanPlayer();
         TestAddResources(humanPlayer);
-        //humanPlayer.askAction(new Board(),new Deck());
-        System.out.println(humanPlayer.getPrice());
-        //humanPlayer.askAction(new Board(),new Deck());
-
+        while (true) {
+            humanPlayer.askAction(new Board(), new Deck());
+        }
+*/
     }
 
     public static void welcoming(){

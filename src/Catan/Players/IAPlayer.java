@@ -31,12 +31,14 @@ public class IAPlayer extends Player{
         if (canBuyDevCard()){
             possibilities.add(4);
         }
-        if (!hand.isEmpty()) {
+        if (canUseDevCard()) {
             possibilities.add(5);
         }
         if (resourceWanted()!=null){
             possibilities.add(6);
         }
+        possibilities.add(7);
+
         Random r= new Random();
         if(possibilities.size()==0){
             executeAction( 7, board, d);
@@ -166,7 +168,7 @@ public class IAPlayer extends Player{
     public void discardCards(int i) {
         while(i>0){
             String random= randomResource();
-            if (resourceDeck.get(random)>0){
+            if ( resourceDeck.get(random) >= 1){
                 looseResource(random,1);
                 i--;
             }

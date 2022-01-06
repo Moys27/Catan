@@ -14,25 +14,39 @@ public class HumanPlayer extends Player{
 
     public void  askAction(Board board, Deck d){
         showResource();
+        ArrayList<Integer> options= new ArrayList<>();
         System.out.println("Choose an action to make:");
         if(canBuildRoad()){
             System.out.println("[1]Build Road");
+            options.add(1);
         }
         if (canBuildSettlement()){
             System.out.println("[2]Build Settlement");
+            options.add(2);
+
         }
         if(canBuildCity()){
             System.out.println("[3]Build City");
+            options.add(3);
+
         }
         if (canBuyDevCard()){
             System.out.println("[4]Buy Develop Card");
+            options.add(4);
+
         }
         if (canUseDevCard()){
             System.out.println("[5]Use Develop Card");
+            options.add(5);
+
         }
         System.out.println("[6]Trade");
+        options.add(6);
+
         System.out.println("[7]Continue");
-        int option=Settings.chooseBetweenCards(7);
+        options.add(7);
+
+        int option=Settings.chooseANumber(options);
         executeAction(option, board, d);
     }
 
