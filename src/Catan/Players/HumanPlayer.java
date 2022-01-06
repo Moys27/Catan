@@ -44,6 +44,9 @@ public class HumanPlayer extends Player{
                 location = Settings.askLocation();
                 if(canBuildRoadAt(board,location)){
                     board.placeRoad(buildRoad(board,location));
+                }else{
+                    System.out.println("You cannot build a road in this location : "+ location);
+                    askAction(board,d);
                 }
                 askAction(board,d);
                 break;
@@ -52,6 +55,9 @@ public class HumanPlayer extends Player{
                 location = Settings.askLocation();
                 if(canBuildSettlementAt(board,location)){
                     board.placeStructure(buildSettlement(board,location));
+                }else{
+                    System.out.println("You cannot build a settlement in this location : "+ location);
+                    askAction(board,d);
                 }
                 askAction(board,d);
                 break;
@@ -60,6 +66,9 @@ public class HumanPlayer extends Player{
                 location=Settings.askLocation();
                 if(canBuildCityAt(board,location)){
                     buildCity(board,location);
+                }else{
+                    System.out.println("You cannot build a city in this location : "+ location);
+                    askAction(board,d);
                 }
                 askAction(board,d);
                 break;
@@ -108,17 +117,27 @@ public class HumanPlayer extends Player{
         System.out.println("Choose the location for the settlement.");
         b.showSuggestedLocationFirstSettlements();
         Location loc = Settings.askLocation();
-        Settlement settlement = new Settlement(this, loc);
-        structureMap.put(loc,settlement);
-        b.placeStructure(settlement);
-        if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
-            ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
-            for (Tile t : tiles){
-                if(t.getResource()!= "DESERT")
-                    this.winResource(t.getResource(),1);
-            }
-        }
 
+        /*The player will be able to place a settlement only in the location suggested*/
+        if (Location.init(b.suggestedLocationFirstSettlements(),loc)){
+            System.out.println("HEEEERRRREEE "+Location.init(b.suggestedLocationFirstSettlements(),loc));
+            Settlement settlement = new Settlement(this, loc);
+            structureMap.put(loc,settlement);
+            b.placeStructure(settlement);
+
+            if (b1){ //if true -> the player win resources from the adjacent tiles for the first time
+                ArrayList<Tile> tiles = b.getAdjacentTilesStructure(loc);
+                for (Tile t : tiles){
+                    if(t.getResource()!= "DESERT")
+                        this.winResource(t.getResource(),1);
+                }
+            }
+
+        }else{
+            System.out.println("You cannot place a settlement in this location : "+ loc+
+                    "\nPlease enter another one.");
+            placeFirstSettlement(b,b1);
+        }
     }
 
     @Override
@@ -126,10 +145,19 @@ public class HumanPlayer extends Player{
         System.out.println("Choose the location for the road.");
         showSuggestedLocationRoads(b);
         Location loc = Settings.askLocation();
-        Road road = new Road(loc,this);
-        updateNbRoad(b,loc);
-        roadsMap.put(loc,road);
-        b.placeRoad(road);
+
+        /*The player will be able to place a road only in the location suggested*/
+        if (Location.init(suggestedLocationRoads(b),loc)){
+            Road road = new Road(loc,this);
+            updateNbRoad(b,loc);
+            roadsMap.put(loc,road);
+            b.placeRoad(road);
+        }else{
+            System.out.println("You cannot place a road in this location : "+ loc+
+                    "\nPlease enter another one.");
+            placeFirstRoad(b);
+        }
+
     }
 
     public void showHand(){
@@ -164,6 +192,19 @@ public class HumanPlayer extends Player{
         } else {
             System.out.println(card.getDescription());
             System.out.println();
+        }
+    }
+
+    @Override
+    void useRoadBuilding(Board board){
+        for (int i = 0; i < 2; i++) {
+            Location location = Settings.askLocation();
+
+            while ( !Location.init(suggestedLocationRoads(board),location)) {
+                showSuggestedLocationRoads(board);
+                location = Settings.askLocation();
+            }
+            board.placeRoad(buildRoadFree(board, location));
         }
     }
 

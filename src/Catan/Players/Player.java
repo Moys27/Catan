@@ -247,10 +247,12 @@ public abstract class Player{
      * Check if the player can place a settlement at the given location
      * @param board
      * @param location
-     * @return if conditions related the location of an eventual settlement construction are fullfilled
+     * @return if conditions related to the location of an eventual settlement construction are fulfilled
      */
     public boolean checkLocationForSettlement(Board board, Location location){
-        return  board.isValidLocation(location)
+        return  location.isaNode() &&
+                board.isValidLocation(location)
+                && !haveAntecedentSettlement(board,location)
                 && board.haveAdjacentRoads(location,this)
                 && !board.haveAdjacentStructures(location, this);
     }
@@ -273,7 +275,7 @@ public abstract class Player{
                winVictoryPoint(1);
                return settlement;
        }else{
-            System.out.println("Couldn't buuild the settlement at the location");
+            System.out.println("Couldn't build the settlement at the location");
             return null;
         }
     }
@@ -283,7 +285,7 @@ public abstract class Player{
      * @param location
      * @return if there's a settlement in a given location
      */
-    private boolean haveAntecedentSettlement(Board b , Location location){
+    protected boolean haveAntecedentSettlement(Board b, Location location){
         if (b.getStructureAt(location) != null ){
             Structure s = b.getStructureAt(location);
             return (s instanceof Settlement && s.getOwner()==this);
@@ -503,17 +505,10 @@ public abstract class Player{
     }
 
     /**
-     * Use the develop card Road Building
+     * Use the development card Road Building
      * @param board
      */
-    private void useRoadBuilding(Board board) {
-        for (int i = 0; i < 2; i++) {
-            Location location = Settings.askLocation();
-            if (checkLocationForRoad(board, location) && (nbRoadsAllowed != 0)) {
-                board.placeRoad(buildRoadFree(board, location));
-            }
-        }
-    }
+    abstract void useRoadBuilding(Board board);
 
     abstract void useYearOfPlenty();
     abstract void actionDevCard(Board board);

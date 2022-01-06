@@ -17,7 +17,6 @@ public class IAPlayer extends Player{
 
     @Override
     public void  askAction(Board board, Deck d){
-        HashMap<Integer,Integer> option= new HashMap<>();
         ArrayList<Integer> possibilities= new ArrayList<>();
         if(canBuildRoad()){
                 possibilities.add(1);
@@ -202,6 +201,14 @@ public class IAPlayer extends Player{
                 if(t.getResource()!= "DESERT")
                     this.winResource(t.getResource(),1);
             }
+        }
+    }
+
+    @Override
+    void useRoadBuilding(Board board) {
+        for (int i = 0; i < 2; i++) {
+            Location location = chooseRandomLocation(suggestedLocationRoads(board));
+            board.placeRoad(buildRoadFree(board, location));
         }
     }
 

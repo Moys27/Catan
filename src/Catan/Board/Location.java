@@ -1,5 +1,7 @@
 package Catan.Board;
 
+import java.util.ArrayList;
+
 public class Location {
     /**
      * @param x
@@ -46,6 +48,16 @@ public class Location {
     }
 
     @Override
+    public int hashCode(){
+        return x+y+10*orientation;
+    }
+
+    @Override
+    public boolean equals(Object loc){
+        return (this.hashCode()==loc.hashCode());
+    }
+
+    @Override
     public String toString() {
         return "Location{" +
                 "x=" + x +
@@ -55,9 +67,13 @@ public class Location {
     }
 
     public static boolean compareLocation(Location loc1, Location loc2){
-        return (
-                loc1.getX()== loc2.getX() && loc1.getY()== loc2.getX()
-                && loc1.orientation== loc2.orientation
-                );
+        return (loc1.equals(loc2));
+    }
+
+    public static boolean init(ArrayList<Location> list, Location loc){
+        for (Location item : list){
+            if (loc.equals(item)) return true;
+        }
+        return false;
     }
 }

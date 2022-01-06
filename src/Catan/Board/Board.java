@@ -623,8 +623,8 @@ public class Board {
     }
 
     /**
-     * Checks if a player has structures near a given lcoation
-     * @return true if there's at least one road adjacent to the location
+     * Checks if a player has structures near a given location
+     * @return true if there's at least one structure adjacent to the location
      */
     public boolean haveAdjacentStructures(Location loc, Player player){
         HashMap<Location, Structure> adjacentStructure = this.getAdjacentStructure(loc);
