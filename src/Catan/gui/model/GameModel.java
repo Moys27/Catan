@@ -9,6 +9,7 @@ public class GameModel {
     Board board;
     Player[] settlers ;
     Player currentPlayer;
+    public static int index = 0;
 
 
     public GameModel(GameRunner runner){
@@ -26,8 +27,15 @@ public class GameModel {
         return settlers;
     }
 
+    public GameRunner getRunner() {
+        return runner;
+    }
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public void switchCurrentPlayer(){
+        currentPlayer = settlers[++index% settlers.length];
     }
 }

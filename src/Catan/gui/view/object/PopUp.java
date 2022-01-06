@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class WarningDialog extends JDialog {
+public class PopUp extends JDialog {
     private JButton buttonOK;
     private JLabel message;
     private JPanel contentPane;
 
-    public WarningDialog(String msg){
+    public PopUp(String msg){
         contentPane= new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout());

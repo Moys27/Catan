@@ -1,5 +1,6 @@
 package Catan.gui.view.run;
 
+import Catan.Board.Location;
 import Catan.Players.Player;
 import Catan.Run.GameRunner;
 import Catan.gui.controller.GameController;
@@ -7,22 +8,18 @@ import Catan.gui.model.GameModel;
 import Catan.gui.view.object.ActionPanel;
 import Catan.gui.view.object.BoardPanel;
 import Catan.gui.view.object.PlayerPanel;
-import Catan.gui.view.object.WarningDialog;
+import Catan.gui.view.object.PopUp;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GameView extends JFrame {
     GameModel model;
     GameController controller;
 
     private JPanel mainPanel;
-    private JTextField getX;
-    private JTextField getY;
-    private JTextField getO;
-
     private PlayerPanel [] players;
-
     private BoardPanel board;
 
     GameView(GameRunner gameRunner){
@@ -50,7 +47,7 @@ public class GameView extends JFrame {
         middle.add(board);
 
         JPanel middleEast = new JPanel(new GridLayout(2,1));
-        middleEast.add(new ActionPanel(model));
+        middleEast.add(new ActionPanel(model,controller));
 
         JButton diceRolling = new JButton("Roll Dice");
         diceRolling.setPreferredSize(new Dimension(40, 40));
@@ -76,6 +73,10 @@ public class GameView extends JFrame {
     }
 
     public void showWarning(String s) {
-        WarningDialog warn = new WarningDialog(s);
+        PopUp warn = new PopUp(s);
+    }
+
+    public void popUp(ArrayList<Location> suggestion) {
+
     }
 }
