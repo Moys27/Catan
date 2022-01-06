@@ -48,27 +48,17 @@ public class IAPlayer extends Player{
 
     @Override
     public void executeAction(int option, Board board, Deck d){
-        Location location;
         switch (option){
             case 1 :
-                location = chooseRandomLocation(suggestedLocationRoads(board));
-                if(canBuildRoadAt(board,location)){
-                    board.placeRoad(buildRoad(board,location));
-                }
+                doARoad(board);
                 askAction(board,d);
                 break;
             case 2:
-                location = chooseRandomLocation(suggestedLocationSettlements(board));
-                if(canBuildSettlementAt(board,location)){
-                    board.placeStructure(buildSettlement(board,location));
-                }
+                doASettlement(board);
                 askAction(board,d);
                 break;
             case 3:
-                location = chooseRandomLocation(suggestedLocationCities(board));
-                if(canBuildCityAt(board,location)){
-                    buildCity(board,location);
-                }
+                doACity(board);
                 askAction(board,d);
                 break;
             case 4:
@@ -133,12 +123,15 @@ public class IAPlayer extends Player{
         return (String) randomChoiceString(possibilities);
     }
 
-    public void optionsDevCard(DevCard card, Board board){
-        useDevCard(card,board);
-    }
-
     public String randomResource(){
         return ResourceCard.array[r.nextInt(ResourceCard.ore)];
+    }
+
+
+    //DEVELOP CARDS FONCTIONS
+
+    public void optionsDevCard(DevCard card, Board board){
+        useDevCard(card,board);
     }
 
 
@@ -146,6 +139,21 @@ public class IAPlayer extends Player{
         for (int i=0; i<2;i++){
             winResource(ResourceCard.array[r.nextInt(ResourceCard.ore)],1);
         }
+    }
+    @Override
+    void useRoadBuilding(Board board) {
+        for (int i = 0; i < 2; i++) {
+            Location location = chooseRandomLocation(suggestedLocationRoads(board));
+            board.placeRoad(buildRoadFree(board, location));
+        }
+    }
+
+    @Override
+    public void placeFirstRoad(Board b) {
+        Location randomLoc = chooseRandomLocation(suggestedLocationRoads(b));
+        Road road = buildRoadFree(b,randomLoc);
+        roadsMap.put(randomLoc,road);
+        b.placeRoad(road);
     }
 
     @Override
@@ -161,6 +169,8 @@ public class IAPlayer extends Player{
             useDevCard(options.get(random),board);
         }
     }
+
+    // ROBBER FONCTIONS
 
     @Override
     public void discardCards(int i) {
@@ -190,6 +200,8 @@ public class IAPlayer extends Player{
 
     }
 
+    //BUILDING FONCTIONS
+
     @Override
     public void placeFirstSettlement(Board b, boolean b1) {
         Location randomLoc = chooseRandomLocation( b.suggestedLocationFirstSettlements());
@@ -205,20 +217,35 @@ public class IAPlayer extends Player{
         }
     }
 
-    @Override
-    void useRoadBuilding(Board board) {
-        for (int i = 0; i < 2; i++) {
+    public void doARoad(Board board){
+        if (!suggestedLocationRoads(board).isEmpty()) {
             Location location = chooseRandomLocation(suggestedLocationRoads(board));
-            board.placeRoad(buildRoadFree(board, location));
+            if(canBuildRoadAt(board,location)){
+                board.placeRoad(buildRoad(board,location));
+            }
         }
     }
 
-    @Override
-    public void placeFirstRoad(Board b) {
-        Location randomLoc = chooseRandomLocation(suggestedLocationRoads(b));
-        Road road = buildRoadFree(b,randomLoc);
-        roadsMap.put(randomLoc,road);
-        b.placeRoad(road);
+    public void doASettlement(Board board){
+        if (!suggestedLocationSettlements(board).isEmpty()) {
+            Location location = chooseRandomLocation(suggestedLocationSettlements(board));
+            if (canBuildSettlementAt(board, location)) {
+                board.placeStructure(buildSettlement(board, location));
+            }
+        }
     }
+
+
+
+    public void doACity(Board board){
+        if (!suggestedLocationCities(board).isEmpty()) {
+            Location location = chooseRandomLocation(suggestedLocationCities(board));
+            if(canBuildCityAt(board,location)){
+                buildCity(board,location);
+            }
+        }
+    }
+
+
 
 }

@@ -103,7 +103,7 @@ public class GameRunner implements Serializable {
 
     public static void moveRobber(Player player, Board b){
         int [] coord= player.askCoordinatesTile();
-        b.moveRobber(coord[0],coord[1]);
+        b.moveRobber(coord[1],coord[0]);
     }
 
 
@@ -154,15 +154,19 @@ public class GameRunner implements Serializable {
     }
 
     public void run(){
+        board.print();
         placeFirstSettlementsAndRoads(board);
         boolean endGame= true;
         int NUMBER_OF_TURNS=0;
         while (endGame){
             current = allPlayers[NUMBER_OF_TURNS%allPlayers.length];
+            if (current instanceof HumanPlayer) {
+                printVictoryPoints();
+                board.print();
+            }
             rollDice(current, board);
             askActions(current);
             verifyTitle(current);
-            if (current instanceof HumanPlayer) printVictoryPoints();
             if (current.getVictoryPoints() > maxVictoryPoint) maxVictoryPoint = current.getVictoryPoints();
             if(maxVictoryPoint>=10) endGame=false;
             NUMBER_OF_TURNS++;

@@ -565,4 +565,23 @@ public class Board {
         return owners;
     }
 
+    public void print(){
+        for (int i=0; i<sizeS;i++) {
+            for (int j = 0; j < sizeS; j++) {
+                if (structures[i][j] == null) {
+                    System.out.print("^            ");
+                } else if (structures[i][j].getOwner() != null) {
+                    System.out.print(structures[i][j].getOwner().name.charAt(0)+"            ");
+                }
+            }
+            System.out.println();
+            for (int j = 0; j < sizeS; j++) {
+                if ((i<sizeT)&&(j<sizeT))
+                System.out.print("  ("+tiles[i][j].id+")"+tiles[i][j].resource+"    ");
+            }
+            System.out.println();
+        }
+
+    }
+
 }
