@@ -30,7 +30,7 @@ public class ActionPanel extends JPanel {
     }
 
     public void setCheckBoxes(){
-        if(!p.canBuildRoad()){
+        if(p.canBuildRoad()){
             buildRoadBox = new JRadioButton("Build A Road");
             buildRoadBox.addActionListener(e -> c.executeAction(1));
             btnG.add(buildRoadBox);

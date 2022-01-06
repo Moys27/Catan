@@ -71,7 +71,6 @@ public class Location {
                 ", orientation=" + orientation +
                 '}';
     }
-
     public static boolean compareLocation(Location loc1, Location loc2){
         return (loc1.equals(loc2));
     }
